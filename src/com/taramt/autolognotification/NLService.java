@@ -50,6 +50,7 @@ public class NLService extends NotificationListenerService {
 				+ sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
 		
 		sendBrodcast();
+		insertDB(sbn);
 	}
 	
 	public void sendBrodcast() {
@@ -57,13 +58,91 @@ public class NLService extends NotificationListenerService {
         i.putExtra("notification_event","onNotificationPosted :");
         sendBroadcast(i);
 	}
+	
+	/*
+	 *  Retrieving the appName using packageName
+	 */
+	public String getAppName(String packageName) {
+		PackageManager packageManager = getApplicationContext().getPackageManager();
+		ApplicationInfo applicationInfo = null;
+		try {
+			applicationInfo = packageManager.getApplicationInfo(packageName, 0);
+		} catch (final NameNotFoundException e) {}
+		final String title = (String)((applicationInfo != null)
+				? packageManager.getApplicationLabel(applicationInfo) : "???");
+		return title;
+	}
 
+/*
+ * Inserting the Notificationdetails with TS 
+ * Uses getNotificationDetails method
+ */
+	public void insertDB(StatusBarNotification sbn) {
 
+		// getting appname 
+		String appName = getAppName(sbn.getPackageName());
+		// timeStamp
+		Date date = new Date(sbn.getPostTime());
+		SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy HH:mm");
+		String timeStamp = formatter.format(date);
+		
+		Notification notification = sbn.getNotification();
+		// getting notificationDetails
+		notificationDetails = getNotificationDetails(notification);
+		String nDetails = "";
+		if (nDetails!=null) nDetails = notificationDetails.toString();
+		db = new DBAdapter(getBaseContext());
+		db.open();
+		db.insertNotificationDetails(appName , nDetails, timeStamp);
+		db.close();
+	}
+	
+	public static List<String> getNotificationDetails(Notification notification) {
+	    // extracting the information from the view
+	    RemoteViews views = notification.bigContentView;
+	    if (views == null) views = notification.contentView;
+	    if (views == null) return null;
 
+	    List<String> text = new ArrayList<String>();
+	    try {
+	        Field field = views.getClass().getDeclaredField("mActions");
+	        field.setAccessible(true);
 
+	        @SuppressWarnings("unchecked")
+	        ArrayList<Parcelable> actions = (ArrayList<Parcelable>) field.get(views);
+
+	        // Find the setText() and setTime() actions
+	        for (Parcelable p : actions) {
+	            Parcel parcel = Parcel.obtain();
+	            p.writeToParcel(parcel, 0);
+	            parcel.setDataPosition(0);
+
+	            int tag = parcel.readInt();
+	            if (tag != 2) continue;
+	            parcel.readInt();
+
+	            String methodName = parcel.readString();
+	            if (methodName == null) {
+	            	continue;
+	            } else if (methodName.equals("setText")) {
+	                parcel.readInt();
+	                // Store the actual string
+	                String t = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(parcel).toString().trim();
+	                text.add(t);
+	            }
+	            parcel.recycle();
+	        }
+	    } catch (Exception e) {
+	        Log.e("NotificationClassifier", e.toString());
+	    }
+
+	    return text;
+	}
+	
 	@Override
 	public void onNotificationRemoved(StatusBarNotification sbn) {
 		Log.i(TAG,"********** onNOtificationRemoved   **********");
-		Log.i(TAG,"ID :" + sbn.getId() + "\t" + sbn.getNotification().tickerText +"\t" + sbn.getPackageName());
+		Log.i(TAG,"ID :" + sbn.getId() + "\t" 
+		+ sbn.getNotification().tickerText +"\t" + sbn.getPackageName());
 	}
 }
