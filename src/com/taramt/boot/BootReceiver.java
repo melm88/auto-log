@@ -2,7 +2,7 @@ package com.taramt.boot;
 
 import java.util.Date;
 
-import com.taramt.autologdatausage.DBAdapter;
+import com.taramt.utils.DBAdapter;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.taramt.autologdatausage;
+package com.taramt.utils;
 
 import java.util.ArrayList;
 
