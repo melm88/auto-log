@@ -7,7 +7,8 @@
     <uses-sdk
         android:minSdkVersion="10"
         android:targetSdkVersion="19" />
-
+ 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -16,12 +17,25 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
-            <intent-filter>
+        </activity>
+        <activity
+            android:name="com.taramt.boot.BootActivity"
+            android:label="@string/title_activity_boot" >
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            
         </activity>
+     <receiver android:name="com.taramt.boot.BootReceiver">
+         <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+        <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+        
+    </intent-filter>
+      </receiver>
+    
     </application>
 
 </manifest>
