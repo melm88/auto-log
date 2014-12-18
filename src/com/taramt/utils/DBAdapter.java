@@ -24,14 +24,14 @@ public class DBAdapter {
 
 
 	public long insertNotificationDetails(String packageName, 
-			String date, String time) {
+			String nDetails, String timeStamp) {
 		Log.d("Notification",
 				"DBA: " + packageName 
-				+ " | " + date + " | " + time);
+				+ " | " + nDetails + " | " + timeStamp);
 		ContentValues cv = new ContentValues();
 		cv.put("appName", packageName);
-		cv.put("notificationDetails", date);
-		cv.put("timeStamp", time);
+		cv.put("notificationDetails", nDetails);
+		cv.put("timeStamp", timeStamp);
 		long n=db.insert("NotificationDetails", null, cv);
 		Log.d("NotificationDetails", "" + n);
 		return n;	
