@@ -1,14 +1,8 @@
 package com.taramt.boot;
 
 import java.util.ArrayList;
-import java.util.Date;
-
 import com.taramt.autolog.R;
-import com.taramt.autolog.R.id;
-import com.taramt.autolog.R.layout;
-import com.taramt.autolog.R.menu;
 import com.taramt.autologdatausage.DBAdapter;
-
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -27,7 +21,7 @@ public class BootActivity extends ActionBarActivity {
 		   ArrayList<String> row = db.getdevicestatelog();
 		   String content = "";
 		   for (int i = 0; i < row.size(); i++) {
-			   content = content+"\n\n\n"+row.get(i);
+			   content = content + "\n\n\n" + row.get(i);
 		}
 		   db.close();
 		   tv.setText(content);
