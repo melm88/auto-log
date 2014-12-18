@@ -17,7 +17,14 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		//TextView in MainActivity
 		tv = (TextView) findViewById(R.id.mainactTV);
+		displayPowerResults();
+		
+	}
+	
+	public void displayPowerResults() {
+		
 		ArrayList<String> displayArray = null;
 		String content = "";
 		
@@ -33,8 +40,7 @@ public class MainActivity extends Activity {
 				content += ele + "\n\n";
 			}
 			
-			tv.setText(content);
-				
+			tv.setText(content);				
 		}
 		
 	}
