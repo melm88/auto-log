@@ -21,8 +21,16 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+/*
+ *  Only applicable for APILevel above 17
+ *  After installing this app goto
+ *  Setting > Security > NotificationAccess
+ *  Check for Autolog
+ *   
+ */
+
 public class NLService extends NotificationListenerService {
-	
+
 	List<String> notificationDetails = new ArrayList<String>();
 	private String TAG = this.getClass().getSimpleName();
 	DBAdapter db;
@@ -35,12 +43,11 @@ public class NLService extends NotificationListenerService {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-
 	}
 
 	@Override
 	public void onNotificationPosted(StatusBarNotification sbn) {
-		
+
 		/*
 		 * While mobile get notification this method will be invoked
 		 * Send the broadcast to update the details which are shown in the activity
@@ -48,17 +55,17 @@ public class NLService extends NotificationListenerService {
 		Log.i(TAG, "**********  onNotificationPosted *********");
 		Log.i(TAG, "ID :" + sbn.getId() + "\t" 
 				+ sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
-		
+
 		sendBrodcast();
 		insertDB(sbn);
 	}
-	
+
 	public void sendBrodcast() {
 		Intent i = new  Intent("com.taramt.autolog.notification");
-        i.putExtra("notification_event","onNotificationPosted :");
-        sendBroadcast(i);
+		i.putExtra("notification_event","onNotificationPosted :");
+		sendBroadcast(i);
 	}
-	
+
 	/*
 	 *  Retrieving the appName using packageName
 	 */
@@ -73,10 +80,10 @@ public class NLService extends NotificationListenerService {
 		return title;
 	}
 
-/*
- * Inserting the Notificationdetails with TS 
- * Uses getNotificationDetails method
- */
+	/*
+	 * Inserting the Notificationdetails with TS 
+	 * Uses getNotificationDetails method
+	 */
 	public void insertDB(StatusBarNotification sbn) {
 
 		// getting appname 
@@ -85,7 +92,7 @@ public class NLService extends NotificationListenerService {
 		Date date = new Date(sbn.getPostTime());
 		SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy HH:mm");
 		String timeStamp = formatter.format(date);
-		
+
 		Notification notification = sbn.getNotification();
 		// getting notificationDetails
 		notificationDetails = getNotificationDetails(notification);
@@ -96,53 +103,54 @@ public class NLService extends NotificationListenerService {
 		db.insertNotificationDetails(appName , nDetails, timeStamp);
 		db.close();
 	}
-	
+
 	public static List<String> getNotificationDetails(Notification notification) {
-	    // extracting the information from the view
-	    RemoteViews views = notification.bigContentView;
-	    if (views == null) views = notification.contentView;
-	    if (views == null) return null;
+		// extracting the information from the view
+		RemoteViews views = notification.bigContentView;
+		if (views == null) views = notification.contentView;
+		if (views == null) return null;
 
-	    List<String> text = new ArrayList<String>();
-	    try {
-	        Field field = views.getClass().getDeclaredField("mActions");
-	        field.setAccessible(true);
+		List<String> text = new ArrayList<String>();
+		try {
+			Field field = views.getClass().getDeclaredField("mActions");
+			field.setAccessible(true);
 
-	        @SuppressWarnings("unchecked")
-	        ArrayList<Parcelable> actions = (ArrayList<Parcelable>) field.get(views);
+			@SuppressWarnings("unchecked")
+			ArrayList<Parcelable> actions = (ArrayList<Parcelable>) field.get(views);
 
-	        // Find the setText() and setTime() actions
-	        for (Parcelable p : actions) {
-	            Parcel parcel = Parcel.obtain();
-	            p.writeToParcel(parcel, 0);
-	            parcel.setDataPosition(0);
+			// Find the setText() actions
+			for (Parcelable p : actions) {
+				Parcel parcel = Parcel.obtain();
+				p.writeToParcel(parcel, 0);
+				parcel.setDataPosition(0);
 
-	            int tag = parcel.readInt();
-	            if (tag != 2) continue;
-	            parcel.readInt();
+				int tag = parcel.readInt();
+				if (tag != 2) continue;
+				parcel.readInt();
 
-	            String methodName = parcel.readString();
-	            if (methodName == null) {
-	            	continue;
-	            } else if (methodName.equals("setText")) {
-	                parcel.readInt();
-	                // Store the actual string
-	                String t = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(parcel).toString().trim();
-	                text.add(t);
-	            }
-	            parcel.recycle();
-	        }
-	    } catch (Exception e) {
-	        Log.e("NotificationClassifier", e.toString());
-	    }
+				String methodName = parcel.readString();
+				if (methodName == null) {
+					continue;
+				} else if (methodName.equals("setText")) {
+					parcel.readInt();
+					// Store the actual string
+					String t = TextUtils.CHAR_SEQUENCE_CREATOR.
+							createFromParcel(parcel).toString().trim();
+					text.add(t);
+				}
+				parcel.recycle();
+			}
+		} catch (Exception e) {
+			Log.d("NotificationActivity", e.toString());
+		}
 
-	    return text;
+		return text;
 	}
-	
+
 	@Override
 	public void onNotificationRemoved(StatusBarNotification sbn) {
 		Log.i(TAG,"********** onNOtificationRemoved   **********");
 		Log.i(TAG,"ID :" + sbn.getId() + "\t" 
-		+ sbn.getNotification().tickerText +"\t" + sbn.getPackageName());
+				+ sbn.getNotification().tickerText +"\t" + sbn.getPackageName());
 	}
 }

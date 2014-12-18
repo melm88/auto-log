@@ -34,7 +34,8 @@ public class NotificationActivity extends Activity {
 		filter.addAction("com.taramt.autolog.notification");
 		registerReceiver(nReceiver,filter);
 		db = new DBAdapter(this);
-
+		// Showing the notifications
+		showNotifications();
 	}
 
 	@Override
@@ -43,10 +44,20 @@ public class NotificationActivity extends Activity {
 		unregisterReceiver(nReceiver);
 	}
 	
-
+	public void showNotifications() {
+		db.open();
+		nDetails = db.getNotificationDetails();
+		String nDetailss = "";
+		for (int i = 0; i<nDetails.size(); i++) {
+			nDetailss = nDetails.get(i) + "\n\n" + nDetailss ;
+		}
+		txtView.setText(nDetailss);
+		db.close();
+	}
+	
 
 	public void CreateNotification(View v) {
-
+	
 		if(v.getId() == R.id.btnCreateNotify){
 			NotificationManager nManager = (NotificationManager) 
 					getSystemService(NOTIFICATION_SERVICE);
@@ -58,7 +69,8 @@ public class NotificationActivity extends Activity {
 			ncomp.setSmallIcon(R.drawable.ic_launcher);
 			ncomp.setAutoCancel(true);
 			nManager.notify((int)System.currentTimeMillis(),ncomp.build());
-
+			
+			showNotifications();
 		}
 	}
 
@@ -66,7 +78,8 @@ public class NotificationActivity extends Activity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			Log.d(TAG, "Notification received");	
-
+			// Showing the notifications
+			showNotifications();
 		}
 	}
 
