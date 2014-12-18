@@ -23,6 +23,7 @@ import android.widget.RemoteViews;
 
 public class NLService extends NotificationListenerService {
 	
+	List<String> notificationDetails = new ArrayList<String>();
 	private String TAG = this.getClass().getSimpleName();
 	DBAdapter db;
 	@Override
@@ -39,12 +40,27 @@ public class NLService extends NotificationListenerService {
 
 	@Override
 	public void onNotificationPosted(StatusBarNotification sbn) {
+		
+		/*
+		 * While mobile get notification this method will be invoked
+		 * Send the broadcast to update the details which are shown in the activity
+		 */
 		Log.i(TAG, "**********  onNotificationPosted *********");
 		Log.i(TAG, "ID :" + sbn.getId() + "\t" 
 				+ sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
-
+		
+		sendBrodcast();
 	}
 	
+	public void sendBrodcast() {
+		Intent i = new  Intent("com.taramt.autolog.notification");
+        i.putExtra("notification_event","onNotificationPosted :");
+        sendBroadcast(i);
+	}
+
+
+
+
 	@Override
 	public void onNotificationRemoved(StatusBarNotification sbn) {
 		Log.i(TAG,"********** onNOtificationRemoved   **********");
