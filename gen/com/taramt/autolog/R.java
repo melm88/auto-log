@@ -2053,6 +2053,7 @@ containing a value of this type.
         public static final int image=0x7f080036;
         public static final int listMode=0x7f080014;
         public static final int list_item=0x7f080038;
+        public static final int mainactTV=0x7f080052;
         public static final int match_parent=0x7f08000c;
         public static final int middle=0x7f080024;
         public static final int monochrome=0x7f080013;
@@ -2306,6 +2307,7 @@ containing a value of this type.
         public static final int hello_world=0x7f060033;
         public static final int store_picture_message=0x7f060001;
         public static final int store_picture_title=0x7f060000;
+        public static final int title_activity_charger_state=0x7f060034;
         /**  Text on a placeholder buy button when Google Play services is not
          available or up-to-date 
          */
