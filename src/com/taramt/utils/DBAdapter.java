@@ -44,5 +44,18 @@ public class DBAdapter {
 		DBHelper.close();
 	}
 
-	
+	public ArrayList<String> getNotificationDetails() {
+		//String query="select email_id from contacts";
+		Cursor cursor = db.query("NotificationDetails", 
+				null, null, null, null, null, null);
+		ArrayList<String> NotificationDetails = new ArrayList<String>();
+		while(cursor.moveToNext()) {
+			String nDetails = cursor.getString(cursor.getColumnIndex("appName"))
+					+ "  " + cursor.getString(cursor.getColumnIndex("notificationDetails")) 
+					+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp"));
+			NotificationDetails.add(nDetails);
+		}
+		return NotificationDetails;
+	}
+
 }
