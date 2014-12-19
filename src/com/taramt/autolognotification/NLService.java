@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 
 import android.app.Notification;
 import android.content.Intent;
@@ -34,6 +35,7 @@ public class NLService extends NotificationListenerService {
 	List<String> notificationDetails = new ArrayList<String>();
 	private String TAG = this.getClass().getSimpleName();
 	DBAdapter db;
+	Utils utils;
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -75,9 +77,9 @@ public class NLService extends NotificationListenerService {
 		try {
 			applicationInfo = packageManager.getApplicationInfo(packageName, 0);
 		} catch (final NameNotFoundException e) {}
-		final String title = (String)((applicationInfo != null)
+		final String appName = (String)((applicationInfo != null)
 				? packageManager.getApplicationLabel(applicationInfo) : "???");
-		return title;
+		return appName;
 	}
 
 	/*
@@ -85,9 +87,9 @@ public class NLService extends NotificationListenerService {
 	 * Uses getNotificationDetails method
 	 */
 	public void insertDB(StatusBarNotification sbn) {
-
+		utils = new Utils(getApplicationContext());
 		// getting appname 
-		String appName = getAppName(sbn.getPackageName());
+		String appName = utils.getAppName(sbn.getPackageName());
 		// timeStamp
 		Date date = new Date(sbn.getPostTime());
 		SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy HH:mm");

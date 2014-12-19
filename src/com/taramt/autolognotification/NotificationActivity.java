@@ -16,12 +16,14 @@ import android.widget.TextView;
 
 import com.taramt.autolog.R;
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 public class NotificationActivity extends Activity {
 
 	private String TAG = this.getClass().getSimpleName();
 	private TextView txtView;
 	private NotificationReceiver nReceiver;
 	DBAdapter db;
+	Utils utils;
 	static ArrayList<String> nDetails = new ArrayList<String>();
 
 	@Override
@@ -34,6 +36,7 @@ public class NotificationActivity extends Activity {
 		filter.addAction("com.taramt.autolog.notification");
 		registerReceiver(nReceiver,filter);
 		db = new DBAdapter(this);
+		utils = new Utils(this);
 		// Showing the notifications
 		showNotifications();
 	}
@@ -47,11 +50,7 @@ public class NotificationActivity extends Activity {
 	public void showNotifications() {
 		db.open();
 		nDetails = db.getNotificationDetails();
-		String nDetailss = "";
-		for (int i = 0; i<nDetails.size(); i++) {
-			nDetailss = nDetails.get(i) + "\n\n" + nDetailss ;
-		}
-		txtView.setText(nDetailss);
+		utils.showDetails(db, nDetails, txtView);
 		db.close();
 	}
 	
