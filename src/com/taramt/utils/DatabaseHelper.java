@@ -24,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				+ " timeStamp text not null);");
 		Log.d("ChargerState", "Table Created ChargerState!!!");
 		db.execSQL("create table if not exists "
-				+ "AmbientTemperature(temperature text not null, "
+				+ "AmbientTemperature(temperature text not null,"
 				+ " timeStamp text not null);");
 		Log.d("ChargerState", "Table Created AmbientTemperature!!!");
 	}

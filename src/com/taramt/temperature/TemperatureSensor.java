@@ -1,5 +1,9 @@
 package com.taramt.temperature;
 
+import java.util.Date;
+
+import com.taramt.utils.DBAdapter;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -23,8 +27,7 @@ public class TemperatureSensor extends Service implements SensorEventListener {
 		// a particular sensor.
 		//mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		//mTemperature = mSensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
-		Log.d("sensor","inService");		
-		
+		Log.d("sensor","inService");				
 		return Service.START_STICKY;
 	}
 
@@ -32,7 +35,7 @@ public class TemperatureSensor extends Service implements SensorEventListener {
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		mSensorManager.unregisterListener(this);
-		Log.d("sensor","inDestroy");
+		//Log.d("sensor","inDestroy");
 		super.onDestroy();
 	}
 
@@ -43,12 +46,17 @@ public class TemperatureSensor extends Service implements SensorEventListener {
 		// a particular sensor.	
 		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		mTemperature = mSensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
-		Log.d("sensor","inCreate");
+		//Log.d("sensor","inCreate");
 		super.onCreate();
 		if(mTemperature != null)
 			mSensorManager.registerListener(this, mTemperature, SensorManager.SENSOR_DELAY_NORMAL);
-		else
+		else {
 			Log.d("sensor","NO TEMPERATURE SENSOR");
+			DBAdapter dba = new DBAdapter(getApplicationContext());
+			dba.open();
+			dba.insertTemperatureDetails("NO TEMPERATURE SENSOR", new Date().toString());
+			dba.close();
+		}		
 		
 	}
 
@@ -65,12 +73,16 @@ public class TemperatureSensor extends Service implements SensorEventListener {
 		float centigrade_of_temperature = event.values[0];
 		
 		if(centigrade_of_temperature != prev_amb_temp) {
+			Log.d("sensor","Temperature: "+centigrade_of_temperature+" | "+prev_amb_temp);
 			prev_amb_temp = centigrade_of_temperature;
-			Log.d("sensor","TemperatureB: "+centigrade_of_temperature+" | "+prev_amb_temp);
+			DBAdapter dba = new DBAdapter(getApplicationContext());
+			dba.open();
+			dba.insertTemperatureDetails(""+centigrade_of_temperature, new Date().toString());
+			dba.close();
 		}
 		
 		// Do something with this sensor data.
-		Log.d("sensor","TemperatureA: "+centigrade_of_temperature);
+		//Log.d("sensor","TemperatureA: "+centigrade_of_temperature);
 		
 	}
 
