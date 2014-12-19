@@ -31,9 +31,14 @@
         </receiver>
 
         <activity
-            android:name=".SensorActivity"
+            android:name="com.taramt.temperature.SensorActivity"
             android:label="@string/title_activity_sensor" >
         </activity>
+        
+        <service android:name="com.taramt.temperature.TemperatureSensor"
+	         android:enabled="true">
+        </service>
+        
     </application>
 
 </manifest>

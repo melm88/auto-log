@@ -499,6 +499,7 @@ int id split_action_bar 0x7f08002c
 int id strict_sandbox 0x7f080009
 int id submit_area 0x7f08004f
 int id tabMode 0x7f080015
+int id temperatureTV 0x7f080053
 int id terrain 0x7f080003
 int id title 0x7f08003a
 int id top 0x7f080026

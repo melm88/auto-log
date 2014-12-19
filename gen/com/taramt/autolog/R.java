@@ -2085,6 +2085,7 @@ containing a value of this type.
         public static final int strict_sandbox=0x7f080009;
         public static final int submit_area=0x7f08004f;
         public static final int tabMode=0x7f080015;
+        public static final int temperatureTV=0x7f080053;
         public static final int terrain=0x7f080003;
         public static final int title=0x7f08003a;
         public static final int top=0x7f080026;

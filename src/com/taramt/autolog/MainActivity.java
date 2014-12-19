@@ -2,6 +2,8 @@ package com.taramt.autolog;
 
 import java.util.ArrayList;
 
+import com.taramt.temperature.SensorActivity;
+import com.taramt.temperature.TemperatureSensor;
 import com.taramt.utils.DBAdapter;
 
 import android.app.Activity;
@@ -22,8 +24,11 @@ public class MainActivity extends Activity {
 		tv = (TextView) findViewById(R.id.mainactTV);
 		//displayPowerResults();
 		
-		Intent it = new Intent(this, SensorActivity.class);
-		startActivity(it);
+		//Intent it = new Intent(this, SensorActivity.class);
+		//startActivity(it);
+		
+		Intent iServe = new Intent(MainActivity.this, TemperatureSensor.class);
+		MainActivity.this.startService(iServe);
 		
 	}
 	
