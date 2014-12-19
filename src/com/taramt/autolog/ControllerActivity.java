@@ -32,13 +32,13 @@ public class ControllerActivity extends Activity {
 	public void openActivity(View v) {
 		if(v == Notification) {
 			
-			Intent myIntent=new Intent(this,NotificationActivity.class);
+			Intent myIntent=new Intent(this, NotificationActivity.class);
 			startActivity(myIntent);
 			finish();
 			
 		} else if (v == Datausage) {
 			
-			Intent myIntent=new Intent(this,DataUsage.class);
+			Intent myIntent=new Intent(this, DataUsage.class);
 			startActivity(myIntent);
 			finish();
 		}
