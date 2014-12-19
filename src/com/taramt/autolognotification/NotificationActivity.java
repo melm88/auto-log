@@ -50,7 +50,7 @@ public class NotificationActivity extends Activity {
 	public void showNotifications() {
 		db.open();
 		nDetails = db.getNotificationDetails();
-		utils.showDetails(db, nDetails, txtView);
+		txtView.setText(utils.getDetails(db, nDetails));
 		db.close();
 	}
 	
