@@ -1,5 +1,6 @@
 package com.taramt.autolog;
 
+import com.taramt.autologdatausage.DataUsage;
 import com.taramt.autolognotification.NotificationActivity;
 
 import android.app.Activity;
