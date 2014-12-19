@@ -3,6 +3,7 @@ package com.taramt.utils;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
 import java.util.ArrayList;
 
 import android.content.ContentValues;
@@ -23,6 +24,14 @@ public class DBAdapter {
 	}	
 
 
+	public void open() {
+		db = DBHelper.getReadableDatabase();
+	}
+	public void close() {
+		DBHelper.close();
+	}
+
+	// To log the database of notification details
 	public long insertNotificationDetails(String packageName, 
 			String nDetails, String timeStamp) {
 		Log.d("Notification",
@@ -36,14 +45,8 @@ public class DBAdapter {
 		Log.d("NotificationDetails", "" + n);
 		return n;	
 	}
-
-	public void open() {
-		db = DBHelper.getReadableDatabase();
-	}
-	public void close() {
-		DBHelper.close();
-	}
-
+	
+	// To get the notification details show in display
 	public ArrayList<String> getNotificationDetails() {
 		//String query="select email_id from contacts";
 		Cursor cursor = db.query("NotificationDetails", 
@@ -57,5 +60,39 @@ public class DBAdapter {
 		}
 		return NotificationDetails;
 	}
+	
+	// To log DataUsage of each app
+	public long insertDataUsage(String tablename, String appName, 
+			String send, String received, String total, String timeStamp)
 
+	{
+		Log.d("Dbb","DBA: " + appName 
+				+ " | "+ send +" | "+received
+				+ " | "+ total +" | "+timeStamp);
+		ContentValues cv = new ContentValues();
+		cv.put("appName", appName);
+		cv.put("send", send);
+		cv.put("received", received);
+		cv.put("total", total);
+		cv.put("timeStamp", timeStamp);
+		long n=db.insert(tablename, null, cv);
+		Log.d("DataUsage", ""+n);
+		return n;	
+	}
+	
+	// to show the Datausage of each app in display
+	public ArrayList<String> getDatausageofApps(){
+		//String query="select email_id from contacts";
+		Cursor cursor=db.query("DataUsage", null,null, null, null, null, null);
+		ArrayList<String> datausageofApps = new ArrayList<String>();
+		while(cursor.moveToNext()) {
+			String nDetails = cursor.getString(cursor.getColumnIndex("appName"))
+					+ "  " + cursor.getString(cursor.getColumnIndex("send")) 
+					+ "  " + cursor.getString(cursor.getColumnIndex("received"))
+					+ "  " + cursor.getString(cursor.getColumnIndex("total"))
+					+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp"));
+			datausageofApps.add(nDetails);
+		}
+		return datausageofApps;
+	}
 }

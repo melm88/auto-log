@@ -15,10 +15,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	//Create tables
 	public void onCreate(SQLiteDatabase db) {
+		
+		// Table for NotificationDetails logging
 		db.execSQL("create table if not exists "
 				+ "NotificationDetails(appName text not null, "
 				+ "notificationDetails text not null,"
 				+ " timeStamp text not null);");
+		
+		// Table for DataUsageLogging
+		db.execSQL("create table if not exists DataUsage(appName text not null, "
+				+ "send text not null, received text not null, "
+				+ "total text not null, timeStamp text not null);");
 		System.out.println();
 		Log.d("Notification", "Table Created!!!");
 	}
@@ -30,6 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		try {
 
 			db.execSQL("DROP TABLE IF EXISTS NotificationDetails");
+			db.execSQL("DROP TABLE IF EXISTS DataUsage");
 			onCreate(db);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
