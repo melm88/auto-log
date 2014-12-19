@@ -30,10 +30,11 @@ public class DataUsage extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_data_usage);
 		dataUsage  = (TextView) findViewById(R.id.dataUsage);
 		db = new DBAdapter(this);
 		utils = new Utils(this);
+		showdataUsage();
 		startAlarm();
 		Log.d("DATAUSAGE", "in on create");
 	}
@@ -66,5 +67,15 @@ public void stopService() {
 	}
 }
 
-
+/*
+ * Showing the data usage of each app from the phone database
+ */
+	public void showdataUsage() {
+		Log.d("DATAUSAGE", "in showdataUsage");
+		db.open();
+		dataUsageApps = db.getDatausageofApps();
+		dataUsage.setText(utils.getDetails(db, dataUsageApps));
+		db.close();
+	}
+	
 }
