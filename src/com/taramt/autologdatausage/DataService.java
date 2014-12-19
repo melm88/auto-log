@@ -42,6 +42,7 @@ public class DataService extends Service{
 	 *  1. getting the list of apps
 	 *  2. getting the Tx and Rx of each app since boot
 	 *  3. Inserting the data into the phone database
+	 *  4. inserts at every 5 minutes (set by alarm manager)
 	 */
 	public void getDatausageperApp() {
 		final PackageManager pm = getPackageManager();
