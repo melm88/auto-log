@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.taramt.utils.DBAdapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -19,7 +20,10 @@ public class MainActivity extends Activity {
 		
 		//TextView in MainActivity
 		tv = (TextView) findViewById(R.id.mainactTV);
-		displayPowerResults();
+		//displayPowerResults();
+		
+		Intent it = new Intent(this, SensorActivity.class);
+		startActivity(it);
 		
 	}
 	

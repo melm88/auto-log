@@ -532,7 +532,8 @@ int layout abc_search_dropdown_item_icons_2line 0x7f030014
 int layout abc_search_view 0x7f030015
 int layout abc_simple_dropdown_hint 0x7f030016
 int layout activity_main 0x7f030017
-int layout support_simple_spinner_dropdown_item 0x7f030018
+int layout activity_sensor 0x7f030018
+int layout support_simple_spinner_dropdown_item 0x7f030019
 int string abc_action_bar_home_description 0x7f060024
 int string abc_action_bar_home_description_format 0x7f060027
 int string abc_action_bar_home_subtitle_description_format 0x7f060028
@@ -585,6 +586,7 @@ int string hello_world 0x7f060033
 int string store_picture_message 0x7f060001
 int string store_picture_title 0x7f060000
 int string title_activity_charger_state 0x7f060034
+int string title_activity_sensor 0x7f060035
 int string wallet_buy_button_place_holder 0x7f060022
 int style AppBaseTheme 0x7f0500f0
 int style AppTheme 0x7f0500f1

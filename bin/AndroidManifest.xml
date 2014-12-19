@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="10"
+        android:minSdkVersion="14"
         android:targetSdkVersion="19" />
 
     <application
@@ -22,13 +22,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <receiver android:name="com.taramt.power.PhoneChargerState">
-	        <intent-filter>
-	       		<action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
-	       		<action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
-	   		</intent-filter>
-     	</receiver>
+
+        <receiver android:name="com.taramt.power.PhoneChargerState" >
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".SensorActivity"
+            android:label="@string/title_activity_sensor" >
+        </activity>
     </application>
 
 </manifest>
