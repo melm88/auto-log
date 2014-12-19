@@ -30,18 +30,16 @@ public class Utils {
 	}
 	
 	/*
-	 * a method for showing the details from the database
+	 * a method for getting the details from the database
 	 */
-	public void showDetails(DBAdapter db, ArrayList<String> details, TextView tv) {
+	public String getDetails(DBAdapter db, ArrayList<String> details) {
 		db.open();
-		
-		details = db.getNotificationDetails();
-		String nDetailss = "";
+		String detailss = "";
 		for (int i = 0; i<details.size(); i++) {
-			nDetailss = details.get(i) + "\n\n" + nDetailss ;
+			detailss = details.get(i) + "\n\n" + detailss ;
 		}
-		tv.setText(nDetailss);
 		db.close();
+		return detailss;
 	}
-
+	
 }
