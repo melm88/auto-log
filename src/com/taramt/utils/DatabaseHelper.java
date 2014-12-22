@@ -28,10 +28,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				+ " timeStamp text not null);");
 		Log.d("AutoLogDB", "Table Created AmbientTemperature!!!");
 		db.execSQL("create table if not exists "
-				+ "CameraEvent(filepath text not null,"
+				+ "MediaEvent(filepath text not null,"
 				+ "filetype text not null,"
 				+ " timeStamp text not null, primary key(timeStamp));");
-		Log.d("AutoLogDB", "Table Created CameraEvent!!!");
+		Log.d("AutoLogDB", "Table Created MediaEvent!!!");
 	}
 
 	@Override

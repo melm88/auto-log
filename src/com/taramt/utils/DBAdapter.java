@@ -84,7 +84,7 @@ public class DBAdapter {
 	
 	//Insert Image/Video info into table
 	public long insertMediaDetails(String path, String mediatype, String time) {
-		Log.d("CameraEvent",
+		Log.d("MediaEvent",
 				"DBA: " + path + " | " + mediatype + " | " + time);
 		long n=0;
 		try {
@@ -92,10 +92,10 @@ public class DBAdapter {
 			cv.put("filepath", path);
 			cv.put("filetype", mediatype);
 			cv.put("timeStamp", time);
-			n=db.insert("CameraEvent", null, cv);
-			Log.d("CameraEvent", "" + n);
+			n=db.insert("MediaEvent", null, cv);
+			Log.d("MediaEvent", "" + n);
 		} catch(Exception e) {
-			Log.d("CameraEvent",e.toString());
+			Log.d("MediaEvent",e.toString());
 			//e.printStackTrace();
 		}
 		

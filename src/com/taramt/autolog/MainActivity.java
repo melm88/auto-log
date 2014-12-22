@@ -1,6 +1,7 @@
 package com.taramt.autolog;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.taramt.temperature.SensorActivity;
 import com.taramt.temperature.TemperatureSensor;
@@ -52,6 +53,10 @@ public class MainActivity extends Activity {
 	                            index);
 	                    //audioFileNames.add(tempFileName);
 	                    Log.d("audiorec","AudioCreate: "+tempFileName + "||" + path);
+	                    DBAdapter dba = new DBAdapter(getApplicationContext());
+	                    dba.open();
+	                    dba.insertMediaDetails(path, "Audio", new Date().toString());
+	                    dba.close();
 
 	                }
 	            } else if (event == FileObserver.DELETE) {
