@@ -81,5 +81,25 @@ public class DBAdapter {
 		Log.d("Temperature", "" + n);
 		return n;	
 	}
+	
+	//Insert Image/Video info into table
+	public long insertMediaDetails(String path, String mediatype, String time) {
+		Log.d("CameraEvent",
+				"DBA: " + path + " | " + mediatype + " | " + time);
+		long n=0;
+		try {
+			ContentValues cv = new ContentValues();
+			cv.put("filepath", path);
+			cv.put("filetype", mediatype);
+			cv.put("timeStamp", time);
+			n=db.insert("CameraEvent", null, cv);
+			Log.d("CameraEvent", "" + n);
+		} catch(Exception e) {
+			Log.d("CameraEvent",e.toString());
+			//e.printStackTrace();
+		}
+		
+		return n;	
+	}
 
 }

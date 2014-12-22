@@ -30,7 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL("create table if not exists "
 				+ "CameraEvent(filepath text not null,"
 				+ "filetype text not null,"
-				+ " timeStamp text not null);");
+				+ " timeStamp text not null, primary key(timeStamp));");
 		Log.d("AutoLogDB", "Table Created CameraEvent!!!");
 	}
 
