@@ -22,4 +22,15 @@
         android:text="@string/call_log" 
         android:onClick="getCallLog"/>
 
+    <Button
+        android:id="@+id/activity"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/callLog"
+        android:layout_below="@+id/callLog"
+        android:layout_marginTop="24dp"
+        android:onClick="getActivity"
+        android:text="Button" />
+
 </RelativeLayout>

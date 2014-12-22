@@ -23,4 +23,11 @@ public class MainActivity extends Activity {
 		Intent intent =new Intent(context,Calllog.class);
 		startActivity(intent);
 	}
+	
+	public void getActivity(View view){
+	
+		Log.d("main","getActivity");
+		Intent intent=new Intent(context,ActivityRecognitionActivity.class);
+		startActivity(intent);
+	}
 }
