@@ -13,6 +13,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		Log.d("AutoLog","Database created....");
 	}
 
+	
 	//Create tables
 	public void onCreate(SQLiteDatabase db) 
 	{
