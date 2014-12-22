@@ -11,7 +11,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	public DatabaseHelper(Context context) {
 		super(context, "AutoLog" , null, 1);
-		Log.d("AutoLog", "Database created....");
+		Log.d("AutoLogDB", "Database created....");
 	}
 
 	//Create tables
@@ -22,11 +22,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				+ "chargingpoint text not null,"
 				+ "battery text not null,"
 				+ " timeStamp text not null);");
-		Log.d("ChargerState", "Table Created ChargerState!!!");
+		Log.d("AutoLogDB", "Table Created ChargerState!!!");
 		db.execSQL("create table if not exists "
 				+ "AmbientTemperature(temperature text not null,"
 				+ " timeStamp text not null);");
-		Log.d("ChargerState", "Table Created AmbientTemperature!!!");
+		Log.d("AutoLogDB", "Table Created AmbientTemperature!!!");
+		db.execSQL("create table if not exists "
+				+ "CameraEvent(filepath text not null,"
+				+ "filetype text not null,"
+				+ " timeStamp text not null);");
+		Log.d("AutoLogDB", "Table Created CameraEvent!!!");
 	}
 
 	@Override
