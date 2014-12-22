@@ -3,6 +3,7 @@
 
     <string name="app_name">AutoLog</string>
     <string name="hello_world">Hello world!</string>
+    <string name="call_log">Call Log</string>
 
 </resources>
 
