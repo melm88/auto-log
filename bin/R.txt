@@ -340,6 +340,7 @@ int id book_now 0x7f0b0014
 int id buyButton 0x7f0b0010
 int id buy_now 0x7f0b0015
 int id buy_with_google 0x7f0b0016
+int id call_log 0x7f0b004e
 int id checkbox 0x7f0b003f
 int id classic 0x7f0b0017
 int id collapseActionView 0x7f0b0023
@@ -426,8 +427,9 @@ int layout abc_popup_menu_item_layout 0x7f030014
 int layout abc_search_dropdown_item_icons_2line 0x7f030015
 int layout abc_search_view 0x7f030016
 int layout abc_simple_decor 0x7f030017
-int layout activity_main 0x7f030018
-int layout support_simple_spinner_dropdown_item 0x7f030019
+int layout activity_calllog 0x7f030018
+int layout activity_main 0x7f030019
+int layout support_simple_spinner_dropdown_item 0x7f03001a
 int string abc_action_bar_home_description 0x7f060021
 int string abc_action_bar_up_description 0x7f060022
 int string abc_action_menu_overflow_description 0x7f060023
@@ -713,7 +715,7 @@ int styleable MenuItem_android_title 7
 int styleable MenuItem_android_titleCondensed 8
 int styleable MenuItem_android_visible 4
 int styleable MenuItem_showAsAction 13
-int[] styleable MenuView { 0x010100ae, 0x0101012c, 0x0101012d, 0x0101012e, 0x0101012f, 0x01010130, 0x01010131, 0x01010435 }
+int[] styleable MenuView { 0x010100ae, 0x0101012c, 0x0101012d, 0x0101012e, 0x0101012f, 0x01010130, 0x01010131, 0x0101052f }
 int styleable MenuView_android_headerBackground 4
 int styleable MenuView_android_horizontalDivider 2
 int styleable MenuView_android_itemBackground 5
