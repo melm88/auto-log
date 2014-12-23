@@ -3,10 +3,11 @@ package com.taramt.autolog;
 
 import android.app.Activity;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -18,27 +19,42 @@ public class ActivityRecognitionActivity extends Activity implements GooglePlayS
 GooglePlayServicesClient.OnConnectionFailedListener{
 
 	
-	private BroadcastReceiver receiver1;
+	
 	private ActivityRecognitionClient arclient;
-	private String Activity = "";
-	private int Confidence = 0;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_activityrecognition);
 		
+		Log.d("activityrecognition","oncreate");
+			
 		int resp =GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
 		if(resp == ConnectionResult.SUCCESS){
 			arclient = new ActivityRecognitionClient(this, this, this);
 			arclient.connect();			
+			
+			
 		}
 		else{
 			Toast.makeText(this,  "Please install Google Play Service.",Toast.LENGTH_LONG).show();
 		}		
-		
 	}
 
+/*	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()){
+            case R.id.action_start:
+            	startUpdates();
+                return true;
+            case R.id.action_stop:
+            	stopUpdates();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }*/
 	@Override
 	public void onConnectionFailed(ConnectionResult connectionResult) {
 		// TODO Auto-generated method stub
@@ -73,5 +89,23 @@ GooglePlayServicesClient.OnConnectionFailedListener{
 		
 	}
 
+	public void startUpdates(){
+		
+		int resp =GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+		if(resp == ConnectionResult.SUCCESS){
+			arclient = new ActivityRecognitionClient(this, this, this);
+			arclient.connect();			
+			
+			Intent intent = new Intent(this, ActivityRecognitionService.class);
+			PendingIntent pIntent = PendingIntent.getService(this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
+			arclient.requestActivityUpdates(10*1000, pIntent); 
+		}
+		else{
+			Toast.makeText(this,  "Please install Google Play Service.",Toast.LENGTH_LONG).show();
+		}		
+	}
+	public void stopUpdates(){
+		
+	}
 	
 }

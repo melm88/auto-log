@@ -19,6 +19,8 @@ public class ActivityRecognitionService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
+		
+		Log.d("activityintent service","onhandle");
 
 		ActivityRecognitionResult result = ActivityRecognitionResult.extractResult(intent);
 

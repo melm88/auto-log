@@ -28,6 +28,9 @@ public class MainActivity extends Activity {
 	
 		Log.d("main","getActivity");
 		Intent intent=new Intent(context,ActivityRecognitionActivity.class);
-		startActivity(intent);
+		//startActivity(intent);
+	}
+	public void getLocation(View view){
+		Log.d("main","get location");
 	}
 }
