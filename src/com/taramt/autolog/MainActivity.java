@@ -2,6 +2,8 @@ package com.taramt.autolog;
 
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,5 +34,10 @@ public class MainActivity extends Activity {
 	}
 	public void getLocation(View view){
 		Log.d("main","get location");
+		Intent intent =new Intent(context,LocationClass.class);
+		PendingIntent pendingIntent = PendingIntent.getService(context,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+		AlarmManager am = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+		am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+				1000*60*1,pendingIntent);
 	}
 }

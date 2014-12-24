@@ -1,15 +1,10 @@
 package com.taramt.autolog;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.location.LocationClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
 
 import android.app.Service;
 import android.content.Context;
@@ -21,7 +16,16 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.taramt.utils.DBAdapter;
 
 public class LocationClass extends Service implements
 GooglePlayServicesClient.ConnectionCallbacks,
@@ -37,32 +41,37 @@ LocationListener {
 	float accuracy=0;
 	double lat=0;
 	double lon=0;
-	//DatabaseAdapter dbAdapter;
+	//DBAdapter dbAdapter;
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		context=getApplicationContext();
-		try {
-			//dbAdapter=new DatabaseAdapter(this);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
+		details=PreferenceManager.getDefaultSharedPreferences(this);
 		
+		Log.d("location class","oncreate");
 	}
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		
+		Log.d("locatin class","onstart");
 		if (!currentlyProcessingLocation) {
 			currentlyProcessingLocation = true;
+			
+			SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+			String timeStamp=s.format(new Date());
+			SharedPreferences.Editor editor=details.edit();
+			editor.putString("timeStamp", timeStamp);
+			editor.commit();
+			
 			startTracking();
 		}
 		//	displayCurrentLocation();
 		return START_STICKY;
 	}
 	private void startTracking() {
-		
+
+		Log.d("location class","starttracking");
+
 		if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
 			locationClient = new LocationClient(this,this,this);
 			if (!locationClient.isConnected() || !locationClient.isConnecting()) {
@@ -83,45 +92,47 @@ LocationListener {
 	}
 	@Override
 	public void onLocationChanged(Location location) {
+		Log.d("location class","on location changed");
 		if (location != null) {
-			
-				SharedPreferences.Editor editor=details.edit();
-				//Log.d("location","yes");
+
+
+			//Log.d("location","yes");
 			/*
 			 * Get the set of accuracy values break the loop and continue to next if the accuracy is less than 20 else get the least 
 			 * value and the corresponding latitude and longitude values from the set of 10 values.
 			 */
-				for(int i=0;i<10;i++){
-					float acc=location.getAccuracy();
-					if(details.getString("firstLoc", "yes").equals("yes")){
-						lat=location.getLatitude();
-						lon=location.getLongitude();
-						accuracy=acc;
-					}else{
-						if(accuracy>acc){
-							lat=location.getLatitude();
-							lon=location.getLongitude();
-							accuracy=acc;
-								if(acc<=20){
-									break;
-								}
-						}
-					}
-				}
-				editor.putString("accuracy", accuracy+"");
-				Double[] params=new Double[2];
-				params[0]= lat;
-				params[1]= lon;
-				
-				
-				locationClient.removeLocationUpdates(this);
-				stopSelf();
-				
-		}
+
 			
+			
+			
+			float acc=location.getAccuracy();
+			lat=location.getLatitude();
+			lon=location.getLongitude();				
+
+			
+			
+			Log.d("lat",lat+"");
+			Log.d("long",lon+"");
+			Double[] params=new Double[3];
+			params[0]= lat;
+			params[1]= lon;
+			params[2]=Double.valueOf(acc);
+			GetCurrentAddress currentadd=new GetCurrentAddress();
+			try {
+				currentadd.execute(params);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				Log.d("exception in calling asynctask",e.toString());
+			}
+
+			locationClient.removeLocationUpdates(this);
+			stopSelf();
+
 		}
-	
-	
+
+	}
+
+
 
 	/**
 	 * Called by Location Services when the request to connect the
@@ -130,7 +141,9 @@ LocationListener {
 	 */
 	@Override
 	public void onConnected(Bundle bundle) {
-	
+
+		Log.d("location class","onconnected");
+
 		locationRequest = LocationRequest.create();
 		locationRequest.setInterval(1); // milliseconds
 		locationRequest.setFastestInterval(0); // the fastest rate in milliseconds at which your app can handle location updates
@@ -149,55 +162,71 @@ LocationListener {
 	public void onConnectionFailed(ConnectionResult connectionResult) {
 		Log.e(TAG, "onConnectionFailed");
 	}
-	
+
 	private class GetCurrentAddress extends AsyncTask<Double, Void, String> {
 
+		DBAdapter dbAdapter;
+		SharedPreferences details;
 
+		double lat,lon,accuracy;
 
 		@Override
 		protected String doInBackground(Double... params) {
 
+			dbAdapter=new DBAdapter(getApplicationContext());
+			details=PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+			lat=params[0];
+			lon=params[1];
+			accuracy=params[2];
 			String address= getAddress(getBaseContext(), params[0], params[1]);
+
 
 			return address;
 
 		}
 		@Override
 		protected void onPostExecute(String resultString) {
-		
+			Log.d("LocationClass","in post execute"+resultString);
+			dbAdapter.insertLocationDetails(details.getString("timeStamp", ""), String.valueOf(lat),
+					String.valueOf(lon), String.valueOf(accuracy), resultString, " ");
 			
-			
-			
-			
+
 		}
 	}
 
 	public  String getAddress(Context ctx, double latitude, double longitude) {
 		//StringBuilder result = new StringBuilder();
-		String first = null;
+		String first = "";
 		try {
 			Geocoder geocoder = new Geocoder(ctx, Locale.getDefault());
 			List<Address> addresses=null;
 			addresses = geocoder.getFromLocation(latitude, longitude, 5);
+			Log.d("size",addresses.size()+"");
 			if (addresses.size() > 0) {
 				Address address = addresses.get(0);
+
+
 				first=address.getAddressLine(0);
+
 
 				if(first.contains(",")){
 					//first.replace(",", " ");
 					first = first.replaceAll(",", " ");
+					Log.d("address",first);
 				}
 				if(first.contains("null")){
 					//first.replace("null", "");
 					first = first.replaceAll("null", "");
+					Log.d("address",first);
 				}
 			}
 		} catch (IOException e) {
-			Log.e("tag", e.getMessage());
+			Log.d("tag", e.getMessage());
 		}
+
 
 		return first;
 	}
-	
+
 
 }
