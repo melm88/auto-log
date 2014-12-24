@@ -2,6 +2,7 @@ package com.taramt.autolog;
 
 import com.taramt.autologdatausage.DataUsage;
 import com.taramt.autolognotification.NotificationActivity;
+import com.taramt.autologscreenstate.ScreenActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,7 +13,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class ControllerActivity extends Activity {
-	Button Notification, Datausage;
+	Button Notification, Datausage, screen;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +21,7 @@ public class ControllerActivity extends Activity {
 		setContentView(R.layout.activity_controller);
 		Notification = (Button) findViewById(R.id.NotificationDetails);
 		Datausage = (Button) findViewById(R.id.Datausage);
+		screen = (Button) findViewById(R.id.screenActivity);
 	}
 
 	@Override
@@ -39,6 +41,10 @@ public class ControllerActivity extends Activity {
 		} else if (v == Datausage) {
 			
 			Intent myIntent=new Intent(this, DataUsage.class);
+			startActivity(myIntent);
+			finish();
+		} else if (v == screen) {
+			Intent myIntent=new Intent(this, ScreenActivity.class);
 			startActivity(myIntent);
 			finish();
 		}
