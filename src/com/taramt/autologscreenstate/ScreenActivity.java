@@ -40,16 +40,21 @@ public class ScreenActivity extends Activity {
         sDetails = db.getScreenStateDetails();
         db.close();
         log.setText(utils.getDetails(db, sDetails));
-  
+        registerReceiver();
        
     }
     
-
+    public void registerReceiver() {
+    	 IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+         filter.addAction(Intent.ACTION_USER_PRESENT);
+          mReceiver = new ScreenReceiver();
+         registerReceiver(mReceiver, filter);
+    }
     
     @Override
     public void onDestroy() {
     	super.onDestroy();
-
+    	unregisterReceiver(mReceiver);
     }
 
     
