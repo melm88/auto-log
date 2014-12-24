@@ -131,6 +131,7 @@ public class DBAdapter {
 	}
 	public long updateTotal(String state, 
 			String timeStamp, String total) {
+		
 		open();
 		ContentValues cv=new ContentValues();
 		cv.put("total", total);
@@ -229,6 +230,13 @@ public long getTotal(String state, String time) {
                   (totalSec%3600)/60+" : "+
                   (totalSec%3600)%60;
 	         return timeStr;
+	}
+	
+	public int getrowcount() {
+		
+		Cursor cursor = db.query("phone_activity", 
+				null, null, null, null, null, null);
+		return cursor.getCount()/2;
 	}
 	
 }
