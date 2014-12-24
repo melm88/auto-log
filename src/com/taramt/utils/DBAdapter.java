@@ -38,7 +38,15 @@ public class DBAdapter {
 		Log.d("tablename", "inserted a row "+n);
 		return n;	
 	}
-	
+	public long insertWifiandData(String activity, String timeStamp) {
+		Log.d("Dbb","DBA: " + activity + " | " + timeStamp);
+		ContentValues cv = new ContentValues();
+		cv.put("activity", activity);
+		cv.put("timestamp", timeStamp);
+		long n=db.insert("wifianddata", null, cv);
+		Log.d("tablename", "inserted a row "+n);
+		return n;	
+	}
 	public void open() {
 		db = DBHelper.getReadableDatabase();
 	}
@@ -62,6 +70,16 @@ public class DBAdapter {
 		ArrayList<String> entry = new ArrayList<String>();
 		while(cursor.moveToNext()) {
 			String nDetails = cursor.getString(cursor.getColumnIndex("value"))
+					+ "\n" + cursor.getString(cursor.getColumnIndex("timestamp"));
+			entry.add(nDetails);
+		}
+		return entry;
+	}
+	public ArrayList<String> getwifianddatalog(){
+		Cursor cursor=db.query("wifianddata", null,null, null, null, null, null);
+		ArrayList<String> entry = new ArrayList<String>();
+		while(cursor.moveToNext()) {
+			String nDetails = cursor.getString(cursor.getColumnIndex("activity"))
 					+ "\n" + cursor.getString(cursor.getColumnIndex("timestamp"));
 			entry.add(nDetails);
 		}

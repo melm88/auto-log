@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.taramt.autolog.R;
 import com.taramt.utils.DBAdapter;
-
 import android.support.v7.app.ActionBarActivity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -27,16 +26,23 @@ public class AmbientlightActivity extends ActionBarActivity {
 		//First time
 		SharedPreferences savedValues = PreferenceManager
 				.getDefaultSharedPreferences(this);
+		
 		if (savedValues.getBoolean(getString(R.string.Start), true)) {
+			
+			Log.d("flag", "timer is being set");
+			
 			SharedPreferences.Editor editor = savedValues.edit();
 			editor.putBoolean(getString(R.string.Start), false);
 			editor.commit();
+			
 			Intent intent = new Intent(this, Ambientlightservice.class);
 			PendingIntent pintent = PendingIntent
 					.getService(this, 0, intent, 0);
+			
 			AlarmManager alarm = (AlarmManager) 
 					getSystemService(Context.ALARM_SERVICE);
 			alarm.cancel(pintent);
+			
 			alarm.setRepeating(AlarmManager.RTC_WAKEUP, 
 					System.currentTimeMillis()+5*60*1000,
 					5*60*1000, pintent); 
