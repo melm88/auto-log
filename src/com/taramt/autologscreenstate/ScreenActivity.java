@@ -23,6 +23,7 @@ public class ScreenActivity extends Activity {
 	TextView log, Average, Total;
 	BroadcastReceiver mReceiver;
 	String total, average;
+	long totalDuration;
 	SharedPreferences prefs;
 	Utils utils;
     @Override
@@ -31,17 +32,22 @@ public class ScreenActivity extends Activity {
         setContentView(R.layout.activity_screen);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         db = new DBAdapter(this);
+        db.open();
         utils = new Utils(this);
         log = (TextView)findViewById(R.id.log);
         Average = (TextView)findViewById(R.id.Average);
         Total = (TextView)findViewById(R.id.Total_duration);
         ArrayList<String> sDetails = new ArrayList<String>();
-        db.open();
         sDetails = db.getScreenStateDetails();
         db.close();
         log.setText(utils.getDetails(db, sDetails));
         registerReceiver();
-       
+        
+        totalDuration = prefs.getLong("t_locked", 0L)
+    			+ prefs.getLong("t_unlocked", 0L);
+        showTotalDuration();
+     
+        
     }
     
     public void registerReceiver() {
@@ -69,12 +75,15 @@ public class ScreenActivity extends Activity {
     }
     
     
-    public void average() {
-    	
-    }
+
     
-    public void TotalDuration() {
-    	
+    public void showTotalDuration() {
+    	total = "Total Duraion : " + totalDuration + "\n";
+    	total = total + "Active:  " 
+    			+ prefs.getLong("t_unlocked", 0L) + "\n";
+    	total = total + "Idle: "
+    			+ prefs.getLong("t_locked", 0L);
+    	Total.setText(total);
     }
     
 }
