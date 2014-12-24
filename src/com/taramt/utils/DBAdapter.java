@@ -13,13 +13,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class DBAdapter {
-
-	private final Context context;
 	private DatabaseHelper DBHelper;
 	private SQLiteDatabase db;
-	public DBAdapter(Context c) {
+	public DBAdapter(Context context) {
 		Log.d("AutoLog","Inside DBAdapter Constructor");
-		context = c;	
 		DBHelper = new DatabaseHelper(context);
 	}	
 
@@ -95,4 +92,34 @@ public class DBAdapter {
 		}
 		return datausageofApps;
 	}
+	
+	
+	// SCREEN STATE
+	
+	
+	public void insertScreenState(String state,String time){
+
+		ContentValues cv = new ContentValues();
+		cv.put("screenState", state);
+		cv.put("timeStamp", time);
+		cv.put("total", "");	
+
+		db.insert("phone_activity", null, cv);
+	
+	}
+	
+	public ArrayList<String> getScreenStateDetails() {
+		//String query="select email_id from contacts";
+		Cursor cursor = db.query("phone_activity", 
+				null, null, null, null, null, null);
+		ArrayList<String>screenStateDetailss = new ArrayList<String>();
+		while(cursor.moveToNext()) {
+			String sDetailss = cursor.getString(cursor.getColumnIndex("sno"))
+					+ "  " + cursor.getString(cursor.getColumnIndex("screenState")) 
+					+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp"));
+			screenStateDetailss.add(sDetailss);
+		}
+		return screenStateDetailss;
+	}
+
 }
