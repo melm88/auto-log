@@ -33,8 +33,13 @@ public class MainActivity extends Activity {
 	public void getActivity(View view){
 	
 		Log.d("main","getActivity");
-		Intent intent=new Intent(context,ActivityRecognitionActivity.class);
-		//startActivity(intent);
+		Intent intent=new Intent(context,ActivityRecognitionService.class);
+		
+		PendingIntent pendingIntent = PendingIntent.getService(context,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+		AlarmManager am = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+		am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+				1000*60*1,pendingIntent);
+		
 	}
 	public void getLocation(View view){
 		Log.d("main","get location");

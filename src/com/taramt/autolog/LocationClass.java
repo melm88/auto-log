@@ -63,12 +63,13 @@ LocationListener {
 			editor.putString("timeStamp", timeStamp);
 			editor.commit();
 			
-			startTracking();
+			startLocationTracking();
+			//startActivityRecognition();
 		}
 		//	displayCurrentLocation();
 		return START_STICKY;
 	}
-	private void startTracking() {
+	private void startLocationTracking() {
 
 		Log.d("location class","starttracking");
 
