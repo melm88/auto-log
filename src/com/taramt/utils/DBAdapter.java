@@ -106,6 +106,7 @@ public class DBAdapter {
 	
 	//To insert the screen state into the database
 	public void inserScreenstate(String state,String time){
+		getTotal(state, time);
 		long total = 0L;
 		ContentValues cv = new ContentValues();
 		cv.put("screenState", state);
@@ -113,7 +114,7 @@ public class DBAdapter {
 		cv.put("total", total+"");	
 
 		db.insert("phone_activity", null, cv);
-		enterPrefs(total, time, state);
+	
 	}
 	
 	public void enterPrefs(long total, String time, String state) {
@@ -127,6 +128,39 @@ public class DBAdapter {
 			edit.putString("s_unlocked", time);
 		}
 		edit.commit();
+	}
+	
+	public long updateTotal(String state, 
+			String timeStamp, String total) {
+		open();
+		ContentValues cv=new ContentValues();
+		cv.put("total", total);
+		try {
+			long n = db.update("phone_activity", 
+					cv, "screenState=? and timeStamp=?", new String[] {state, timeStamp});
+			Log.d("UPDATE", ""+n);
+			return n;
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			Log.d("exception in updating folders",e.toString());
+		}
+		close();
+		return 0;
+	}
+	
+	public ArrayList<String> getScreenStateDetails() {
+		Cursor cursor = db.query("phone_activity", 
+				null, null, null, null, null, null);
+		ArrayList<String>screenStateDetailss = new ArrayList<String>();
+		while(cursor.moveToNext()) {
+			String sDetailss = cursor.getString(cursor.getColumnIndex("sno"))
+					+ "  " + cursor.getString(cursor.getColumnIndex("screenState")) 
+					+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp"))
+					+ "  " + cursor.getString(cursor.getColumnIndex("total"));
+			screenStateDetailss.add(sDetailss);
+		}
+		return screenStateDetailss;
 	}
 /*
  * getDiffTS is the method which will get the difference b/n 
@@ -153,24 +187,14 @@ public long getDiffTS(String timeStamp, String time) {
 		}
 		return (start - stop);
 	}
-	public ArrayList<String> getScreenStateDetails() {
-		Cursor cursor = db.query("phone_activity", 
-				null, null, null, null, null, null);
-		ArrayList<String>screenStateDetailss = new ArrayList<String>();
-		while(cursor.moveToNext()) {
-			String sDetailss = cursor.getString(cursor.getColumnIndex("sno"))
-					+ "  " + cursor.getString(cursor.getColumnIndex("screenState")) 
-					+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp"));
-			screenStateDetailss.add(sDetailss);
-		}
-		return screenStateDetailss;
-	}
 
 	public long getTotal(String state, String time) {
 		String timeStamp = getLastTS();
 		long total = 0L;
-		if (state.equals("locked")) {
+		String state1 = "Locked";
+		if (state.equals("Locked")) {
 			total =  prefs.getLong("t_locked", 0L);
+			state1 = "Un_Locked";
 		} else {
 			total = prefs.getLong("t_unlocked", 0L);
 		}
@@ -181,6 +205,8 @@ public long getDiffTS(String timeStamp, String time) {
 			Log.d("LAST..", time + " | " + timeStamp + " | ");
 			total = total + getDiffTS(timeStamp, time);
 		}
+		enterPrefs(total, time, state);
+		updateTotal(state1, timeStamp, total+"");
 		return total;
 	}
 	public String getLastTS() {
@@ -193,4 +219,17 @@ public long getDiffTS(String timeStamp, String time) {
 		}
 		return sDetailss;
 	}
+	
+	
+
+	public String convert2Time(String total1) {
+		long total = Long.parseLong(total1);
+		 long totalSec = total/1000;
+	         //new date object with time difference
+	         String timeStr = totalSec/3600+" : "+
+                  (totalSec%3600)/60+" : "+
+                  (totalSec%3600)%60;
+	         return timeStr;
+	}
+	
 }
