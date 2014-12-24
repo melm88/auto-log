@@ -5,7 +5,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -101,8 +104,8 @@ public class DBAdapter {
 	
 	// SCREEN STATE
 	
-	
-	public void inserRecord(String state,String time){
+	//To insert the screen state into the database
+	public void inserScreenstate(String state,String time){
 		long total = 0L;
 		ContentValues cv = new ContentValues();
 		cv.put("screenState", state);
@@ -112,6 +115,7 @@ public class DBAdapter {
 		db.insert("phone_activity", null, cv);
 		enterPrefs(total, time, state);
 	}
+	
 	public void enterPrefs(long total, String time, String state) {
 		Editor edit = prefs.edit();
 		Log.d("LAST", time + " | " + state + " | " + total);
@@ -124,9 +128,32 @@ public class DBAdapter {
 		}
 		edit.commit();
 	}
-
+/*
+ * getDiffTS is the method which will get the difference b/n 
+ * current state time stamp and previous state time stamp
+ *
+ */
+public long getDiffTS(String timeStamp, String time) {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		Date time1 = null;
+		Date timeStamp1 = null;
+		long start = 0L, stop = 0L;
+		try {
+			time1 = sdf.parse(time);
+			start = time1.getTime();
+			
+			timeStamp1 = sdf.parse(timeStamp);
+			stop = timeStamp1.getTime();
+			
+			Log.d("LASTLONG", start + " | " +stop+ " | " + (start - stop)/1000);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return (start - stop);
+	}
 	public ArrayList<String> getScreenStateDetails() {
-		//String query="select email_id from contacts";
 		Cursor cursor = db.query("phone_activity", 
 				null, null, null, null, null, null);
 		ArrayList<String>screenStateDetailss = new ArrayList<String>();
@@ -139,4 +166,31 @@ public class DBAdapter {
 		return screenStateDetailss;
 	}
 
+	public long getTotal(String state, String time) {
+		String timeStamp = getLastTS();
+		long total = 0L;
+		if (state.equals("locked")) {
+			total =  prefs.getLong("t_locked", 0L);
+		} else {
+			total = prefs.getLong("t_unlocked", 0L);
+		}
+		if (!timeStamp.equals("noLastTS")) {
+			// diff TS and time
+			// add the diff to total
+			//return total
+			Log.d("LAST..", time + " | " + timeStamp + " | ");
+			total = total + getDiffTS(timeStamp, time);
+		}
+		return total;
+	}
+	public String getLastTS() {
+		Cursor cursor = db.query("phone_activity", 
+				null, null, null, null, null, null);
+		String sDetailss = "noLastTS";
+		if (cursor.getCount() > 0) {
+			cursor.moveToLast();
+			sDetailss = cursor.getString(cursor.getColumnIndex("timeStamp"));
+		}
+		return sDetailss;
+	}
 }
