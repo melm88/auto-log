@@ -120,16 +120,15 @@ public class DBAdapter {
 	public void enterPrefs(long total, String time, String state) {
 		Editor edit = prefs.edit();
 		Log.d("LAST", time + " | " + state + " | " + total);
-		if(state.equals("locked")) {
-			edit.putLong("t_locked",total);
-			edit.putString("s_locked", time);
-		} else {
+		if(state.equals("Locked")) {
 			edit.putLong("t_unlocked",total);
 			edit.putString("s_unlocked", time);
+		} else {
+			edit.putLong("t_locked",total);
+			edit.putString("s_locked", time);
 		}
 		edit.commit();
 	}
-	
 	public long updateTotal(String state, 
 			String timeStamp, String total) {
 		open();
@@ -188,27 +187,27 @@ public long getDiffTS(String timeStamp, String time) {
 		return (start - stop);
 	}
 
-	public long getTotal(String state, String time) {
-		String timeStamp = getLastTS();
-		long total = 0L;
-		String state1 = "Locked";
-		if (state.equals("Locked")) {
-			total =  prefs.getLong("t_locked", 0L);
-			state1 = "Un_Locked";
-		} else {
-			total = prefs.getLong("t_unlocked", 0L);
-		}
-		if (!timeStamp.equals("noLastTS")) {
-			// diff TS and time
-			// add the diff to total
-			//return total
-			Log.d("LAST..", time + " | " + timeStamp + " | ");
-			total = total + getDiffTS(timeStamp, time);
-		}
-		enterPrefs(total, time, state);
-		updateTotal(state1, timeStamp, total+"");
-		return total;
+public long getTotal(String state, String time) {
+	String timeStamp = getLastTS();
+	long total = 0L;
+	String state1 = "Locked";
+	if (state.equals("Locked")) {
+		total =  prefs.getLong("t_unlocked", 0L);
+		state1 = "Un_Locked";
+	} else {
+		total = prefs.getLong("t_locked", 0L);
 	}
+	if (!timeStamp.equals("noLastTS")) {
+		// diff TS and time
+		// add the diff to total
+		//return total
+		Log.d("LAST..", time + " | " + timeStamp + " | ");
+		total = total + getDiffTS(timeStamp, time);
+	}
+	enterPrefs(total, time, state);
+	updateTotal(state1, timeStamp, total+"");
+	return total;
+}
 	public String getLastTS() {
 		Cursor cursor = db.query("phone_activity", 
 				null, null, null, null, null, null);
