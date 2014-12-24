@@ -16,8 +16,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) 
 	{
 		db.execSQL("create table if not exists devicestate(activity text not null, timestamp text not null);");
-		System.out.println();
 		Log.d("devicestate","Table Created!!!");
+		
+		db.execSQL("create table if not exists lightsensor(value text not null, timestamp text not null);");
+		Log.d("lightsensor","Table Created!!!");
+		
 	}
 
 	@Override
@@ -27,6 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		try {
 			
 			db.execSQL("DROP TABLE IF EXISTS devicestate");
+			db.execSQL("DROP TABLE IF EXISTS lightsensor");
 			onCreate(db);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

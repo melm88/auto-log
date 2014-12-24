@@ -29,6 +29,15 @@ public class DBAdapter {
 		Log.d("tablename", "inserted a row "+n);
 		return n;	
 	}
+	public long insertLightSensorValue(String activity, String timeStamp) {
+		Log.d("Dbb","DBA: " + activity + " | " + timeStamp);
+		ContentValues cv = new ContentValues();
+		cv.put("value", activity);
+		cv.put("timestamp", timeStamp);
+		long n=db.insert("lightsensor", null, cv);
+		Log.d("tablename", "inserted a row "+n);
+		return n;	
+	}
 	
 	public void open() {
 		db = DBHelper.getReadableDatabase();
@@ -43,6 +52,16 @@ public class DBAdapter {
 		ArrayList<String> entry = new ArrayList<String>();
 		while(cursor.moveToNext()) {
 			String nDetails = cursor.getString(cursor.getColumnIndex("activity"))
+					+ "\n" + cursor.getString(cursor.getColumnIndex("timestamp"));
+			entry.add(nDetails);
+		}
+		return entry;
+	}
+	public ArrayList<String> getLightSensorlog(){
+		Cursor cursor=db.query("lightsensor", null,null, null, null, null, null);
+		ArrayList<String> entry = new ArrayList<String>();
+		while(cursor.moveToNext()) {
+			String nDetails = cursor.getString(cursor.getColumnIndex("value"))
 					+ "\n" + cursor.getString(cursor.getColumnIndex("timestamp"));
 			entry.add(nDetails);
 		}
