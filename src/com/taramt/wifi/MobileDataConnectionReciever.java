@@ -1,6 +1,9 @@
 package com.taramt.wifi;
 
+import java.util.Date;
+
 import com.taramt.autolog.R;
+import com.taramt.utils.DBAdapter;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -26,7 +29,11 @@ public class MobileDataConnectionReciever extends BroadcastReceiver {
         	//Log.d("netInfo",netInfo.isConnectedOrConnecting()+"" );
                  if(netInfo.isConnectedOrConnecting()){
                 	 if(!Mobiledata.equals("connected")||Mobiledata.equals("NotInvoked")){
-                     
+                		 DBAdapter db = new DBAdapter(context);
+                    	   db.open();
+                    	   db.insertWifiandData("MOBILE", "connected", new Date().toString());
+                    	   db.close();
+                    	  
                 	    Log.d("3G Receiver", "Have 3G Connection "+netInfo.getDetailedState());
                 		SharedPreferences.Editor editor = savedValues.edit();
              			editor.putString("MobileData", "connected");
@@ -39,6 +46,11 @@ public class MobileDataConnectionReciever extends BroadcastReceiver {
         else {
         	if(!Mobiledata.equals("disconnected")||Mobiledata.equals("NotInvoked")){
                 
+        		DBAdapter db = new DBAdapter(context);
+         	    db.open();
+         	    db.insertWifiandData("MOBILE", "disconnected", new Date().toString());
+         	    db.close();
+         	
         		Log.d("3G Receiver", "Don't have 3G Connection ");    
               	SharedPreferences.Editor editor = savedValues.edit();
      			editor.putString("MobileData", "disconnected");

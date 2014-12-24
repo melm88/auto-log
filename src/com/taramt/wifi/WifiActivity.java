@@ -1,14 +1,18 @@
 package com.taramt.wifi;
 
+import java.util.ArrayList;
+
 import com.taramt.autolog.R;
 import com.taramt.autolog.R.id;
 import com.taramt.autolog.R.layout;
 import com.taramt.autolog.R.menu;
+import com.taramt.utils.DBAdapter;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class WifiActivity extends ActionBarActivity {
 
@@ -16,6 +20,18 @@ public class WifiActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_wifi);
+		
+		TextView tv = (TextView)findViewById(R.id.wifi);
+		  DBAdapter db = new DBAdapter(this);
+		   db.open();
+		   ArrayList<String> row = db.getLightSensorlog();
+		   String content = "";
+		   for (int i = 0; i < row.size(); i++) {
+			   content = content +  row.get(i)+ "\n\n";
+		}
+		   db.close();
+		   tv.setText(content);
+	
 	}
 
 	@Override

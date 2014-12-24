@@ -21,7 +21,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL("create table if not exists lightsensor(value text not null, timestamp text not null);");
 		Log.d("lightsensor","Table Created!!!");
 		
-		db.execSQL("create table if not exists wifianddata(activity text not null, timestamp text not null);");
+		db.execSQL("create table if not exists wifianddata(network text not null, activity text not null, timestamp text not null);");
 		Log.d("lightsensor","Table Created!!!");
 		
 	}

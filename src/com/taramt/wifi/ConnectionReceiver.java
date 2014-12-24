@@ -1,5 +1,9 @@
 package com.taramt.wifi;
 
+import java.util.Date;
+
+import com.taramt.utils.DBAdapter;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +28,10 @@ public class ConnectionReceiver extends BroadcastReceiver {
         if (netInfo != null && netInfo.getType() == ConnectivityManager.TYPE_WIFI) {
            if(netInfo.isConnectedOrConnecting()){
             if(!WIFI.equals("connected")||WIFI.equals("NotInvoked")){
-                
+            	   DBAdapter db = new DBAdapter(context);
+            	   db.open();
+            	   db.insertWifiandData("WIFI", "connected", new Date().toString());
+            	   db.close();
             	  Log.d("WifiReceiver", "Have Wifi Connection");
                   	SharedPreferences.Editor editor = savedValues.edit();
      			editor.putString("WIFI", "connected");
@@ -37,6 +44,11 @@ public class ConnectionReceiver extends BroadcastReceiver {
             
         	if(!WIFI.equals("disconnected")||WIFI.equals("NotInvoked")){
                 
+        	   DBAdapter db = new DBAdapter(context);
+          	   db.open();
+          	   db.insertWifiandData("WIFI", "disconnected", new Date().toString());
+          	   db.close();
+          	  
         		Log.d("WifiReceiver", "Don't have Wifi Connection");    
         		SharedPreferences.Editor editor = savedValues.edit();
      			editor.putString("WIFI", "disconnected");
