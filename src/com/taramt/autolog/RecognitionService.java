@@ -40,6 +40,8 @@ public class RecognitionService extends IntentService {
 			Log.d("activity",Activity);
 
 			Intent i = new Intent("stopupdates");
+			i.putExtra("Activity", Activity );
+			i.putExtra("confidence", confidence+"");
 			
 
 			sendBroadcast(i);

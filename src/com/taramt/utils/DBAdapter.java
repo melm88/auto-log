@@ -77,5 +77,48 @@ public class DBAdapter {
 		}
 		
 	}
+	
+	public void insertActivity(String timestamp,String activity,String confidence){
+		
+		Log.d("DBAdapter","insertActivity");
+		open();
+				
+		//String query="insert into LOCATION VALUES ("+timeStamp+","+lat+","+lon+","+accuracy+","+address+","+type+")";
+		ContentValues locationValues=new ContentValues();
+		locationValues.put("timestamp", timestamp);
+		locationValues.put("activity", activity);
+		locationValues.put("confidence", confidence);
+		
+		db.insert("ACTIVITIES", null, locationValues);
+		//db.execSQL(query);
+		db.close();
+	}
+	
+	public String[][] getActivities(){
+		Log.d("DBAdapter","getactivities");
+		open();
+		String query="select * from ACTIVITIES";
+		Cursor cursor;
+		try {
+			cursor = db.rawQuery(query, null);
+			int size=cursor.getCount();
+			Log.d("no of activities logs",size+"");
+			String[][] data=new String[size][3];
+			int i=0;
+			while(cursor.moveToNext()){
+				data[i][0]=cursor.getString(1);
+				data[i][1]=cursor.getString(2);
+				data[i][2]=cursor.getString(3);
+				
+				i++;
+			}
+			db.close();
+			return data;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			Log.d("exception in getactivity",e.toString());
+			return null;
+		}
+	}
 
 }

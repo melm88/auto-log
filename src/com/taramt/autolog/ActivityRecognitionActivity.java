@@ -8,104 +8,45 @@ import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.ActivityRecognitionClient;
+import com.taramt.utils.DBAdapter;
 
-public class ActivityRecognitionActivity extends Activity implements GooglePlayServicesClient.ConnectionCallbacks,
-GooglePlayServicesClient.OnConnectionFailedListener{
+public class ActivityRecognitionActivity extends Activity {
 
+	TextView activitydata;
+	DBAdapter dbAdapter;
 	
 	
-	private ActivityRecognitionClient arclient;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_activityrecognition);
+		activitydata=(TextView)findViewById(R.id.activities);
 		
-		Log.d("activityrecognition","oncreate");
-			
-		int resp =GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-		if(resp == ConnectionResult.SUCCESS){
-			arclient = new ActivityRecognitionClient(this, this, this);
-			arclient.connect();			
-			
-			
-		}
-		else{
-			Toast.makeText(this,  "Please install Google Play Service.",Toast.LENGTH_LONG).show();
-		}		
-	}
-
-/*	@Override
-	public boolean onOptionsItemSelected(MenuItem item){
-        switch(item.getItemId()){
-            case R.id.action_start:
-            	startUpdates();
-                return true;
-            case R.id.action_stop:
-            	stopUpdates();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
-	@Override
-	public void onConnectionFailed(ConnectionResult connectionResult) {
-		// TODO Auto-generated method stub
-		if (connectionResult.hasResolution()) {
-			try {
-
-				// Start an Activity that tries to resolve the error
-				connectionResult.startResolutionForResult(
-						this,
-						9000);//CONNECTION_FAILURE_RESOLUTION_REQUEST
-
-			} catch (IntentSender.SendIntentException e) {
-
-				e.printStackTrace();
+		dbAdapter=new DBAdapter(this);
+		String[][] data=dbAdapter.getActivities();
+		String adata="";
+		if(data.length>0){
+			for(int i=0;i<data.length;i++){
+				adata=adata+data[i][0]+" "+data[i][1]+" "+data[i][2]+"\n";
 			}
-		} 
-
-	}
-
-	@Override
-	public void onConnected(Bundle arg0) {
-		// TODO Auto-generated method stub
-		
-		Intent intent = new Intent(this, ActivityRecognitionService.class);
-		PendingIntent pIntent = PendingIntent.getService(this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
-		arclient.requestActivityUpdates(10*1000, pIntent); 
-	}
-
-	@Override
-	public void onDisconnected() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void startUpdates(){
-		
-		int resp =GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-		if(resp == ConnectionResult.SUCCESS){
-			arclient = new ActivityRecognitionClient(this, this, this);
-			arclient.connect();			
-			
-			Intent intent = new Intent(this, ActivityRecognitionService.class);
-			PendingIntent pIntent = PendingIntent.getService(this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
-			arclient.requestActivityUpdates(10*1000, pIntent); 
+		}else{
+			adata=adata+"Log started just now";
 		}
-		else{
-			Toast.makeText(this,  "Please install Google Play Service.",Toast.LENGTH_LONG).show();
-		}		
-	}
-	public void stopUpdates(){
 		
+		activitydata.setText(adata);
 	}
+		
+	
+
+
 	
 }

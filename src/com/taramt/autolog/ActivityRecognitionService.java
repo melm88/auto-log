@@ -13,6 +13,7 @@ import com.google.android.gms.location.DetectedActivity;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.taramt.utils.DBAdapter;
 
 import android.app.IntentService;
 import android.app.PendingIntent;
@@ -47,12 +48,14 @@ LocationListener  {
 	private ActivityRecognition activityRequest;
 	private ActivityRecognitionClient activityClient;
 	BroadcastReceiver receiver;
+	DBAdapter dbAdapter;
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		context=getApplicationContext();
 
 		details=PreferenceManager.getDefaultSharedPreferences(this);
+		dbAdapter=new DBAdapter(this);
 		
 		Log.d("activity class","oncreate");
 	}
@@ -60,10 +63,7 @@ LocationListener  {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d("activity class","onstart");
-		/*if (!currentlyProcessingActivity) {
-			currentlyProcessingActivity = true;
-			Log.d("Service","onstartcommand");*/
-			
+					
 			SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 			String timeStamp=s.format(new Date());
 			SharedPreferences.Editor editor=details.edit();
@@ -71,23 +71,17 @@ LocationListener  {
 			editor.commit();
 			startActivityMonitoring();
 			
-			//startActivityRecognition();
-	/*	}else{
-			Log.d("service","remove updates");
-			Intent intentt = new Intent(this, RecognitionService.class);
-			PendingIntent pIntent = PendingIntent.getService(this, 0, intentt,PendingIntent.FLAG_UPDATE_CURRENT);
-			arclient.removeActivityUpdates(pIntent);
-			currentlyProcessingActivity=false;
-			
-		}*/
 		
-		//	displayCurrentLocation();
 			
 			receiver=new BroadcastReceiver(){
 
 				@Override
 				public void onReceive(Context context, Intent intent) {
-					// TODO Auto-generated method stub'
+					// TODO Auto-generated method stub
+					String Activity=intent.getExtras().getString("Activity");
+					String confidence=intent.getExtras().getString("confidence");
+					
+					dbAdapter.insertActivity(details.getString("timeStamp", " "), Activity, confidence);
 					stopMonitoring();
 				}
 

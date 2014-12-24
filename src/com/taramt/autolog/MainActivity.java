@@ -31,14 +31,27 @@ public class MainActivity extends Activity {
 	}
 	
 	public void getActivity(View view){
+		if(details.getBoolean("activity", false)){
+			Intent activityIntent=new Intent(context,ActivityRecognitionActivity.class);
+			startActivity(activityIntent);
+		}else{
+			Intent intent=new Intent(context,ActivityRecognitionService.class);
+			
+			PendingIntent pendingIntent = PendingIntent.getService(context,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+			AlarmManager am = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+			am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+					1000*60*5,pendingIntent);
+			
+			Intent activityIntent=new Intent(context,ActivityRecognitionActivity.class);
+			startActivity(activityIntent);
+			
+			SharedPreferences.Editor editor=details.edit();
+			editor.putBoolean("activity", true);
+			editor.commit();
+		}
 	
 		Log.d("main","getActivity");
-		Intent intent=new Intent(context,ActivityRecognitionService.class);
 		
-		PendingIntent pendingIntent = PendingIntent.getService(context,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-		AlarmManager am = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-		am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
-				1000*60*1,pendingIntent);
 		
 	}
 	public void getLocation(View view){
@@ -51,7 +64,7 @@ public class MainActivity extends Activity {
 			PendingIntent pendingIntent = PendingIntent.getService(context,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 			AlarmManager am = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 			am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
-					1000*60*1,pendingIntent);
+					1000*60*5,pendingIntent);
 			
 			Intent activityIntent=new Intent(context,LocationActivity.class);
 			startActivity(activityIntent);
