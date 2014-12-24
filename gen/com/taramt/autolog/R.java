@@ -1204,6 +1204,7 @@ containing a value of this type.
         public static final int boot=0x7f0c0001;
     }
     public static final class string {
+        public static final int Start=0x7f0a0012;
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
          */
         public static final int abc_action_bar_home_description=0x7f0a0001;
