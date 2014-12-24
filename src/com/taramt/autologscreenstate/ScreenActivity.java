@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import com.taramt.autolog.R;
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 
 public class ScreenActivity extends Activity {
 
@@ -21,16 +24,24 @@ public class ScreenActivity extends Activity {
 	BroadcastReceiver mReceiver;
 	String total, average;
 	SharedPreferences prefs;
+	Utils utils;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         db = new DBAdapter(this);
+        utils = new Utils(this);
         log = (TextView)findViewById(R.id.log);
         Average = (TextView)findViewById(R.id.Average);
         Total = (TextView)findViewById(R.id.Total_duration);
-        
+        ArrayList<String> sDetails = new ArrayList<String>();
+        db.open();
+        sDetails = db.getScreenStateDetails();
+        db.close();
+        log.setText(utils.getDetails(db, sDetails));
+  
+       
     }
     
 
@@ -40,9 +51,7 @@ public class ScreenActivity extends Activity {
     	super.onDestroy();
 
     }
-    public String showDetails(DBAdapter db, ArrayList<String> details) {
-		return "";
-	}
+
     
     
     public void Sort(View v) {
