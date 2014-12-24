@@ -46,7 +46,7 @@ public class ScreenActivity extends Activity {
         totalDuration = prefs.getLong("t_locked", 0L)
     			+ prefs.getLong("t_unlocked", 0L);
         showTotalDuration();
-     
+        showAverage();
         
     }
     
@@ -75,7 +75,15 @@ public class ScreenActivity extends Activity {
     }
     
     
-
+    public void showAverage() {
+    	db.open();
+    	average = "Average: \nActive:  " 
+    			+ prefs.getLong("t_unlocked", 0L)/db.getrowcount() + "\n";
+    	average = average + "Idle: "
+    			+ prefs.getLong("t_locked", 0L)/db.getrowcount();
+    	Average.setText(average);
+    	db.close();
+    }
     
     public void showTotalDuration() {
     	total = "Total Duraion : " + totalDuration + "\n";
