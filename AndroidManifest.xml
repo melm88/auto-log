@@ -36,6 +36,6 @@
         <activity android:name=".ActivityRecognitionActivity"
             android:label="Activities"></activity>
         <service android:name="com.taramt.autolog.LocationClass"></service>
-    </application>
+        <activity android:name="com.taramt.autolog.LocationActivity"></activity>    </application>
 
 </manifest>

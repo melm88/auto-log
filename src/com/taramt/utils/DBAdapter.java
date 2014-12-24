@@ -60,12 +60,12 @@ public class DBAdapter {
 			String[][] data=new String[size][6];
 			int i=0;
 			while(cursor.moveToNext()){
-				data[i][0]=cursor.getString(cursor.getColumnIndex("timeStamp"));
-				data[i][1]=cursor.getString(cursor.getColumnIndex("lat"));
-				data[i][2]=cursor.getString(cursor.getColumnIndex("lon"));
-				data[i][3]=cursor.getString(cursor.getColumnIndex("accuracy"));
-				data[i][4]=cursor.getString(cursor.getColumnIndex("address"));
-				data[i][5]=cursor.getString(cursor.getColumnIndex("ltype"));
+				data[i][0]=cursor.getString(1);
+				data[i][1]=cursor.getString(2);
+				data[i][2]=cursor.getString(3);
+				data[i][3]=cursor.getString(4);
+				data[i][4]=cursor.getString(5);
+				data[i][5]=cursor.getString(6);
 				i++;
 			}
 			db.close();
