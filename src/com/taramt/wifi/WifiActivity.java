@@ -24,7 +24,7 @@ public class WifiActivity extends ActionBarActivity {
 		TextView tv = (TextView)findViewById(R.id.wifi);
 		  DBAdapter db = new DBAdapter(this);
 		   db.open();
-		   ArrayList<String> row = db.getLightSensorlog();
+		   ArrayList<String> row = db.getwifianddatalog();
 		   String content = "";
 		   for (int i = 0; i < row.size(); i++) {
 			   content = content +  row.get(i)+ "\n\n";
