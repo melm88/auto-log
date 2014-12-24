@@ -2,12 +2,15 @@ package com.taramt.utils;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.ArrayList;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -15,9 +18,11 @@ import android.util.Log;
 public class DBAdapter {
 	private DatabaseHelper DBHelper;
 	private SQLiteDatabase db;
+	SharedPreferences prefs;
 	public DBAdapter(Context context) {
 		Log.d("AutoLog","Inside DBAdapter Constructor");
 		DBHelper = new DatabaseHelper(context);
+		prefs = PreferenceManager.getDefaultSharedPreferences(context);
 	}	
 
 
@@ -97,17 +102,29 @@ public class DBAdapter {
 	// SCREEN STATE
 	
 	
-	public void insertScreenState(String state,String time){
-
+	public void inserRecord(String state,String time){
+		long total = 0L;
 		ContentValues cv = new ContentValues();
 		cv.put("screenState", state);
 		cv.put("timeStamp", time);
-		cv.put("total", "");	
+		cv.put("total", total+"");	
 
 		db.insert("phone_activity", null, cv);
-	
+		enterPrefs(total, time, state);
 	}
-	
+	public void enterPrefs(long total, String time, String state) {
+		Editor edit = prefs.edit();
+		Log.d("LAST", time + " | " + state + " | " + total);
+		if(state.equals("locked")) {
+			edit.putLong("t_locked",total);
+			edit.putString("s_locked", time);
+		} else {
+			edit.putLong("t_unlocked",total);
+			edit.putString("s_unlocked", time);
+		}
+		edit.commit();
+	}
+
 	public ArrayList<String> getScreenStateDetails() {
 		//String query="select email_id from contacts";
 		Cursor cursor = db.query("phone_activity", 
