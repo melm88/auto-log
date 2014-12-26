@@ -11,12 +11,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.FileObserver;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	
 	TextView tv;
+	EditText etv;
 	private FileObserver mFileObserver;
 	
 	@Override
@@ -26,6 +30,7 @@ public class MainActivity extends Activity {
 		
 		//TextView in MainActivity
 		tv = (TextView) findViewById(R.id.mainactTV);
+		etv = (EditText) findViewById(R.id.editTV);
 		//displayPowerResults();
 		//enableTemperatureSensing();
 		
@@ -33,7 +38,8 @@ public class MainActivity extends Activity {
 		//startActivity(it);
 		
 		//mFileObserver.startWatching();
-		addObserver();
+		//addObserver();
+		
 		
 		
 	}
@@ -89,7 +95,7 @@ public class MainActivity extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		 mFileObserver.startWatching();
+		//mFileObserver.startWatching();
 	}
 
 	public void displayPowerResults() {
