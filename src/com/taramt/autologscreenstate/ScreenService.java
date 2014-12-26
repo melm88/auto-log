@@ -29,7 +29,7 @@ public class ScreenService extends Service {
 		// REGISTER RECEIVER THAT HANDLES SCREEN ON AND SCREEN OFF LOGIC
 
 
-		Log.d("oonService", "on Create called");
+		Log.i("oonService", "on Create called");
 
 	}
 	@Override
@@ -40,12 +40,12 @@ public class ScreenService extends Service {
 			filter.addAction(Intent.ACTION_USER_PRESENT);
 			BroadcastReceiver mReceiver = new ScreenReceiver();
 			registerReceiver(mReceiver, filter);
-			Log.d("oonService", "receiver registered");
+			Log.i("register oonService", "receiver registered");
 			Editor edit = prefs.edit();
 			edit.putBoolean("register", false);
 			edit.commit();
 		}
-		Log.d("oonService", "receiver not registered");
+	//	Log.i("register oonService", "receiver not registered");
 		stopAlarm();
 	}
 	
@@ -55,7 +55,7 @@ public class ScreenService extends Service {
 			PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 			AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 			am.cancel(pendingIntent);
-			Log.d("oonServivce", "Alarm canceled");
+			Log.i("oonServivce", "Alarm canceled");
 			
 			Editor edit = prefs.edit();
 			// yes alarm started

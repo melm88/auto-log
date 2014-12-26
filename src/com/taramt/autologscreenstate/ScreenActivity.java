@@ -62,26 +62,27 @@ public class ScreenActivity extends Activity {
 	}
 
 	public void registerReceiver() {
-		Log.d("register", prefs.getBoolean("register", false)+"");
-		if (prefs.getBoolean("register", true)) {
+		Log.i("register", prefs.getBoolean("register", false)+"");
+		if (prefs.getBoolean("register", true) || prefs.getBoolean("firstTime", true)) {
 
 			IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
 			filter.addAction(Intent.ACTION_USER_PRESENT);
 			mReceiver = new ScreenReceiver();
 			try {
 				registerReceiver(mReceiver, filter);
-				Log.d("oonCreate", "receiver registered");
+				Log.i("register oonCreate", "receiver registered");
 			} catch (IllegalArgumentException e) {
 
 			}
 			Editor edit = prefs.edit();
 			edit.putBoolean("register", false);
+			edit.putBoolean("firstTime", false);
 			edit.commit();
 		}
 	}
 
 	public void startAlarm() {
-		Log.d(alarm, prefs.getBoolean(alarm, false)+"");
+		Log.i(alarm, prefs.getBoolean(alarm, false)+"");
 		if (!prefs.getBoolean(alarm, false)) {
 			try {
 				intent = new Intent(getApplicationContext(), ScreenService.class);
@@ -89,7 +90,7 @@ public class ScreenActivity extends Activity {
 				am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 				am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
 						1000*30, pendingIntent);
-				Log.d("oon Alarm", "Alarm started");
+				Log.i("oon Alarm", "Alarm started");
 
 				Editor edit = prefs.edit();
 				// yes alarm started
@@ -109,13 +110,14 @@ public class ScreenActivity extends Activity {
 		if (!prefs.getBoolean("register", true)) {
 			try {
 				unregisterReceiver(mReceiver);
-				Log.d("oonDestroy", "receiver unregistered");
+				Log.i("register oonDestroy", "receiver unregistered");
+				Editor edit = prefs.edit();
+				edit.putBoolean("register", true);
+				edit.commit();
 			} catch (IllegalArgumentException e) {
 
 			}
-			Editor edit = prefs.edit();
-			edit.putBoolean("register", true);
-			edit.commit();
+		
 		} 
 		
 		
