@@ -78,7 +78,7 @@ public class DBAdapter {
 		cv.put("appName", appName);
 		cv.put("send", send);
 		cv.put("received", received);
-		cv.put("total", total);
+		cv.put("cumulatetotal", total);
 		cv.put("timeStamp", timeStamp);
 		long n=db.insert(tablename, null, cv);
 		Log.d("DataUsage", ""+n);
@@ -94,7 +94,7 @@ public class DBAdapter {
 			String nDetails = cursor.getString(cursor.getColumnIndex("appName"))
 					+ "  " + cursor.getString(cursor.getColumnIndex("send")) 
 					+ "  " + cursor.getString(cursor.getColumnIndex("received"))
-					+ "  " + cursor.getString(cursor.getColumnIndex("total"))
+					+ "  " + cursor.getString(cursor.getColumnIndex("cumulatetotal"))
 					+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp"));
 			datausageofApps.add(nDetails);
 		}
@@ -107,11 +107,11 @@ public class DBAdapter {
 	//To insert the screen state into the database
 	public void inserScreenstate(String state,String time){
 		getTotal(state, time);
-		long total = 0L;
 		ContentValues cv = new ContentValues();
 		cv.put("screenState", state);
 		cv.put("timeStamp", time);
-		cv.put("total", total+"");	
+		cv.put("total", 0L);
+		cv.put("cumulatetotal", 0L+"");	
 
 		db.insert("phone_activity", null, cv);
 	
@@ -129,15 +129,15 @@ public class DBAdapter {
 		}
 		edit.commit();
 	}
-	public long updateTotal(String state, 
-			String timeStamp, String total) {
+	public long updateTotal(String timeStamp, long total, String cumulateTotal) {
 		
 		open();
 		ContentValues cv=new ContentValues();
+		cv.put("cumulatetotal", cumulateTotal);
 		cv.put("total", total);
 		try {
 			long n = db.update("phone_activity", 
-					cv, "screenState=? and timeStamp=?", new String[] {state, timeStamp});
+					cv, "timeStamp=?", new String[] {timeStamp});
 			Log.d("UPDATE", ""+n);
 			return n;
 			
@@ -190,24 +190,24 @@ public long getDiffTS(String timeStamp, String time) {
 
 public long getTotal(String state, String time) {
 	String timeStamp = getLastTS();
+	long cumulateTotal = 0L;
 	long total = 0L;
-	String state1 = "Locked";
 	if (state.equals("Locked")) {
-		total =  prefs.getLong("t_unlocked", 0L);
-		state1 = "Un_Locked";
+		cumulateTotal =  prefs.getLong("t_unlocked", 0L);
 	} else {
-		total = prefs.getLong("t_locked", 0L);
+		cumulateTotal = prefs.getLong("t_locked", 0L);
 	}
 	if (!timeStamp.equals("noLastTS")) {
 		// diff TS and time
 		// add the diff to total
 		//return total
 		Log.d("LAST..", time + " | " + timeStamp + " | ");
-		total = total + getDiffTS(timeStamp, time);
+		total = getDiffTS(timeStamp, time);
+		cumulateTotal = cumulateTotal + total ;
 	}
-	enterPrefs(total, time, state);
-	updateTotal(state1, timeStamp, total+"");
-	return total;
+	enterPrefs(cumulateTotal, time, state);
+	updateTotal(timeStamp, total, cumulateTotal+"");
+	return cumulateTotal;
 }
 	public String getLastTS() {
 		Cursor cursor = db.query("phone_activity", 
@@ -222,21 +222,16 @@ public long getTotal(String state, String time) {
 	
 	
 
-	public String convert2Time(String total1) {
-		long total = Long.parseLong(total1);
-		 long totalSec = total/1000;
-	         //new date object with time difference
-	         String timeStr = totalSec/3600+" : "+
-                  (totalSec%3600)/60+" : "+
-                  (totalSec%3600)%60;
-	         return timeStr;
-	}
 	
 	public int getrowcount() {
 		
 		Cursor cursor = db.query("phone_activity", 
 				null, null, null, null, null, null);
-		return cursor.getCount()/2;
+		int count = cursor.getCount()/2;
+		if (count > 0) {
+		return count;
+		}
+		return 1;
 	}
 	
 }

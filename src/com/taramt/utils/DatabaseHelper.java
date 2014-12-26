@@ -32,7 +32,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				+ "phone_activity(sno INTEGER PRIMARY KEY AUTOINCREMENT, "
 				+ "screenState text not null,"
 				+ "timeStamp text not null,"
-				+ " total text not null);");
+				+ "total long not null,"
+				+ "cumulatetotal text not null);");
 		System.out.println();
 		Log.d("Notification", "Table Created!!!");
 	}
