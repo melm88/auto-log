@@ -32,14 +32,18 @@ public class ScreenActivity extends Activity {
 	long totalDuration;
 	SharedPreferences prefs;
 	Utils utils;
+	AlarmManager am;
+	PendingIntent pendingIntent;
+	String alarm = "ALARM";
+	Intent intent;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_screen);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		
+
 		registerReceiver();
-		
+
 		db = new DBAdapter(this);
 		db.open();
 		utils = new Utils(this);
@@ -54,10 +58,11 @@ public class ScreenActivity extends Activity {
 				+ prefs.getLong("t_unlocked", 0L);
 		showTotalDuration();
 		showAverage();
-		
+
 	}
 
 	public void registerReceiver() {
+		Log.d("register", prefs.getBoolean("register", false)+"");
 		if (prefs.getBoolean("register", true)) {
 
 			IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
@@ -74,20 +79,27 @@ public class ScreenActivity extends Activity {
 			edit.commit();
 		}
 	}
-	
-	public void startAlarm() {
 
-		try {
-			Intent intentt = new Intent(getApplicationContext(), ScreenService.class);
-			PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(),0,intentt,PendingIntent.FLAG_UPDATE_CURRENT);
-			AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-			am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
-					1000*60*100, pendingIntent);
-			Log.d("oon Alarm", "Alarm started");
-		} catch (Exception e) {
-			Log.d("exceptionasdfdf",""+e);
+	public void startAlarm() {
+		Log.d(alarm, prefs.getBoolean(alarm, false)+"");
+		if (!prefs.getBoolean(alarm, false)) {
+			try {
+				intent = new Intent(getApplicationContext(), ScreenService.class);
+				pendingIntent = PendingIntent.getService(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+				am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+				am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+						1000*30, pendingIntent);
+				Log.d("oon Alarm", "Alarm started");
+
+				Editor edit = prefs.edit();
+				// yes alarm started
+				edit.putBoolean(alarm, true);
+				edit.commit();
+			} catch (Exception e) {
+				Log.d("exceptionasdfdf",""+e);
+			}
+
 		}
-		
 	}
 
 	@Override
@@ -104,9 +116,13 @@ public class ScreenActivity extends Activity {
 			Editor edit = prefs.edit();
 			edit.putBoolean("register", true);
 			edit.commit();
-		}
+		} 
+		
+		
 		startAlarm();
 	}
+
+
 
 
 	public void Sort(View v) {

@@ -1,7 +1,10 @@
 package com.taramt.autologscreenstate;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -13,6 +16,7 @@ import android.util.Log;
 public class ScreenService extends Service {
 
 	SharedPreferences prefs;
+	String alarm = "ALARM";
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
@@ -42,6 +46,22 @@ public class ScreenService extends Service {
 			edit.commit();
 		}
 		Log.d("oonService", "receiver not registered");
+		stopAlarm();
+	}
+	
+	public void stopAlarm() {
+		if (prefs.getBoolean(alarm, false)) {
+			Intent intent = new Intent(getApplicationContext(), ScreenService.class);
+			PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+			AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+			am.cancel(pendingIntent);
+			Log.d("oonServivce", "Alarm canceled");
+			
+			Editor edit = prefs.edit();
+			// yes alarm started
+			edit.putBoolean(alarm, false);
+			edit.commit();
+		}
 	}
 
 }
