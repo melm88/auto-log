@@ -27,7 +27,6 @@ public class ScreenActivity extends Activity {
 
 	DBAdapter db;
 	TextView log, Average, Total;
-	BroadcastReceiver mReceiver;
 	String total, average;
 	long totalDuration;
 	SharedPreferences prefs;
@@ -41,12 +40,9 @@ public class ScreenActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_screen);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-		registerReceiver();
-
+		utils = new Utils(this);
 		db = new DBAdapter(this);
 		db.open();
-		utils = new Utils(this);
 		log = (TextView)findViewById(R.id.log);
 		Average = (TextView)findViewById(R.id.Average);
 		Total = (TextView)findViewById(R.id.Total_duration);
@@ -59,81 +55,47 @@ public class ScreenActivity extends Activity {
 		showTotalDuration();
 		showAverage();
 
-	}
-
-	public void registerReceiver() {
-		Log.i("register", prefs.getBoolean("register", false)+"");
-		if (prefs.getBoolean("register", true) || prefs.getBoolean("firstTime", true)) {
-
-			IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-			filter.addAction(Intent.ACTION_USER_PRESENT);
-			mReceiver = new ScreenReceiver();
-			try {
-				registerReceiver(mReceiver, filter);
-				Log.i("register oonCreate", "receiver registered");
-			} catch (IllegalArgumentException e) {
-
-			}
-			Editor edit = prefs.edit();
-			edit.putBoolean("register", false);
-			edit.putBoolean("firstTime", false);
-			edit.commit();
+		if (ScreenActivity.this.getResources().getConfiguration().orientation == 1) {
+			startAlarm();
 		}
+
 	}
+
 
 	public void startAlarm() {
-		Log.i(alarm, prefs.getBoolean(alarm, false)+"");
-		if (!prefs.getBoolean(alarm, false)) {
-			try {
-				intent = new Intent(getApplicationContext(), ScreenService.class);
-				pendingIntent = PendingIntent.getService(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-				am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-				am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
-						1000*30, pendingIntent);
-				Log.i("oon Alarm", "Alarm started");
+		try {
 
-				Editor edit = prefs.edit();
-				// yes alarm started
-				edit.putBoolean(alarm, true);
-				edit.commit();
-			} catch (Exception e) {
-				Log.d("exceptionasdfdf",""+e);
-			}
-
+			intent = new Intent(getApplicationContext(), ScreenService.class);
+			pendingIntent = PendingIntent.getService(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+			am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+			am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+					1000*30, pendingIntent);
+			Log.i("oon Alarm", "Alarm started");
+		} catch (Exception e) {
+			Log.d("exceptionasdfdf",""+e);
 		}
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		//Toast.makeText(this, "receiver unregistered", Toast.LENGTH_LONG).show();
-		if (!prefs.getBoolean("register", true)) {
-			try {
-				unregisterReceiver(mReceiver);
-				Log.i("register oonDestroy", "receiver unregistered");
-				Editor edit = prefs.edit();
-				edit.putBoolean("register", true);
-				edit.commit();
-			} catch (IllegalArgumentException e) {
-
-			}
-		
-		} 
-		
-		
-		startAlarm();
+		if (ScreenActivity.this.getResources().getConfiguration().orientation == 1) {
+			startAlarm();
+		}
+		Log.d("start", "onDestroy");
 	}
-
-
-
-
+	@Override
+public void onPause() {
+	super.onPause();
+	Log.d("start", "onPause");
+}
 	public void Sort(View v) {
 
-		Log.i("Clicked", "Clicked");
 
 	}
 	public void Top3(View v) {
-		Log.i("Clicked", "Clicked");
+
+
 	}
 
 
@@ -156,5 +118,7 @@ public class ScreenActivity extends Activity {
 				+ utils.convert2Time(prefs.getLong("t_locked", 0L));
 		Total.setText(total);
 	}
+
+
 
 }
