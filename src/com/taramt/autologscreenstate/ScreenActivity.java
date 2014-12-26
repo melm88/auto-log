@@ -41,6 +41,7 @@ public class ScreenActivity extends Activity {
 		setContentView(R.layout.activity_screen);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		utils = new Utils(this);
+
 		db = new DBAdapter(this);
 		db.open();
 		log = (TextView)findViewById(R.id.log);
@@ -96,6 +97,14 @@ public void onPause() {
 	public void Top3(View v) {
 
 
+		String Top3 = "Active:\n\n";
+
+		ArrayList<String> top3 = new ArrayList<String>();
+		top3 = db.getTop3("Active");
+		Top3 = Top3 + utils.getDetails(db, top3) + "\n";
+		top3 = db.getTop3("Idle");
+		Top3 = Top3 + "Idle:\n\n" + utils.getDetails(db, top3) + "\n";
+		log.setText(Top3);
 	}
 
 

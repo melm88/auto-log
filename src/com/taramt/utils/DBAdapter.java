@@ -234,4 +234,24 @@ public long getTotal(String state, String time) {
 		return 1;
 	}
 	
+	public ArrayList<String> getTop3(String state) {
+		open();
+		Cursor cursor = db.query("phone_activity", 
+				null, "screenState=?", new String[] {state}, null, null, "total");
+		ArrayList<String> top3 = new ArrayList<String>();
+		cursor.moveToPosition(cursor.getCount() - 4);
+		while(cursor.moveToNext()) {
+			
+			String sDetailss = cursor.getString(cursor.getColumnIndex("sno"))
+					+ "  " + cursor.getString(cursor.getColumnIndex("screenState")) 
+					+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp"))
+					+ "  " + cursor.getString(cursor.getColumnIndex("total"));
+			top3.add(sDetailss);
+
+			
+		}
+		close();
+		return top3;
+	}
+	
 }
