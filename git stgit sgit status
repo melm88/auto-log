@@ -1,0 +1,17 @@
+[33mcommit d9148aefa820c55f732af50f6d04d24faa984ed0[m
+Author: niranjan1624 <niranjan.ece1@gmail.com>
+Date:   Thu Dec 18 12:53:00 2014 +0530
+
+    Method for inserting Notification Details and to open the DB open, close methods are added
+
+[33mcommit 41e2836281d5e2b6b424c56f5d8fb766c58b09c9[m
+Author: niranjan1624 <niranjan.ece1@gmail.com>
+Date:   Thu Dec 18 12:48:55 2014 +0530
+
+    Database created for notification logging with TS
+
+[33mcommit 4d0c5383e335e8c83dd7691edcb79d1f5ae7ebe9[m
+Author: melvinm88 <melvin.m@taramt.com>
+Date:   Thu Dec 18 10:46:32 2014 +0530
+
+    First commit for AutoLog. Base code (master branch)

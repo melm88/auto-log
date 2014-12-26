@@ -24,13 +24,13 @@ public class ScreenReceiver extends BroadcastReceiver {
 		String date =s.format(new Date());
 		if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
 			
-			db.inserScreenstate("Locked", date);
+			db.inserScreenstate("Idle", date);
 			
 			Log.d("screen","screen off");
 
 		} else if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
 			
-			db.inserScreenstate("Un_Locked", date);
+			db.inserScreenstate("Active", date);
 			
 			Log.d("screen","user present");
 

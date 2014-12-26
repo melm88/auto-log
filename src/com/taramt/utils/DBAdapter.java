@@ -120,7 +120,7 @@ public class DBAdapter {
 	public void enterPrefs(long total, String time, String state) {
 		Editor edit = prefs.edit();
 		Log.d("LAST", time + " | " + state + " | " + total);
-		if(state.equals("Locked")) {
+		if(state.equals("Idle")) {
 			edit.putLong("t_unlocked",total);
 			edit.putString("s_unlocked", time);
 		} else {
@@ -192,7 +192,7 @@ public long getTotal(String state, String time) {
 	String timeStamp = getLastTS();
 	long cumulateTotal = 0L;
 	long total = 0L;
-	if (state.equals("Locked")) {
+	if (state.equals("Idle")) {
 		cumulateTotal =  prefs.getLong("t_unlocked", 0L);
 	} else {
 		cumulateTotal = prefs.getLong("t_locked", 0L);

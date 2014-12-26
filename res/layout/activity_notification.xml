@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:text="Create Notification"
             android:id="@+id/btnCreateNotify"
-            android:onClick="buttonClicked"
+            android:onClick="CreateNotification"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"/>
@@ -33,7 +33,5 @@
                 android:text="Notifications"
                 android:id="@+id/textView"
                 />
-
-
     </ScrollView>
 </RelativeLayout>

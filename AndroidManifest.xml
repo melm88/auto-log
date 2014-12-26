@@ -44,7 +44,20 @@
             android:name="com.taramt.autologdatausage.DataUsage"
             android:label="@string/title_activity_data_usage" >
         </activity>
-         <service android:name="com.taramt.autologdatausage.DataService"></service>
+
+        <service android:name="com.taramt.autologdatausage.DataService" >
+        </service>
+
+        <activity
+            android:name="com.taramt.autologscreenstate.ScreenActivity"
+            android:label="@string/title_activity_screen" >
+        </activity>
+        <receiver android:name="com.taramt.autologscreenstate.ScreenReceiver">
+		</receiver>
+		  <service android:name="com.taramt.autologscreenstate.ScreenService" >
+        </service>
+        
     </application>
+    
 
 </manifest>
