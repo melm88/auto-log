@@ -80,10 +80,12 @@ public class ScreenActivity extends Activity {
 		if (ScreenActivity.this.getResources().getConfiguration().orientation == 1) {
 			startAlarm();
 		}
-		Log.d("start", "onDestroy");
 	}
 	
 	public void Sort(View v) {
+		
+		showTotalDuration();
+		showAverage();
 
 		String Sort = "Active:\n\n";
 
@@ -136,6 +138,7 @@ public class ScreenActivity extends Activity {
 		total = total + "Idle: "
 				+ utils.convert2Time(prefs.getLong("t_locked", 0L));
 		Total.setText(total);
+		Log.d("Totalduration", prefs.getLong("t_locked", 0L) + " | " + prefs.getLong("t_locked", 0L));
 	}
 
 
