@@ -124,4 +124,9 @@ public class MainActivity extends Activity {
 		Intent iServe = new Intent(MainActivity.this, TemperatureSensor.class);
 		MainActivity.this.startService(iServe);
 	}
+	
+	public void stopTemperatureSensing() {
+		Intent iServe = new Intent(MainActivity.this, TemperatureSensor.class);
+		MainActivity.this.stopService(iServe);
+	}
 }
