@@ -28,22 +28,6 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="com.taramt.power.PhoneChargerState" >
-            <intent-filter>
-                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
-            </intent-filter>
-        </receiver>
-
-        <activity
-            android:name="com.taramt.temperature.SensorActivity"
-            android:label="@string/title_activity_sensor" >
-        </activity>
-        
-        <service android:name="com.taramt.temperature.TemperatureSensor"
-	         android:enabled="true">
-        </service>
-        
         <receiver
             android:name="com.taramt.logmedia.CameraReceiver"
             android:enabled="true" >
@@ -58,6 +42,10 @@
                 <data android:mimeType="video/*" />
             </intent-filter>
         </receiver>
+        
+        <service android:name="com.taramt.logmedia.AudioService"
+	         android:enabled="true">
+        </service>
 </application>
 
 </manifest>
