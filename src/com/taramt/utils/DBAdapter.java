@@ -155,7 +155,7 @@ public class DBAdapter {
 			String sDetailss = cursor.getString(cursor.getColumnIndex("sno"))
 					+ "  " + cursor.getString(cursor.getColumnIndex("screenState")) 
 					+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp"))
-					+ "  " + cursor.getString(cursor.getColumnIndex("total"));
+					+ "  " + utils.convert2Time(cursor.getLong(cursor.getColumnIndex("total")));
 			screenStateDetailss.add(sDetailss);
 		}
 		return screenStateDetailss;
@@ -221,11 +221,11 @@ public long getTotal(String state, String time) {
 	
 
 	
-	public int getrowcount() {
+	public int getrowcount(String state) {
 		
 		Cursor cursor = db.query("phone_activity", 
-				null, null, null, null, null, null);
-		int count = cursor.getCount()/2;
+				null, "screenState=?", new String[] {state}, null, null, "total");
+		int count = cursor.getCount();
 		if (count > 0) {
 		return count;
 		}
@@ -239,14 +239,12 @@ public long getTotal(String state, String time) {
 		ArrayList<String> top3 = new ArrayList<String>();
 		cursor.moveToPosition(cursor.getCount() - 4);
 		while(cursor.moveToNext()) {
-			
-			String sDetailss = cursor.getString(cursor.getColumnIndex("sno"))
-					+ "  " + cursor.getString(cursor.getColumnIndex("screenState")) 
-					+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp"))
-					+ "  " + cursor.getString(cursor.getColumnIndex("total"));
+
+			String sDetailss = cursor.getString(cursor.getColumnIndex("timeStamp"))
+					+ "  " + utils.convert2Time(cursor.getLong(cursor.getColumnIndex("total")));
 			top3.add(sDetailss);
 
-			
+
 		}
 		close();
 		return top3;
