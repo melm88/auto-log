@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import com.taramt.utils.DBAdapter;
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	
 	TextView tv;
-	EditText etv;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +17,6 @@ public class MainActivity extends Activity {
 		
 		//TextView in MainActivity
 		tv = (TextView) findViewById(R.id.mainactTV);
-		etv = (EditText) findViewById(R.id.editTV);
 		displayPowerResults();	
 		
 	}	

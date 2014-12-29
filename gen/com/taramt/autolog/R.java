@@ -2038,7 +2038,6 @@ containing a value of this type.
         public static final int dialog=0x7f080021;
         public static final int disableHome=0x7f08001b;
         public static final int dropdown=0x7f080022;
-        public static final int editTV=0x7f080053;
         public static final int edit_query=0x7f080046;
         public static final int end=0x7f080025;
         public static final int expand_activities_button=0x7f080035;

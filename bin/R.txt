@@ -452,7 +452,6 @@ int id default_activity_button 0x7f080037
 int id dialog 0x7f080021
 int id disableHome 0x7f08001b
 int id dropdown 0x7f080022
-int id editTV 0x7f080053
 int id edit_query 0x7f080046
 int id end 0x7f080025
 int id expand_activities_button 0x7f080035
