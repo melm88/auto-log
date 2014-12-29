@@ -500,7 +500,6 @@ int id split_action_bar 0x7f08002c
 int id strict_sandbox 0x7f080009
 int id submit_area 0x7f08004f
 int id tabMode 0x7f080015
-int id temperatureTV 0x7f080054
 int id terrain 0x7f080003
 int id title 0x7f08003a
 int id top 0x7f080026
@@ -534,8 +533,7 @@ int layout abc_search_dropdown_item_icons_2line 0x7f030014
 int layout abc_search_view 0x7f030015
 int layout abc_simple_dropdown_hint 0x7f030016
 int layout activity_main 0x7f030017
-int layout activity_sensor 0x7f030018
-int layout support_simple_spinner_dropdown_item 0x7f030019
+int layout support_simple_spinner_dropdown_item 0x7f030018
 int string abc_action_bar_home_description 0x7f060024
 int string abc_action_bar_home_description_format 0x7f060027
 int string abc_action_bar_home_subtitle_description_format 0x7f060028
