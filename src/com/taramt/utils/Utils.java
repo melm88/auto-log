@@ -2,10 +2,14 @@ package com.taramt.utils;
 
 import java.util.ArrayList;
 
+import com.taramt.autologscreenstate.ScreenActivity;
+
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.util.Log;
 import android.widget.TextView;
 
 public class Utils {
@@ -59,5 +63,5 @@ public class Utils {
                 timeStr = timeStr + (totalSec%3600)%60 + "s";
 	         return timeStr;
 	}
-	
+
 }
