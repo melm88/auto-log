@@ -452,7 +452,6 @@ int id default_activity_button 0x7f080037
 int id dialog 0x7f080021
 int id disableHome 0x7f08001b
 int id dropdown 0x7f080022
-int id editTV 0x7f080053
 int id edit_query 0x7f080046
 int id end 0x7f080025
 int id expand_activities_button 0x7f080035
@@ -468,7 +467,7 @@ int id ifRoom 0x7f08001d
 int id image 0x7f080036
 int id listMode 0x7f080014
 int id list_item 0x7f080038
-int id mainactTV 0x7f080052
+int id mainactTV 0x7f080053
 int id match_parent 0x7f08000c
 int id middle 0x7f080024
 int id monochrome 0x7f080013
@@ -481,6 +480,7 @@ int id progress_horizontal 0x7f080030
 int id radio 0x7f08003e
 int id sandbox 0x7f080008
 int id satellite 0x7f080002
+int id scrollView1 0x7f080052
 int id search_badge 0x7f080048
 int id search_bar 0x7f080047
 int id search_button 0x7f080049

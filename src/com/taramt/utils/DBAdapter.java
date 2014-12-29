@@ -59,14 +59,16 @@ public class DBAdapter {
 		Cursor cursor = db.query("ChargerState", 
 				null, null, null, null, null, null);
 		ArrayList<String> PowerDetails = new ArrayList<String>();
-		while(cursor.moveToNext()) {
-			String nDetails = cursor.getString(cursor.getColumnIndex("connection"))
-					+ "  " + cursor.getString(cursor.getColumnIndex("chargingstate"))
-					+ "  " + cursor.getString(cursor.getColumnIndex("chargingpoint"))
-					+ "  " + cursor.getString(cursor.getColumnIndex("battery"))
-					+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp"));
-			PowerDetails.add(nDetails);
-		}
+		if(cursor != null) {
+			while(cursor.moveToNext()) {
+				String nDetails = cursor.getString(cursor.getColumnIndex("connection"))
+						+ "  " + cursor.getString(cursor.getColumnIndex("chargingstate"))
+						+ "  " + cursor.getString(cursor.getColumnIndex("chargingpoint"))
+						+ "  " + cursor.getString(cursor.getColumnIndex("battery"))
+						+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp"));
+				PowerDetails.add(nDetails);
+			}
+		}		
 		return PowerDetails;
 	}
 	
@@ -81,6 +83,25 @@ public class DBAdapter {
 		Log.d("Temperature", "" + n);
 		return n;	
 	}
+	
+	//Retrieve TemperatureDetails
+		public ArrayList<String> getTemperatureDetails() {
+			//String query="select email_id from contacts";
+			Cursor cursor = db.query("AmbientTemperature", 
+					null, null, null, null, null, null);
+			ArrayList<String> TemperatureDetails = new ArrayList<String>();
+			if(cursor != null) {
+				int count = 1;
+				while(cursor.moveToNext()) {
+					String nDetails = count+") " + cursor.getString(cursor.getColumnIndex("temperature"))
+							+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp")).split("GMT")[0];
+					TemperatureDetails.add(nDetails);
+					count++;
+				}
+			}
+			
+			return TemperatureDetails;
+		}
 	
 	//Insert Image/Video info into table
 	public long insertMediaDetails(String path, String mediatype, String time) {

@@ -6,12 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="19" />
-    
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-  	<uses-permission android:name="android.permission.CAMERA" />
-  	<uses-feature android:name="android.hardware.camera" />
-    
+        android:targetSdkVersion="19" />    
 
     <application
         android:allowBackup="true"
@@ -28,13 +23,6 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="com.taramt.power.PhoneChargerState" >
-            <intent-filter>
-                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
-            </intent-filter>
-        </receiver>
-
         <activity
             android:name="com.taramt.temperature.SensorActivity"
             android:label="@string/title_activity_sensor" >
@@ -44,20 +32,6 @@
 	         android:enabled="true">
         </service>
         
-        <receiver
-            android:name="com.taramt.logmedia.CameraReceiver"
-            android:enabled="true" >
-            <intent-filter>
-                <action android:name="com.android.camera.NEW_PICTURE" />                
-                <action android:name="android.hardware.action.NEW_PICTURE" />
-                <action android:name="com.android.camera.NEW_VIDEO" />
-                <action android:name="android.hardware.action.NEW_VIDEO" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="image/*" />
-                <data android:mimeType="video/*" />
-            </intent-filter>
-        </receiver>
 </application>
 
 </manifest>

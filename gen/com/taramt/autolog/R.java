@@ -2038,7 +2038,6 @@ containing a value of this type.
         public static final int dialog=0x7f080021;
         public static final int disableHome=0x7f08001b;
         public static final int dropdown=0x7f080022;
-        public static final int editTV=0x7f080053;
         public static final int edit_query=0x7f080046;
         public static final int end=0x7f080025;
         public static final int expand_activities_button=0x7f080035;
@@ -2054,7 +2053,7 @@ containing a value of this type.
         public static final int image=0x7f080036;
         public static final int listMode=0x7f080014;
         public static final int list_item=0x7f080038;
-        public static final int mainactTV=0x7f080052;
+        public static final int mainactTV=0x7f080053;
         public static final int match_parent=0x7f08000c;
         public static final int middle=0x7f080024;
         public static final int monochrome=0x7f080013;
@@ -2067,6 +2066,7 @@ containing a value of this type.
         public static final int radio=0x7f08003e;
         public static final int sandbox=0x7f080008;
         public static final int satellite=0x7f080002;
+        public static final int scrollView1=0x7f080052;
         public static final int search_badge=0x7f080048;
         public static final int search_bar=0x7f080047;
         public static final int search_button=0x7f080049;
