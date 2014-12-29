@@ -1,10 +1,5 @@
 package com.taramt.utils;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.preference.PreferenceManager;
-import android.util.Log;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,15 +11,18 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class DBAdapter {
 	private DatabaseHelper DBHelper;
 	private SQLiteDatabase db;
 	SharedPreferences prefs;
+	Utils utils;
 	public DBAdapter(Context context) {
 		Log.d("AutoLog","Inside DBAdapter Constructor");
 		DBHelper = new DatabaseHelper(context);
+		utils = new Utils(context);
 		prefs = PreferenceManager.getDefaultSharedPreferences(context);
 	}	
 
@@ -253,5 +251,52 @@ public long getTotal(String state, String time) {
 		close();
 		return top3;
 	}
+	
+	// SORT
+
+
+		public void insertSort(String state, String time, long total, String hour) {
+
+			ContentValues cv = new ContentValues();
+			cv.put("screenState", state);
+			cv.put("timeStamp", time);
+			cv.put("total", total);
+			cv.put("hour", hour);	
+			Log.d("DBBInsert", state + " | " + time  + " | " + total  + " | " + hour);
+			db.insert("sort", null, cv);
+		}
+		public long updateSort(String state, String timeStamp, long total, String hour) {
+
+			open();
+			ContentValues cv=new ContentValues();
+			cv.put("timeStamp", timeStamp);
+			cv.put("total", total);
+			try {
+				long n = db.update("sort", 
+						cv, "screenState=? and hour=?", new String[] {state, hour});
+				Log.d("UPDATESORT", ""+n);
+				return n;
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				Log.d("exception in updating folders",e.toString());
+			}
+			close();
+			return 0;
+		}
+		public ArrayList<String> getSortDetails(String state) {
+			open();
+			Cursor cursor = db.query("sort", 
+					null, "screenState=?", new String[] {state}, null, null, "total");
+			ArrayList<String> screenStateDetailss = new ArrayList<String>();
+			while(cursor.moveToNext()) {
+				String sDetailss = cursor.getString(cursor.getColumnIndex("timeStamp"))
+						+ "  " + utils.convert2Time(cursor.getLong(cursor.getColumnIndex("total")))
+						+ "  " + cursor.getString(cursor.getColumnIndex("hour"));
+				screenStateDetailss.add(sDetailss);
+			}
+			close();
+			return screenStateDetailss;
+		}
 	
 }

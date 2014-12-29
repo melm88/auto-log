@@ -34,8 +34,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				+ "timeStamp text not null,"
 				+ "total long not null,"
 				+ "cumulatetotal text not null);");
-		System.out.println();
-		Log.d("Notification", "Table Created!!!");
+		// Table for Screenstate sorting 
+		
+				db.execSQL("create table if not exists "
+						+ "sort(sno INTEGER PRIMARY KEY AUTOINCREMENT, "
+						+ "hour text not null,"
+						+ "screenState text not null,"
+						+ "timeStamp text not null,"
+						+ "total long not null);");
 	}
 
 	@Override
@@ -47,6 +53,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			db.execSQL("DROP TABLE IF EXISTS NotificationDetails");
 			db.execSQL("DROP TABLE IF EXISTS DataUsage");
 			db.execSQL("DROP TABLE IF EXISTS phone_activity");
+			db.execSQL("DROP TABLE IF EXISTS sort");
 			onCreate(db);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

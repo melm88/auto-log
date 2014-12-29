@@ -87,7 +87,14 @@ public void onPause() {
 }
 	public void Sort(View v) {
 
+		String Sort = "Active:\n\n";
 
+		ArrayList<String> sort = new ArrayList<String>();
+		sort = db.getSortDetails("Active");
+		Sort = Sort + utils.getDetails(db, sort) + "\n";
+		sort = db.getSortDetails("Idle");
+		Sort = Sort + "Idle:\n\n" + utils.getDetails(db, sort) + "\n";
+		log.setText(Sort);
 	}
 	public void Top3(View v) {
 
