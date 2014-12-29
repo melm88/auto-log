@@ -3,13 +3,12 @@ package com.taramt.autologscreenstate;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.taramt.utils.DBAdapter;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.taramt.utils.DBAdapter;
 
 public class ScreenReceiver extends BroadcastReceiver {
 	DBAdapter db;

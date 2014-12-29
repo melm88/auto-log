@@ -1,10 +1,5 @@
 package com.taramt.utils;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.preference.PreferenceManager;
-import android.util.Log;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class DBAdapter {
