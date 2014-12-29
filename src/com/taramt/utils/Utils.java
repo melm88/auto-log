@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.widget.TextView;
 
 public class Utils {
 	Context context;
@@ -59,5 +58,5 @@ public class Utils {
                 timeStr = timeStr + (totalSec%3600)%60 + "s";
 	         return timeStr;
 	}
-	
+
 }
