@@ -47,12 +47,26 @@ public class ScreenActivity extends Activity {
 	
 		sDetails = db.getScreenStateDetails();
 		db.close();
+		// displaying general database values of Screen activity
 		log.setText(utils.getDetails(db, sDetails));
-		totalDuration = prefs.getLong("t_locked", 0L)
-				+ prefs.getLong("t_unlocked", 0L);
+		
+		/* calling the method to show the total duration 
+		 * of each screen activity Active and Idle
+		*/
+		
 		showTotalDuration();
+		
+		/* calling the method to show the average 
+		 * of each screen activity Active and Idle
+		*/
 		showAverage();
-
+		
+		/*
+		 * startAlarm calling only when it is portrait
+		 * because if orientation changes oncreate will
+		 * be called and alram will be started and stopped
+		 * multiple times.
+		 */
 		if (ScreenActivity.this.getResources().getConfiguration().orientation == 1) {
 			startAlarm();
 		}
@@ -83,6 +97,11 @@ public class ScreenActivity extends Activity {
 		Log.d("start", "onDestroy");
 	}
 	
+	/*
+	 * Method for showing the sorted Active and
+	 * Idle cycles in hourly manner from highest 
+	 * to lowest
+	 */
 	public void Sort(View v) {
 		
 		showTotalDuration();
@@ -98,9 +117,17 @@ public class ScreenActivity extends Activity {
 		log.setText(Sort);
 
 	}
+	
+	/*
+	 *  Method to show the top3 values of
+	 *  Active Idle cycles 
+	 *  By using "id" also showing general database 
+	 *  version active idle cycles 
+	 */
 	public void Top3(View v) {
 
 		if (id == 0) {
+			// showing top3
 			String Top3 = "Active:\n\n";
 
 			ArrayList<String> top3 = new ArrayList<String>();
@@ -111,6 +138,7 @@ public class ScreenActivity extends Activity {
 			log.setText(Top3);
 			id = 1;
 		} else {
+			// showing general database by reading the table 
 			db.open();
 			sDetails = db.getScreenStateDetails();
 			db.close();
@@ -120,7 +148,12 @@ public class ScreenActivity extends Activity {
 		
 	}
 
-
+	/*
+	 * Method for showing the average of each cycle
+	 * db.getRowcount(stateName) is to get no. of records
+	 * saved in database of that particular state and
+	 * converting to hh:mm:ss 
+	 */
 	public void showAverage() {
 		db.open();
 		average = "Average: \nActive:  " 
@@ -131,8 +164,18 @@ public class ScreenActivity extends Activity {
 		Average.setText(average);
 		db.close();
 	}
+	
+
+	/*
+	 * Method for showing the total duration 
+	 * of each cycle
+	 * converting duration to hh:mm:ss 
+	 */
 
 	public void showTotalDuration() {
+		totalDuration = prefs.getLong("t_locked", 0L)
+				+ prefs.getLong("t_unlocked", 0L);
+		
 		total = "Total Duraion : " + utils.convert2Time(totalDuration) + "\n";
 		total = total + "Active:  " 
 				+ utils.convert2Time(prefs.getLong("t_unlocked", 0L)) + "\n";

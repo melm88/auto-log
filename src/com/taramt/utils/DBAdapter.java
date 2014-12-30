@@ -125,7 +125,7 @@ public class DBAdapter {
 		db.insert("phone_activity", null, cv);
 
 	}
-
+	// updating the preference values of total time of each cycle
 	public void enterPrefs(long cumulateTotal, String time, String state) {
 
 		String lastTimeStamp = getLastrow().split(",")[1];
@@ -157,6 +157,7 @@ public class DBAdapter {
 		}
 		edit.commit();
 	}
+	// updating the total column in database
 	public long updateTotal(String timeStamp, long total, String cumulateTotal) {
 
 		open();
@@ -176,7 +177,7 @@ public class DBAdapter {
 		close();
 		return 0;
 	}
-
+	// reading the database and getting the screenstate details 
 	public ArrayList<String> getScreenStateDetails() {
 		Cursor cursor = db.query("phone_activity", 
 				null, null, null, null, null, null);
@@ -215,8 +216,18 @@ public class DBAdapter {
 		}
 		return (start - stop);
 	}
-
+	/*
+	 * Method is for updating the total of previous record
+	 * before inserting current record so that last row will
+	 * be updated with total time elapsed from time inserted
+	 * to the time when the other record will be inserted
+	 * 
+	 * in same method updating the sharedprefs and also 
+	 * updating the total
+	 */
 	public long getTotal(String state, String time) {
+		
+		Editor editor = prefs.edit();
 		String rowDetails = getLastrow();
 		String timeStamp = rowDetails.split(",")[1];
 		String lastState = rowDetails.split(",")[0];
@@ -232,13 +243,14 @@ public class DBAdapter {
 			if (ahour != Integer.parseInt(timeStamp.substring(11,13))) {
 				ahour = Integer.parseInt(timeStamp.substring(11,13));
 				insertSort(lastState, timeStamp, total, ahour+"");
+				editor.putString("aTS", timeStamp);
 				atotal = total;
 				Log.d("DebActive", lastState + " | " + timeStamp 
 						+ " | " + utils.convert2Time(cumulateTotal) 
 						+ " | " + utils.convert2Time(atotal));
 			} else {
 				atotal = atotal + total;
-				updateSort(lastState, timeStamp, atotal, ahour+"");
+				updateSort(lastState, prefs.getString("aTS", timeStamp), atotal, ahour+"");
 				Log.d("DebActive", lastState + " | " + timeStamp 
 						+ " | " + utils.convert2Time(cumulateTotal)
 						+ " | " + utils.convert2Time(atotal));
@@ -251,19 +263,21 @@ public class DBAdapter {
 			if (ihour != Integer.parseInt(timeStamp.substring(11,13))) {
 				ihour = Integer.parseInt(timeStamp.substring(11,13));
 				insertSort(lastState, timeStamp, total, ihour+"");
+				editor.putString("iTS", timeStamp);
 				itotal = total;
 				Log.d("DebIdle", lastState + " | " + timeStamp 
 						+ " | " + utils.convert2Time(cumulateTotal) 
 						+ " | " + utils.convert2Time(itotal));
 			} else {
 				itotal = itotal + total;
-				updateSort(lastState, timeStamp, itotal, ihour+"");
+				updateSort(lastState, prefs.getString("iTS", timeStamp), itotal, ihour+"");
 				Log.d("DebIdle", lastState + " | " + timeStamp 
 						+ " | " + utils.convert2Time(cumulateTotal) 
 						+ " | " + utils.convert2Time(itotal));
 			}
 
 		}
+		editor.commit();
 		// diff TS and time
 		// add the diff to total
 		//return total
@@ -272,6 +286,8 @@ public class DBAdapter {
 		updateTotal(timeStamp, total, cumulateTotal+"");
 		return cumulateTotal;
 	}
+	
+	// getting the last recorded values in database to use to check
 	public String getLastrow() {
 		Cursor cursor = db.query("phone_activity", 
 				null, null, null, null, null, null);
@@ -283,7 +299,7 @@ public class DBAdapter {
 		}
 		return sDetailss;
 	}
-
+	// this method used in showaverage() method in screenactivity
 	public int getrowcount(String state) {
 
 		Cursor cursor = db.query("phone_activity", 
@@ -294,7 +310,7 @@ public class DBAdapter {
 		}
 		return 1;
 	}
-
+	// method showing top3
 	public ArrayList<String> getTop3(String state) {
 		open();
 		Cursor cursor = db.query("phone_activity", 
@@ -315,7 +331,9 @@ public class DBAdapter {
 
 	// SORT
 
-
+	// sort table created especially for the sorting in hourly manner
+	
+	// to insert the values
 	public void insertSort(String state, String time, long total, String hour) {
 
 		ContentValues cv = new ContentValues();
@@ -326,15 +344,16 @@ public class DBAdapter {
 		Log.d("DBBInsert", state + " | " + time  + " | " + total  + " | " + hour);
 		db.insert("sort", null, cv);
 	}
+	// to update the values
 	public long updateSort(String state, String timeStamp, long total, String hour) {
 
 		open();
 		ContentValues cv=new ContentValues();
-		cv.put("timeStamp", timeStamp);
 		cv.put("total", total);
 		try {
 			long n = db.update("sort", 
-					cv, "screenState=? and hour=?", new String[] {state, hour});
+					cv, "screenState=? and hour=? and timeStamp=?", 
+					new String[] {state, hour, timeStamp});
 			Log.d("UPDATESORT", ""+n);
 			return n;
 
@@ -345,6 +364,7 @@ public class DBAdapter {
 		close();
 		return 0;
 	}
+	// to show the sorting details
 	public ArrayList<String> getSortDetails(String state) {
 		open();
 		Cursor cursor = db.query("sort", 
