@@ -3,7 +3,8 @@
     package="com.taramt.autolog"
     android:versionCode="1"
     android:versionName="1.0" >
-
+ <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    
     <uses-sdk
         android:minSdkVersion="10"
         android:targetSdkVersion="19" />
@@ -55,13 +56,18 @@
         <activity
             android:name="com.taramt.wifi.WifiActivity"
             android:label="@string/title_activity_wifi" >
- <intent-filter>
+             
+        </activity>
+   <activity
+            android:name="com.taramt.audiolevel.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            
         </activity>
-    </application>
+        
+        </application>
 
 </manifest>
