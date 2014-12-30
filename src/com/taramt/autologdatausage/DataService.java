@@ -63,7 +63,7 @@ public class DataService extends Service{
 					(double) TrafficStats.getUidRxBytes(uid)/ (1024 * 1024);
 			double send = 
 					(double) TrafficStats.getUidTxBytes(uid)/ (1024 * 1024);
-			double total = received + send;
+			double total = received  +  send;
 
 			if(total>0) {
 				long date = System.currentTimeMillis();
@@ -71,7 +71,7 @@ public class DataService extends Service{
 				String timeStamp = formatter.format(date);
 				// Logging the datausage of each app
 				db.insertDataUsage(dataTable, appName, 
-						send+"", received+"", total+"", timeStamp);
+						send + "", received + "", total + "", timeStamp);
 			}
 		}
 		db.close();

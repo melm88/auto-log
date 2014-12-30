@@ -21,12 +21,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 public class DataUsage extends Activity {
-	  SharedPreferences shared;
+	SharedPreferences shared;
 	TextView dataUsage;
 	DBAdapter db;
 	Utils utils;
 	static ArrayList<String> dataUsageApps = new ArrayList<String>();
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,11 +34,13 @@ public class DataUsage extends Activity {
 		dataUsage  = (TextView) findViewById(R.id.dataUsage);
 		db = new DBAdapter(this);
 		utils = new Utils(this);
+		// Showing datausage from database
 		showdataUsage();
+		// starting the service to run every 5 minutes
 		startAlarm();
 		Log.d("DATAUSAGE", "in on create");
 	}
-	 
+	// method for starting alarm for service
 	public void startAlarm() {
 
 		try {
@@ -50,26 +52,27 @@ public class DataUsage extends Activity {
 		} catch (Exception e) {
 			Log.d("exceptionasdfdf",""+e);
 		}
-		
-	}
-public void stopService() {
-	Intent intent = new Intent(this, DataService.class);
-	stopService(intent);
-	try {
-		
-		PendingIntent pendingIntent = PendingIntent.getService(this, 
-				0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		AlarmManager am =(AlarmManager)getSystemService(Context.ALARM_SERVICE);
-		am.cancel(pendingIntent);
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-}
 
-/*
- * Showing the data usage of each app from the phone database
- */
+	}
+	// Method to stop the service 
+	public void stopService() {
+		Intent intent = new Intent(this, DataService.class);
+		stopService(intent);
+		try {
+
+			PendingIntent pendingIntent = PendingIntent.getService(this, 
+					0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+			AlarmManager am =(AlarmManager)getSystemService(Context.ALARM_SERVICE);
+			am.cancel(pendingIntent);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/*
+	 * Showing the data usage of each app from the phone database
+	 */
 	public void showdataUsage() {
 		Log.d("DATAUSAGE", "in showdataUsage");
 		db.open();
@@ -77,5 +80,5 @@ public void stopService() {
 		dataUsage.setText(utils.getDetails(db, dataUsageApps));
 		db.close();
 	}
-	
+
 }
