@@ -72,6 +72,7 @@ public class TemperatureSensor extends Service implements SensorEventListener {
 		
 		float centigrade_of_temperature = event.values[0];
 		
+		//Insert temperature if its different from previous entered data
 		if(centigrade_of_temperature != prev_amb_temp) {
 			Log.d("sensor","Temperature: "+centigrade_of_temperature+" | "+prev_amb_temp);
 			prev_amb_temp = centigrade_of_temperature;

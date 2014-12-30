@@ -36,13 +36,14 @@ public class MainActivity extends Activity {
 		super.onResume();
 	}
 
-	
+	//Method to initiate the service for capturing AmbientTemperature
 	public void enableTemperatureSensing() {
 		Intent iServe = new Intent(MainActivity.this, TemperatureSensor.class);
 		MainActivity.this.startService(iServe);
 		displayTemperatureSensingData();
 	}
 	
+	//Method to stop the service for capturing AmbientTemperature
 	public void stopTemperatureSensing() {
 		Intent iServe = new Intent(MainActivity.this, TemperatureSensor.class);
 		MainActivity.this.stopService(iServe);
