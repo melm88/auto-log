@@ -2,11 +2,9 @@ package com.taramt.autolog;
 
 import java.util.ArrayList;
 import java.util.Date;
-
 import com.taramt.temperature.SensorActivity;
 import com.taramt.temperature.TemperatureSensor;
 import com.taramt.utils.DBAdapter;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +18,6 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 	
 	TextView tv;
-	EditText etv;
 	private FileObserver mFileObserver;
 	
 	@Override
@@ -30,7 +27,6 @@ public class MainActivity extends Activity {
 		
 		//TextView in MainActivity
 		tv = (TextView) findViewById(R.id.mainactTV);
-		etv = (EditText) findViewById(R.id.editTV);
 		//displayPowerResults();
 		//enableTemperatureSensing();
 		
@@ -44,6 +40,8 @@ public class MainActivity extends Activity {
 		
 	}
 	
+	
+	//The function below monitors sdcard/Sounds folder for identifying newly created audiofiles
 	private void addObserver() {
 		//Log.d("audiorec","in addObserver");
 	    this.mFileObserver = new FileObserver("/sdcard/Sounds/") {
@@ -83,6 +81,7 @@ public class MainActivity extends Activity {
 	    mFileObserver.startWatching();
 	}
 	
+	//Stop FileObserverWatch which is used to monitor newly created audio files
 	public void stopFileObserverWatch() {
 		if (mFileObserver != null) {
             mFileObserver.stopWatching();
@@ -91,13 +90,14 @@ public class MainActivity extends Activity {
 	
 	
 	
+	//Pre-defined onResume function
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		//mFileObserver.startWatching();
 	}
-
+	
+	//Read data from database for Charge Connected_Disconnected and display them on the MainActivity
 	public void displayPowerResults() {
 		
 		ArrayList<String> displayArray = null;
@@ -120,11 +120,13 @@ public class MainActivity extends Activity {
 		
 	}
 	
+	//Initiate AmbientTemperatureSensing service to capture temperature values.
 	public void enableTemperatureSensing() {
 		Intent iServe = new Intent(MainActivity.this, TemperatureSensor.class);
 		MainActivity.this.startService(iServe);
 	}
 	
+	//Stop Ambient Temperature service
 	public void stopTemperatureSensing() {
 		Intent iServe = new Intent(MainActivity.this, TemperatureSensor.class);
 		MainActivity.this.stopService(iServe);
