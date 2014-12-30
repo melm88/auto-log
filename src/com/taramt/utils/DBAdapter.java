@@ -1,10 +1,5 @@
 package com.taramt.utils;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.preference.PreferenceManager;
-import android.util.Log;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class DBAdapter {
@@ -74,9 +70,7 @@ public class DBAdapter {
 
 	// To log DataUsage of each app
 	public long insertDataUsage(String tablename, String appName, 
-			String send, String received, String total, String timeStamp)
-
-	{
+			String send, String received, String total, String timeStamp) {
 		Log.d("Dbb","DBA: " + appName 
 				+ " | "+ send +" | "+received
 				+ " | "+ total +" | "+timeStamp);

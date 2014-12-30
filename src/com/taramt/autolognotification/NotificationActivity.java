@@ -31,6 +31,12 @@ public class NotificationActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_notification);
 		txtView = (TextView) findViewById(R.id.textView);
+		/*
+		 * defining nReceiver (NotificationReceiver) and 
+		 * adding intentfileter action so that
+		 * any values can be received here which will send from the 
+		 * NLService through sendBroadcast method
+		 */
 		nReceiver = new NotificationReceiver();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("com.taramt.autolog.notification");
@@ -46,7 +52,7 @@ public class NotificationActivity extends Activity {
 		super.onDestroy();
 		unregisterReceiver(nReceiver);
 	}
-	
+	// getting notification details from database and displaying
 	public void showNotifications() {
 		db.open();
 		nDetails = db.getNotificationDetails();
@@ -54,7 +60,11 @@ public class NotificationActivity extends Activity {
 		db.close();
 	}
 	
-
+/* this is for creating notification so that
+ * we can create immediately to test the 
+ * app instead of waiting for the actual 
+ * notifications
+ */
 	public void CreateNotification(View v) {
 	
 		if(v.getId() == R.id.btnCreateNotify){
