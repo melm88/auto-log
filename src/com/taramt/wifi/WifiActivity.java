@@ -13,14 +13,18 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-
+/**
+ * launches WifiActivity
+ * @author AKIL
+ *
+ */
 public class WifiActivity extends ActionBarActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_wifi);
-		
+		//displaying the log from database on text view 
 		TextView tv = (TextView)findViewById(R.id.wifi);
 		  DBAdapter db = new DBAdapter(this);
 		   db.open();

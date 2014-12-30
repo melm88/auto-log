@@ -23,10 +23,9 @@ public class AmbientlightActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ambientlight);
-		//First time
 		SharedPreferences savedValues = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		
+		//If this is the first launch
 		if (savedValues.getBoolean(getString(R.string.Start), true)) {
 			
 			Log.d("flag", "timer is being set");
@@ -34,7 +33,7 @@ public class AmbientlightActivity extends ActionBarActivity {
 			SharedPreferences.Editor editor = savedValues.edit();
 			editor.putBoolean(getString(R.string.Start), false);
 			editor.commit();
-			
+			//Starting a Ambient light service 
 			Intent intent = new Intent(this, Ambientlightservice.class);
 			PendingIntent pintent = PendingIntent
 					.getService(this, 0, intent, 0);
@@ -42,18 +41,16 @@ public class AmbientlightActivity extends ActionBarActivity {
 			AlarmManager alarm = (AlarmManager) 
 					getSystemService(Context.ALARM_SERVICE);
 			alarm.cancel(pintent);
-			
+			//setting an alarm manager for interval of 5 minutes
 			alarm.setRepeating(AlarmManager.RTC_WAKEUP, 
 					System.currentTimeMillis()+5*60*1000,
 					5*60*1000, pintent); 
-
-
-		
 		} else {
 			Log.d("flag", "timer is already set");
 		}
-				TextView tv = (TextView)findViewById(R.id.ambientlightlog);
-		  DBAdapter db = new DBAdapter(this);
+		   //displaying the log from database on text view 
+		   TextView tv = (TextView)findViewById(R.id.ambientlightlog);
+		   DBAdapter db = new DBAdapter(this);
 		   db.open();
 		   ArrayList<String> row = db.getLightSensorlog();
 		   String content = "";
@@ -63,7 +60,7 @@ public class AmbientlightActivity extends ActionBarActivity {
 		   db.close();
 		   tv.setText(content);
 	
-              }
+        }
 
 
 	@Override

@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
+/**
+ * Main Activity that launches all logs
+ * @author AKIL
+ *
+ */
 public class MainActivity extends Activity {
 
 	@Override

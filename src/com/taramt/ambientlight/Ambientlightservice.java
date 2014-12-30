@@ -34,16 +34,16 @@ static float lastsensedvalue;
 	{	 
 		SharedPreferences savedValues = PreferenceManager
 				.getDefaultSharedPreferences(Ambientlightservice.this);
-		
+		//set initial value to 0 to get first time
 		SharedPreferences.Editor editor = savedValues.edit();
 		editor.putInt("issaved", 0);
 		editor.commit();
 		
-		Log.d("TEST", "HELLOO");
 		RecordLightIntensity();
 		return START_STICKY;
 	}
 	
+	//Captures the first record of light sensor.
 	private void RecordLightIntensity() {
 		Log.d("TEST", "RecordLightIntensity");
 		  SensorManager sensorManager 
@@ -51,14 +51,14 @@ static float lastsensedvalue;
 	        Sensor lightSensor 
 	        = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
-		// TODO Auto-generated method stub
+		// If lightSensor is not available in device
 		  if (lightSensor == null){
 		         Toast.makeText(this, 
 		           "No Light Sensor! quit-", 
 		           Toast.LENGTH_LONG).show();
 		        } else {
 		      
-		          
+		  //register light sensor        
 		 sensorManager.registerListener(lightSensorEventListener, 
 		         lightSensor, 
 		         SensorManager.SENSOR_DELAY_NORMAL);
@@ -72,14 +72,12 @@ static float lastsensedvalue;
 		Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
 	}
 
-
-	SensorEventListener lightSensorEventListener
+//light sensor event listener implementation
+SensorEventListener lightSensorEventListener
 	= new SensorEventListener(){
 
 @Override
 public void onSensorChanged(SensorEvent event) {
-	// TODO Auto-generated method stub
-	// TODO Auto-generated method stub
        if(event.sensor.getType()==Sensor.TYPE_LIGHT){
     		Log.d("TEST", "RecordLightIntensity");
     	 float currentReading = event.values[0];
@@ -87,7 +85,7 @@ public void onSensorChanged(SensorEvent event) {
         SharedPreferences savedValues = PreferenceManager
 				.getDefaultSharedPreferences(Ambientlightservice.this);
 		int issaved = savedValues.getInt("issaved", 0);
-		
+		//if first value is not yet saved in the service
         if (issaved == 0){
         	
          DBAdapter db = new DBAdapter(Ambientlightservice.this);
@@ -95,6 +93,7 @@ public void onSensorChanged(SensorEvent event) {
    		 db.insertLightSensorValue(""+lastsensedvalue, new Date().toString());
    		 db.close();
    		SharedPreferences.Editor editor = savedValues.edit();
+   		//set value to 1 so, it is not executed from second time 
 		editor.putInt("issaved", 1);
 		editor.commit();
 		Log.d("TEST", "LightSensor value saved");

@@ -9,13 +9,18 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-
+/**
+ * Launches BootActivity
+ * @author AKIL
+ *
+ */
 public class BootActivity extends ActionBarActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_boot);
+		//displaying the log from database on text view 
 		TextView tv = (TextView)findViewById(R.id.textview);
 		  DBAdapter db = new DBAdapter(this);
 		   db.open();
