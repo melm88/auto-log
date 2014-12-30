@@ -48,6 +48,12 @@
         <activity
             android:name="com.taramt.ambientlight.AmbientlightActivity"
             android:label="@string/title_activity_ambientlight" >
+             <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            
         </activity>
 
         <service android:name="com.taramt.ambientlight.Ambientlightservice" />
@@ -55,11 +61,6 @@
         <activity
             android:name="com.taramt.wifi.WifiActivity"
             android:label="@string/title_activity_wifi" >
- <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
             
         </activity>
     </application>
