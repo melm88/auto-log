@@ -217,6 +217,7 @@ public class DBAdapter {
 	}
 
 	public long getTotal(String state, String time) {
+		Editor editor = prefs.edit();
 		String rowDetails = getLastrow();
 		String timeStamp = rowDetails.split(",")[1];
 		String lastState = rowDetails.split(",")[0];
@@ -232,13 +233,14 @@ public class DBAdapter {
 			if (ahour != Integer.parseInt(timeStamp.substring(11,13))) {
 				ahour = Integer.parseInt(timeStamp.substring(11,13));
 				insertSort(lastState, timeStamp, total, ahour+"");
+				editor.putString("aTS", timeStamp);
 				atotal = total;
 				Log.d("DebActive", lastState + " | " + timeStamp 
 						+ " | " + utils.convert2Time(cumulateTotal) 
 						+ " | " + utils.convert2Time(atotal));
 			} else {
 				atotal = atotal + total;
-				updateSort(lastState, timeStamp, atotal, ahour+"");
+				updateSort(lastState, prefs.getString("aTS", timeStamp), atotal, ahour+"");
 				Log.d("DebActive", lastState + " | " + timeStamp 
 						+ " | " + utils.convert2Time(cumulateTotal)
 						+ " | " + utils.convert2Time(atotal));
@@ -251,19 +253,21 @@ public class DBAdapter {
 			if (ihour != Integer.parseInt(timeStamp.substring(11,13))) {
 				ihour = Integer.parseInt(timeStamp.substring(11,13));
 				insertSort(lastState, timeStamp, total, ihour+"");
+				editor.putString("iTS", timeStamp);
 				itotal = total;
 				Log.d("DebIdle", lastState + " | " + timeStamp 
 						+ " | " + utils.convert2Time(cumulateTotal) 
 						+ " | " + utils.convert2Time(itotal));
 			} else {
 				itotal = itotal + total;
-				updateSort(lastState, timeStamp, itotal, ihour+"");
+				updateSort(lastState, prefs.getString("iTS", timeStamp), itotal, ihour+"");
 				Log.d("DebIdle", lastState + " | " + timeStamp 
 						+ " | " + utils.convert2Time(cumulateTotal) 
 						+ " | " + utils.convert2Time(itotal));
 			}
 
 		}
+		editor.commit();
 		// diff TS and time
 		// add the diff to total
 		//return total
@@ -288,11 +292,7 @@ public class DBAdapter {
 
 		Cursor cursor = db.query("phone_activity", 
 				null, "screenState=?", new String[] {state}, null, null, "total");
-		int count = cursor.getCount();
-		if (count > 0) {
-			return count;
-		}
-		return 1;
+		return cursor.getCount();
 	}
 
 	public ArrayList<String> getTop3(String state) {
@@ -330,11 +330,11 @@ public class DBAdapter {
 
 		open();
 		ContentValues cv=new ContentValues();
-		cv.put("timeStamp", timeStamp);
 		cv.put("total", total);
 		try {
 			long n = db.update("sort", 
-					cv, "screenState=? and hour=?", new String[] {state, hour});
+					cv, "screenState=? and hour=? and timeStamp=?",
+					new String[] {state, hour, timeStamp});
 			Log.d("UPDATESORT", ""+n);
 			return n;
 
@@ -345,10 +345,10 @@ public class DBAdapter {
 		close();
 		return 0;
 	}
-	public ArrayList<String> getSortDetails(String state) {
+	public ArrayList<String> getSortDetails(String state, String date) {
 		open();
 		Cursor cursor = db.query("sort", 
-				null, "screenState=?", new String[] {state}, null, null, "total");
+				null, "screenState=? and timeStamp LIKE '"+date+"%'", new String[] {state}, null, null, "total");
 		ArrayList<String> screenStateDetailss = new ArrayList<String>();
 		while(cursor.moveToNext()) {
 			String sDetailss = cursor.getString(cursor.getColumnIndex("timeStamp"))
