@@ -28,18 +28,20 @@ public class MainActivity extends Activity {
 		super.onResume();
 	}
 
+	//Display data from PowerTable in MainActivity
 	public void displayPowerResults() {
 		
 		ArrayList<String> displayArray = null;
 		String content = "";
 		
-		//Code to display the database results on screen
-		//(if any)
+		//Retrieve data from DB (PowerTable)
 		DBAdapter dba = new DBAdapter(this);
 		dba.open();
 		displayArray = dba.getPowerDetails();
 		dba.close();
 		
+		//Code to display the database results on screen
+		//(if any)
 		if(displayArray != null) {
 			for(String ele: displayArray) {
 				content += ele + "\n\n";

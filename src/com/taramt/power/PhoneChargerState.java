@@ -15,6 +15,7 @@ public class PhoneChargerState extends BroadcastReceiver {
     private Context cc;
     private Intent batteryStatus;
 
+    //Register the receiver (ACTION_BATTERY_CHANGED)
     public final void start(final Context c) {
     	cc = c;
         //c.registerReceiver(this, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
@@ -22,22 +23,26 @@ public class PhoneChargerState extends BroadcastReceiver {
         batteryStatus = c.registerReceiver(this, ifilter);
     }
 
+    //Unregister the receiver (ACTION_BATTERY_CHANGED)
     public final void stop(final Context c) {
         c.unregisterReceiver(this);
     }
 
+    //Method to identify if the device is charging
     public final boolean isCharging() {
         return mCharging;
     }
 
+    //Method to identify if the device is connected through USB
     public final boolean isUsb() {
         return mUsb;
     }
 
+    //Method to identify if the device is connected to an AC socket
     public final boolean isAC() {
         return mAC;
     }
-
+    
     @Override
 	public final void onReceive(final Context context, final Intent intent) {
     	Log.d("PCS","onReceive");
