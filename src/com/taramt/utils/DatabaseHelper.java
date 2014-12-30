@@ -22,7 +22,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		Log.d("lightsensor","Table Created!!!");
 		
 		db.execSQL("create table if not exists wifianddata(network text not null, activity text not null, timestamp text not null);");
-		Log.d("lightsensor","Table Created!!!");
+		Log.d("wifianddata","Table Created!!!");
+	
+		db.execSQL("create table if not exists audiolevel(value text not null, timestamp text not null);");
+		Log.d("audiolevel","Table Created!!!");
 		
 	}
 
