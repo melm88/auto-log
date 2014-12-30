@@ -26,6 +26,7 @@ public class AudioService extends Service {
 		return Service.START_STICKY;
 	}
 	
+	//Destroy the FileObserver object on stopping the service
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
@@ -36,7 +37,7 @@ public class AudioService extends Service {
 		super.onDestroy();
 	}
 	
-
+	//Initiate the watcher over sdcards/Sounds folder
 	@Override
 	public void onCreate() {
 		// TODO Auto-generated method stub
@@ -47,7 +48,8 @@ public class AudioService extends Service {
 	        public void onEvent(int event, String path) {
 	        	Log.d("audiorec","inOnEvent "+event);
 	        	Log.d("audiorec", "allevents: c:"+FileObserver.CREATE+" | d:"+FileObserver.DELETE+" | o:"+FileObserver.OPEN+" | ac:"+FileObserver.ACCESS+" | clo:"+FileObserver.CLOSE_WRITE+" | mod:"+FileObserver.MODIFY+" | movto:"+FileObserver.MOVED_TO+" | movf"+FileObserver.MOVED_FROM);
-	            if (event == FileObserver.MOVED_TO) {
+	            //Identify if the event that occured is New_File_Created or File_Renamed and if so then insert into DB.
+	        	if (event == FileObserver.MOVED_TO) {
 	            	Log.d("audiorec","inside CREATE");
 	                if (path != null) {
 	                    int index = path.indexOf(".");

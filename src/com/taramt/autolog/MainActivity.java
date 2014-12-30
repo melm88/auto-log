@@ -23,6 +23,7 @@ public class MainActivity extends Activity {
 		tv = (TextView) findViewById(R.id.mainactTV);
 		
 		//mFileObserver.startWatching();
+		//onLaunch of the activity, initiate FileObserver
 		addObserver();
 				
 		
@@ -33,16 +34,21 @@ public class MainActivity extends Activity {
 		//Log.d("audiorec","in addObserver");
 	    Intent audioservice = new Intent(MainActivity.this, AudioService.class);
 	    MainActivity.this.startService(audioservice);
+	    
+	    //Display Media data from DB into MainActivity
 	    displayMediaData();
 	}
 	
 	//Display MediaTable data
 	public void displayMediaData() {
+		
+		//Retrieve an ArrayList<String> of results from MediaTable
 		DBAdapter dba = new DBAdapter(this);
 		dba.open();
 		ArrayList<String> mediaData = dba.getMediaDetails();
 		dba.close();
 		
+		//If there are contents in DB then display else show a message "No Media data captured"
 		if(mediaData.size() > 0) {
 			String result = "";
 			for (String med: mediaData) {
