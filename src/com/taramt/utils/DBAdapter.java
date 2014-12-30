@@ -365,10 +365,10 @@ public class DBAdapter {
 		return 0;
 	}
 	// to show the sorting details
-	public ArrayList<String> getSortDetails(String state) {
+	public ArrayList<String> getSortDetails(String state, String date) {
 		open();
 		Cursor cursor = db.query("sort", 
-				null, "screenState=?", new String[] {state}, null, null, "total");
+				null, "screenState=? and timeStamp LIKE '"+date+"%'", new String[] {state}, null, null, "total");
 		ArrayList<String> screenStateDetailss = new ArrayList<String>();
 		while(cursor.moveToNext()) {
 			String sDetailss = cursor.getString(cursor.getColumnIndex("timeStamp"))
