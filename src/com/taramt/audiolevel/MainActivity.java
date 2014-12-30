@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
 				alarm.cancel(pintent);
 				//setting an alarm manager for interval of 5 minutes
 				alarm.setRepeating(AlarmManager.RTC_WAKEUP,
-				System.currentTimeMillis()+5*60*1000,
+				System.currentTimeMillis(),
 				5*60*1000, pintent);
 				} else {
 				Log.d("flag", "timer is already set");

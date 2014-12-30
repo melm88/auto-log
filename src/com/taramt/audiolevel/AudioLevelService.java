@@ -1,5 +1,9 @@
 package com.taramt.audiolevel;
 
+import java.util.Date;
+
+import com.taramt.utils.DBAdapter;
+
 import android.app.Service;
 import android.content.Intent;
 import android.media.AudioFormat;
@@ -59,6 +63,10 @@ private void readAudioBuffer() {
 			}
 			lastLevel = Math.abs((sumLevel / bufferReadResult));
 		Log.d("Audio Level", lastLevel+"");
+		DBAdapter db = new DBAdapter(this);
+		db.open();
+		db.insertAudioLevelValue(lastLevel+"", new Date().toString());
+		db.close();
 		}
 
 	} catch (Exception e) {
