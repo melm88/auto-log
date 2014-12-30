@@ -7,6 +7,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_ambientlight">AmbientlightActivity</string>
     <string name="Start">Start</string>
+    <string name="StartAudio">StartAudio</string>
     <string name="title_activity_wifi">WifiActivity</string>
 
 </resources>
