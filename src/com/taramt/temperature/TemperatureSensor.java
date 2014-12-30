@@ -48,6 +48,8 @@ public class TemperatureSensor extends Service implements SensorEventListener {
 		mTemperature = mSensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
 		//Log.d("sensor","inCreate");
 		super.onCreate();
+		
+		//If sensor for Ambient_Temperature is available then register  the receiver
 		if(mTemperature != null)
 			mSensorManager.registerListener(this, mTemperature, SensorManager.SENSOR_DELAY_NORMAL);
 		else {

@@ -49,11 +49,14 @@ public class MainActivity extends Activity {
 		MainActivity.this.stopService(iServe);
 	}
 	
+	//Method to display the results from Temperature table onto MainActivity
 	public void displayTemperatureSensingData() {
 		DBAdapter dba = new DBAdapter(this);
 		dba.open();
 		ArrayList<String> TemperatureData = dba.getTemperatureDetails();
 		String result = "";
+		
+		//Display results only if there are data in DB.
 		if(TemperatureData.size() > 0) {
 			for(String temper: TemperatureData) {
 				result += temper + "\n\n";
