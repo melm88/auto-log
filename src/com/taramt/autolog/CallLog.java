@@ -8,6 +8,13 @@ import android.os.Bundle;
 import android.provider.CallLog;
 import android.widget.TextView;
 
+/**
+ * 
+ * @author ASHOK
+ *
+ * This class is used to get the call log from the android phone .
+ * 
+ */
 public class Calllog extends Activity {
 
 	TextView log;
@@ -18,10 +25,18 @@ public class Calllog extends Activity {
 		setContentView(R.layout.activity_calllog);
 		
 		log = (TextView) findViewById(R.id.call_log);
+	
+		// get the call log
 		getCallDetails(); 
+	
 	}
+	
+/*
+ * getCallDetails method is used to get call details from the phone database.
+ */
 	@SuppressWarnings("deprecation")
 	private void getCallDetails() { 
+		
 		StringBuffer sb = new StringBuffer(); 
 		
 		Cursor managedCursor = managedQuery(CallLog.Calls.CONTENT_URI, 
@@ -30,7 +45,10 @@ public class Calllog extends Activity {
 		int type = managedCursor.getColumnIndex(CallLog.Calls.TYPE); 
 		int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
 		int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
+		
 		sb.append("Call Log :");
+		
+		// loop for traversing whole log
 		while (managedCursor.moveToNext()) { 
 			String phNumber = managedCursor.getString(number); 
 			String callType = managedCursor.getString(type);
@@ -51,7 +69,7 @@ public class Calllog extends Activity {
 					+ " \nCall duration in sec :--- " + callDuration); 
 			sb.append("\n----------------------------------"); } 
 		
-		//managedCursor.close(); 
+		// set the log to textview.
 		log.setText(sb); 
 		} 
 	

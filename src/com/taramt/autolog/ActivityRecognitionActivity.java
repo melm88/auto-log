@@ -1,22 +1,18 @@
 package com.taramt.autolog;
 
-
 import android.app.Activity;
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.location.ActivityRecognitionClient;
 import com.taramt.utils.DBAdapter;
 
+/**
+ * 
+ * @author ASHOK
+ *
+ * ActivityRecognitionActivity class is used to show the activity log to user and starts the recognition service 
+ * 
+ */
 public class ActivityRecognitionActivity extends Activity {
 
 	TextView activitydata;
@@ -28,12 +24,16 @@ public class ActivityRecognitionActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+	
 		setContentView(R.layout.activity_activityrecognition);
 		activitydata=(TextView)findViewById(R.id.activities);
 		
 		dbAdapter=new DBAdapter(this);
+		
+		// get the activity data from the database.
 		String[][] data=dbAdapter.getActivities();
 		String adata="";
+		// if activity data is there in the database loop through the data to append that to textview.
 		if(data.length>0){
 			for(int i=0;i<data.length;i++){
 				adata=adata+data[i][0]+" "+data[i][1]+" "+data[i][2]+"\n";

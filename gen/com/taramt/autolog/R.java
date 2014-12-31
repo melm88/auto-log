@@ -1462,6 +1462,10 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f0b0002;
         public static final int action_menu_presenter=0x7f0b0003;
         public static final int action_mode_close_button=0x7f0b0036;
+        public static final int action_start=0x7f0b0055;
+        public static final int action_stop=0x7f0b0056;
+        public static final int activities=0x7f0b004f;
+        public static final int activity=0x7f0b0052;
         public static final int activity_chooser_view_content=0x7f0b0037;
         public static final int always=0x7f0b0022;
         public static final int beginning=0x7f0b0029;
@@ -1469,6 +1473,8 @@ containing a value of this type.
         public static final int buyButton=0x7f0b0010;
         public static final int buy_now=0x7f0b0015;
         public static final int buy_with_google=0x7f0b0016;
+        public static final int callLog=0x7f0b0053;
+        public static final int call_log=0x7f0b0050;
         public static final int checkbox=0x7f0b003f;
         public static final int classic=0x7f0b0017;
         public static final int collapseActionView=0x7f0b0023;
@@ -1489,8 +1495,10 @@ containing a value of this type.
         public static final int icon=0x7f0b003c;
         public static final int ifRoom=0x7f0b0024;
         public static final int image=0x7f0b0039;
+        public static final int ldata=0x7f0b0051;
         public static final int listMode=0x7f0b001a;
         public static final int list_item=0x7f0b003b;
+        public static final int location=0x7f0b0054;
         public static final int match_parent=0x7f0b0012;
         public static final int middle=0x7f0b002b;
         public static final int monochrome=0x7f0b0019;
@@ -1503,6 +1511,7 @@ containing a value of this type.
         public static final int radio=0x7f0b0041;
         public static final int sandbox=0x7f0b000e;
         public static final int satellite=0x7f0b0009;
+        public static final int scrollView1=0x7f0b004e;
         public static final int search_badge=0x7f0b0044;
         public static final int search_bar=0x7f0b0043;
         public static final int search_button=0x7f0b0045;
@@ -1581,8 +1590,14 @@ containing a value of this type.
         public static final int abc_search_dropdown_item_icons_2line=0x7f030015;
         public static final int abc_search_view=0x7f030016;
         public static final int abc_simple_decor=0x7f030017;
-        public static final int activity_main=0x7f030018;
-        public static final int support_simple_spinner_dropdown_item=0x7f030019;
+        public static final int activity_activityrecognition=0x7f030018;
+        public static final int activity_calllog=0x7f030019;
+        public static final int activity_location=0x7f03001a;
+        public static final int activity_main=0x7f03001b;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001c;
+    }
+    public static final class menu {
+        public static final int main=0x7f0c0000;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -1625,6 +1640,8 @@ containing a value of this type.
         /**  Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f06002b;
+        public static final int action_start=0x7f060030;
+        public static final int action_stop=0x7f060031;
         public static final int app_name=0x7f06002d;
         public static final int auth_client_needs_enabling_title=0x7f060001;
         public static final int auth_client_needs_installation_title=0x7f060002;
@@ -1632,6 +1649,7 @@ containing a value of this type.
         public static final int auth_client_play_services_err_notification_msg=0x7f060004;
         public static final int auth_client_requested_by_msg=0x7f060005;
         public static final int auth_client_using_bad_version_title=0x7f060000;
+        public static final int call_log=0x7f06002f;
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
         will direct user to application settings of Google Play services where they
         can enable it [CHAR LIMIT=40] 
@@ -3433,7 +3451,7 @@ containing a value of this type.
          */
         public static final int[] MenuView = {
             0x010100ae, 0x0101012c, 0x0101012d, 0x0101012e,
-            0x0101012f, 0x01010130, 0x01010131, 0x01010435
+            0x0101012f, 0x01010130, 0x01010131, 0x0101052f
         };
         /**
           <p>

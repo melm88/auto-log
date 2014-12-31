@@ -1,18 +1,22 @@
 package com.taramt.autolog;
 
-import com.google.android.gms.location.ActivityRecognitionClient;
-import com.google.android.gms.location.ActivityRecognitionResult;
-import com.google.android.gms.location.DetectedActivity;
-
 import android.app.IntentService;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.util.Log;
 
+import com.google.android.gms.location.ActivityRecognitionResult;
+import com.google.android.gms.location.DetectedActivity;
+
+/**
+ * 
+ * @author ASHOK
+ *
+ * RecognitionService class for getting activity updates.
+ */
 public class RecognitionService extends IntentService {
 
 	public final String KEY_PREVIOUS_ACTIVITY_TYPE="KEY";
-	private ActivityRecognitionClient arclient;
+	
 	//SharedPreferences details;
 
 	public RecognitionService() {
@@ -27,11 +31,14 @@ public class RecognitionService extends IntentService {
 		ActivityRecognitionResult result = ActivityRecognitionResult.extractResult(intent);
 
 		DetectedActivity mostProbableActivity = result.getMostProbableActivity();
+	
 		int activityType = mostProbableActivity.getType();
 		int confidence=mostProbableActivity.getConfidence();
+		
 		String Activity=getType(activityType);
 		//           SharedPreferences.Editor editor = details.edit();
 		//Log.e("ActivityRecognitionService",Activity+"  confidence is  "+confidence);
+		
 		if(ActivityRecognitionResult.hasResult(intent)){ 
 
 			//			editor.putString("Activity1", Activity);
@@ -44,12 +51,16 @@ public class RecognitionService extends IntentService {
 			i.putExtra("confidence", confidence+"");
 			
 
+			// broadcast the updates to location class.
 			sendBroadcast(i);
 
 		}
 
 	}
 
+/*
+ * getType methode for getting type of activity from the detected activity. It returns a string.
+ */
 	private String getType(int type){
 		if(type == DetectedActivity.UNKNOWN)
 			return "Unknown";

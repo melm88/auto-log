@@ -27,48 +27,66 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.taramt.utils.DBAdapter;
 
+/**
+ * 
+ * @author ASHOK
+ *
+ * Location class for getting location updates and checking for google play services.
+ */
 public class LocationClass extends Service implements
 GooglePlayServicesClient.ConnectionCallbacks,
 GooglePlayServicesClient.OnConnectionFailedListener,
 LocationListener {
+
 	private static final String TAG = "LocationService";
 
 	private boolean currentlyProcessingLocation = false;
 	private LocationRequest locationRequest;
 	private LocationClient locationClient;
 	static Context context;
+
 	SharedPreferences details;
+
 	float accuracy=0;
 	double lat=0;
 	double lon=0;
 	//DBAdapter dbAdapter;
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		context=getApplicationContext();
 
 		details=PreferenceManager.getDefaultSharedPreferences(this);
-		
+
 		Log.d("location class","oncreate");
 	}
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+
 		Log.d("locatin class","onstart");
+		// start the location updates if not already processing.
 		if (!currentlyProcessingLocation) {
+
 			currentlyProcessingLocation = true;
-			
+
 			SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 			String timeStamp=s.format(new Date());
 			SharedPreferences.Editor editor=details.edit();
 			editor.putString("timeStamp", timeStamp);
 			editor.commit();
-			
+
+			// start location tracking
 			startLocationTracking();
-			//startActivityRecognition();
+
 		}
-		//	displayCurrentLocation();
+
 		return START_STICKY;
 	}
+
+	/*
+	 * startLocationTracking method for getting location updates.
+	 */
 	private void startLocationTracking() {
 
 		Log.d("location class","starttracking");
@@ -103,30 +121,35 @@ LocationListener {
 			 * value and the corresponding latitude and longitude values from the set of 10 values.
 			 */
 
-			
-			
-			
+
+
+
 			float acc=location.getAccuracy();
 			lat=location.getLatitude();
 			lon=location.getLongitude();				
 
-			
-			
+
+
 			Log.d("lat",lat+"");
 			Log.d("long",lon+"");
 			Double[] params=new Double[3];
 			params[0]= lat;
 			params[1]= lon;
 			params[2]=Double.valueOf(acc);
+
+			// get address from the lat and lon
 			GetCurrentAddress currentadd=new GetCurrentAddress();
 			try {
+				// start the async task for getting address.
 				currentadd.execute(params);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				Log.d("exception in calling asynctask",e.toString());
 			}
 
+			//remove the location updates after getting address
 			locationClient.removeLocationUpdates(this);
+			//stop the service
 			stopSelf();
 
 		}
@@ -164,6 +187,9 @@ LocationListener {
 		Log.e(TAG, "onConnectionFailed");
 	}
 
+/*
+ * getCurrentAdderss is asynctask class for getting currentaddress.
+ */
 	private class GetCurrentAddress extends AsyncTask<Double, Void, String> {
 
 		DBAdapter dbAdapter;
@@ -187,15 +213,20 @@ LocationListener {
 		}
 		@Override
 		protected void onPostExecute(String resultString) {
+			
 			Log.d("LocationClass","in post execute"+resultString);
 			dbAdapter.insertLocationDetails(details.getString("timeStamp", ""), String.valueOf(lat),
 					String.valueOf(lon), String.valueOf(accuracy), resultString, " ");
-			
+
 
 		}
 	}
 
+/*
+ * getAddress method for getting adderss from geocoder.
+ */
 	public  String getAddress(Context ctx, double latitude, double longitude) {
+		
 		//StringBuilder result = new StringBuilder();
 		String first = "";
 		try {

@@ -3,32 +3,33 @@ package com.taramt.autolog;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.location.ActivityRecognition;
-import com.google.android.gms.location.ActivityRecognitionClient;
-import com.google.android.gms.location.ActivityRecognitionResult;
-import com.google.android.gms.location.DetectedActivity;
-import com.google.android.gms.location.LocationClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.taramt.utils.DBAdapter;
-
-import android.app.IntentService;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.location.ActivityRecognitionClient;
+import com.google.android.gms.location.LocationListener;
+import com.taramt.utils.DBAdapter;
+
+/**
+ * 
+ * @author ASHOK
+ *
+ * ActivityRecognitionService class for handling recognition service(starts and stops after getting updates)
+ * Uses google play services.
+ */
 
 public class ActivityRecognitionService extends Service implements
 GooglePlayServicesClient.ConnectionCallbacks,
@@ -42,13 +43,13 @@ LocationListener  {
 
 	Context context;
 	SharedPreferences details;
-	private boolean currentlyProcessingActivity = false;
+
 	private ActivityRecognitionClient arclient;
-	
-	private ActivityRecognition activityRequest;
-	private ActivityRecognitionClient activityClient;
+
+
 	BroadcastReceiver receiver;
 	DBAdapter dbAdapter;
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -56,56 +57,77 @@ LocationListener  {
 
 		details=PreferenceManager.getDefaultSharedPreferences(this);
 		dbAdapter=new DBAdapter(this);
-		
+
 		Log.d("activity class","oncreate");
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * @see android.app.Service#onStartCommand(android.content.Intent, int, int)
+	 */
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d("activity class","onstart");
-					
-			SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-			String timeStamp=s.format(new Date());
-			SharedPreferences.Editor editor=details.edit();
-			editor.putString("timeStamp", timeStamp);
-			editor.commit();
-			startActivityMonitoring();
-			
-		
-			
-			receiver=new BroadcastReceiver(){
 
-				@Override
-				public void onReceive(Context context, Intent intent) {
-					// TODO Auto-generated method stub
-					String Activity=intent.getExtras().getString("Activity");
-					String confidence=intent.getExtras().getString("confidence");
-					
-					dbAdapter.insertActivity(details.getString("timeStamp", " "), Activity, confidence);
-					stopMonitoring();
-				}
+		SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		String timeStamp=s.format(new Date());
+		SharedPreferences.Editor editor=details.edit();
+		editor.putString("timeStamp", timeStamp);
+		editor.commit();
 
-			};
-			IntentFilter filter1 = new IntentFilter();
-			filter1.addAction("stopupdates");
-			registerReceiver(receiver, filter1);
+		// start the activity monitoring 
+		startActivityMonitoring();
+
+		// receiver which receives activity updates from recognition service.
+		receiver=new BroadcastReceiver(){
+
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				// TODO Auto-generated method stub
+				//get activity and confidence from receiver
+				String Activity=intent.getExtras().getString("Activity");
+				String confidence=intent.getExtras().getString("confidence");
+
+				// store activity data in database
+				dbAdapter.insertActivity(details.getString("timeStamp", " "), Activity, confidence);
+
+				// call stopmonitoring method to stop activity updates.
+				stopMonitoring();
+
+			}
+
+		};
+		IntentFilter filter1 = new IntentFilter();
+		filter1.addAction("stopupdates");
+		// registering of receiver.
+		registerReceiver(receiver, filter1);
 		return START_STICKY;
 	}
+
+	/*
+	 * stopMonitoring method to stop activity updates after getting the update.
+	 */
 	private void stopMonitoring(){
+
 		Intent intentt = new Intent(this, RecognitionService.class);
 		PendingIntent pIntent = PendingIntent.getService(this, 0, intentt,PendingIntent.FLAG_UPDATE_CURRENT);
+		// remove updates.
 		arclient.removeActivityUpdates(pIntent);
 	}
-	
+
+	/*
+	 * startActivityMonitoring method to start the activity updates.
+	 */
 	private void startActivityMonitoring() {
 
 		Log.d("activity class","startmonitoring");
 
+		// check for googleplayservices availablity in mobile, if present proceed further.
 		if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
+
 			arclient = new ActivityRecognitionClient(this, this, this);
-			
-				arclient.connect();
-			
+			arclient.connect();
+
 		} else {
 			Log.d("TAG", "unable to connect to google play services.");
 		}
@@ -119,36 +141,37 @@ LocationListener  {
 		return null;
 	}
 
-	
+
 	@Override
 	public void onLocationChanged(Location arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onConnectionFailed(ConnectionResult connectionResult) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onConnected(Bundle arg0) {
 		// TODO Auto-generated method stub
-		
-		
+
+
 		Log.d("activityrecognition","onconnected");
 		Intent intent = new Intent(this, RecognitionService.class);
 		PendingIntent pIntent = PendingIntent.getService(this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
 		arclient.requestActivityUpdates(5*1000, pIntent); 
+
 	}
 
 	@Override
 	public void onDisconnected() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 
 
 }
