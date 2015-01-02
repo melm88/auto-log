@@ -111,4 +111,13 @@ public class MainActivity extends Activity {
 		}
 		
 	}
+	
+/*
+ *  visualizationOfLocationData method to start visualization activity to show markers on map
+ */
+	public void visualizationOfLocationData(View view){
+		
+		Intent intent=new Intent(context,VisualizationOfLocation.class);
+		startActivity(intent);
+	}
 }
