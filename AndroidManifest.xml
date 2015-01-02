@@ -38,6 +38,9 @@
         <service android:name="com.taramt.autolog.LocationClass"></service>
         <activity android:name="com.taramt.autolog.LocationActivity"></activity>
         <service android:name="com.taramt.autolog.RecognitionService"></service>
+        <activity
+            android:name="com.taramt.autolog.VisualizationOfLocation"
+            android:label="Visualization"></activity>"
         </application>
 
 </manifest>
