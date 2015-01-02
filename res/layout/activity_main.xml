@@ -42,4 +42,15 @@
         android:onClick="getCallLog"
         android:text="@string/call_log" />
 
+    <Button
+        android:id="@+id/visualization"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/location"
+        android:layout_below="@+id/location"
+        android:layout_marginTop="22dp"
+        android:onClick="visualizationOfLocationData"
+        android:text="Show Location" />
+
 </RelativeLayout>
