@@ -42,9 +42,18 @@ import android.widget.TextView;
 		if (Alarmactivity.this.getResources().getConfiguration().orientation == 1) {
 			startAlarm();
 		}
-	
+		
+		db = new DBAdapter(this);
+		utils = new Utils(this);
+		db.open();
+		// getting alarm details
+		aDetails = db.getAlarmDetails();
+		db.close();
+		// displaying 
+		alarmDetails.setText(utils.getDetails(db, aDetails));
 	}
 
+	// to set alarm to call service every 5 minutes 
 	public void startAlarm() {
 		try {
 
@@ -52,7 +61,7 @@ import android.widget.TextView;
 			pendingIntent = PendingIntent.getService(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 			am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 			am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 
-					1000*30 , pendingIntent);
+					1000*60*5 , pendingIntent);
 			Log.i("oon Alarm", "Alarm started");
 		} catch (Exception e) {
 			Log.d("exceptionasdfdf",""+e);
