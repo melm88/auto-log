@@ -1449,6 +1449,7 @@ containing a value of this type.
         public static final int ic_plusone_tall_off_client=0x7f020073;
         public static final int powered_by_google_dark=0x7f020074;
         public static final int powered_by_google_light=0x7f020075;
+        public static final int red=0x7f020076;
     }
     public static final class id {
         public static final int action_bar=0x7f0b002e;
@@ -1462,8 +1463,8 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f0b0002;
         public static final int action_menu_presenter=0x7f0b0003;
         public static final int action_mode_close_button=0x7f0b0036;
-        public static final int action_start=0x7f0b0055;
-        public static final int action_stop=0x7f0b0056;
+        public static final int action_start=0x7f0b0057;
+        public static final int action_stop=0x7f0b0058;
         public static final int activities=0x7f0b004f;
         public static final int activity=0x7f0b0052;
         public static final int activity_chooser_view_content=0x7f0b0037;
@@ -1499,6 +1500,7 @@ containing a value of this type.
         public static final int listMode=0x7f0b001a;
         public static final int list_item=0x7f0b003b;
         public static final int location=0x7f0b0054;
+        public static final int map=0x7f0b0056;
         public static final int match_parent=0x7f0b0012;
         public static final int middle=0x7f0b002b;
         public static final int monochrome=0x7f0b0019;
@@ -1536,6 +1538,7 @@ containing a value of this type.
         public static final int top_action_bar=0x7f0b0032;
         public static final int up=0x7f0b0033;
         public static final int useLogo=0x7f0b0021;
+        public static final int visualization=0x7f0b0055;
         public static final int withText=0x7f0b0026;
         public static final int wrap_content=0x7f0b0013;
     }
@@ -1594,7 +1597,8 @@ containing a value of this type.
         public static final int activity_calllog=0x7f030019;
         public static final int activity_location=0x7f03001a;
         public static final int activity_main=0x7f03001b;
-        public static final int support_simple_spinner_dropdown_item=0x7f03001c;
+        public static final int activity_visualization=0x7f03001c;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001d;
     }
     public static final class menu {
         public static final int main=0x7f0c0000;

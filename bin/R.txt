@@ -322,6 +322,7 @@ int drawable ic_plusone_standard_off_client 0x7f020072
 int drawable ic_plusone_tall_off_client 0x7f020073
 int drawable powered_by_google_dark 0x7f020074
 int drawable powered_by_google_light 0x7f020075
+int drawable red 0x7f020076
 int id action_bar 0x7f0b002e
 int id action_bar_activity_content 0x7f0b0001
 int id action_bar_container 0x7f0b002d
@@ -333,8 +334,8 @@ int id action_context_bar 0x7f0b002f
 int id action_menu_divider 0x7f0b0002
 int id action_menu_presenter 0x7f0b0003
 int id action_mode_close_button 0x7f0b0036
-int id action_start 0x7f0b0055
-int id action_stop 0x7f0b0056
+int id action_start 0x7f0b0057
+int id action_stop 0x7f0b0058
 int id activities 0x7f0b004f
 int id activity 0x7f0b0052
 int id activity_chooser_view_content 0x7f0b0037
@@ -370,6 +371,7 @@ int id ldata 0x7f0b0051
 int id listMode 0x7f0b001a
 int id list_item 0x7f0b003b
 int id location 0x7f0b0054
+int id map 0x7f0b0056
 int id match_parent 0x7f0b0012
 int id middle 0x7f0b002b
 int id monochrome 0x7f0b0019
@@ -407,6 +409,7 @@ int id title 0x7f0b003d
 int id top_action_bar 0x7f0b0032
 int id up 0x7f0b0033
 int id useLogo 0x7f0b0021
+int id visualization 0x7f0b0055
 int id withText 0x7f0b0026
 int id wrap_content 0x7f0b0013
 int integer abc_max_action_buttons 0x7f080001
@@ -439,7 +442,8 @@ int layout activity_activityrecognition 0x7f030018
 int layout activity_calllog 0x7f030019
 int layout activity_location 0x7f03001a
 int layout activity_main 0x7f03001b
-int layout support_simple_spinner_dropdown_item 0x7f03001c
+int layout activity_visualization 0x7f03001c
+int layout support_simple_spinner_dropdown_item 0x7f03001d
 int menu main 0x7f0c0000
 int string abc_action_bar_home_description 0x7f060021
 int string abc_action_bar_up_description 0x7f060022
