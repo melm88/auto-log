@@ -34,7 +34,21 @@ import android.util.Log;
 	public void onCreate() {
 		db = new DBAdapter(getApplicationContext());
 		Log.d(Tag, "Service onCreate called");
-		
+		/* getting nextalarmclock information 
+		 * through getNextAlarmClock
+		 * works only for api level 21 and above
+		  */
+		String nextAlarm = null;
+		try {
+		    AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+		    nextAlarm = am.getNextAlarmClock().toString();
+		    Log.d(Tag + "_AI", nextAlarm);
+		    } catch (NoSuchMethodError e) {
+		        
+		    }
+		db.open();
+		db.insertAlarmDetails("alarmset", nextAlarm);
+		db.close();
 	}
 	
 	@Override
