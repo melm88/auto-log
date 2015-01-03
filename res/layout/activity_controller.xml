@@ -33,8 +33,17 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/NotificationDetails"
         android:layout_below="@+id/NotificationDetails"
-        android:layout_marginTop="19dp"
-        android:text="ScreenActivity"
-        android:onClick="openActivity" />
+        android:onClick="openActivity"
+        android:text="ScreenActivity" />
+
+    <Button
+        android:id="@+id/Alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/screenActivity"
+        android:layout_alignRight="@+id/screenActivity"
+        android:layout_below="@+id/screenActivity"
+        android:onClick="openActivity"
+        android:text="Alarm" />
 
 </RelativeLayout>

@@ -21,7 +21,12 @@
             android:name="com.taramt.autolognotification.NotificationActivity"
             android:label="@string/title_activity_notification" >
         </activity>
-
+ <activity
+            android:name="com.taramt.autologalarm.Alarmactivity"
+            android:label="@string/title_activity_alarm" >
+        </activity>
+        
+        <service android:name="com.taramt.autologalarm.AlarmService" > </service>
         <service
             android:name="com.taramt.autolognotification.NLService"
             android:label="@string/app_name"

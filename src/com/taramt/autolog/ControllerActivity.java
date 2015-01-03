@@ -1,5 +1,6 @@
 package com.taramt.autolog;
 
+import com.taramt.autologalarm.Alarmactivity;
 import com.taramt.autologdatausage.DataUsage;
 import com.taramt.autolognotification.NotificationActivity;
 import com.taramt.autologscreenstate.ScreenActivity;
@@ -13,7 +14,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class ControllerActivity extends Activity {
-	Button Notification, Datausage, screen;
+	Button Notification, Datausage, screen, alarm;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,7 @@ public class ControllerActivity extends Activity {
 		Notification = (Button) findViewById(R.id.NotificationDetails);
 		Datausage = (Button) findViewById(R.id.Datausage);
 		screen = (Button) findViewById(R.id.screenActivity);
+		alarm = (Button) findViewById(R.id.Alarm);
 	}
 
 	@Override
@@ -32,22 +34,19 @@ public class ControllerActivity extends Activity {
 	}
 
 	public void openActivity(View v) {
+		Intent myIntent = null;
 		if(v == Notification) {
-			
-			Intent myIntent=new Intent(this, NotificationActivity.class);
-			startActivity(myIntent);
-			finish();
-			
+			 myIntent=new Intent(this, NotificationActivity.class);
 		} else if (v == Datausage) {
 			
-			Intent myIntent=new Intent(this, DataUsage.class);
-			startActivity(myIntent);
-			finish();
+			 myIntent=new Intent(this, DataUsage.class);
 		} else if (v == screen) {
-			Intent myIntent=new Intent(this, ScreenActivity.class);
-			startActivity(myIntent);
-			finish();
+			 myIntent=new Intent(this, ScreenActivity.class);
+		} else if (v == alarm) {
+			myIntent=new Intent(this, Alarmactivity.class);			
 		}
+		startActivity(myIntent);
+		finish();
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

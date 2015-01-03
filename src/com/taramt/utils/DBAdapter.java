@@ -359,4 +359,41 @@ public class DBAdapter {
 		close();
 		return screenStateDetailss;
 	}
+	
+	
+	
+	// ALARMDETAILS
+	// To log the database of Alarm details
+		public long insertAlarmDetails(String alarm, 
+				String timeStamp) {
+			try {
+				Log.d("AALARM",
+						"DBA: " + alarm 
+						+  timeStamp);
+				ContentValues cv = new ContentValues();
+				cv.put("alarm", alarm);
+				cv.put("timeStamp", timeStamp);
+				long n = db.insertOrThrow("AlarmDetails", null, cv);
+				Log.d("AlarmInserted", "" + n);
+				return n;	
+			} catch (android.database.sqlite.SQLiteConstraintException s) {
+
+			} 
+			return 0;
+		}
+
+		// To get the Alarm details show in display
+		public ArrayList<String> getAlarmDetails() {
+			//String query="select email_id from contacts";
+			Cursor cursor = db.query("AlarmDetails", 
+					null, null, null, null, null, null);
+			ArrayList<String> AlarmDetails = new ArrayList<String>();
+			while(cursor.moveToNext()) {
+				String aDetails = cursor.getString(cursor.getColumnIndex("alarm"))
+						+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp"));
+				AlarmDetails.add(aDetails);
+			}
+			return AlarmDetails;
+		}
+
 }
