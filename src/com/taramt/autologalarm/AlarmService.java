@@ -38,6 +38,8 @@ import android.util.Log;
 	@Override
 	public void onStart(Intent intent, int startId) {
 		db = new DBAdapter(getApplicationContext());
+		prefs = getSharedPreferences("ALARM", MODE_PRIVATE);
+		
 		String nextAlarm = Settings.System.getString(getApplicationContext().
 				getContentResolver(),Settings.System.NEXT_ALARM_FORMATTED);
 		/* getting nextalarmclock information 
@@ -51,9 +53,21 @@ import android.util.Log;
 		    } catch (NoSuchMethodError e) {
 		        
 		    }
-		db.open();
-		db.insertAlarmDetails("alarmset", nextAlarm);
-		db.close();
+		
+		 /*if alarm is not set then nextAlarm = "" 
+		  * so not iserting this data into the database
+		  */
+		if (!nextAlarm.equals(prefs.getString("nextAlarm", "")) 
+				&& !nextAlarm.equals("")
+				&& !nextAlarm.equals(" ")) {
+			db.open();
+			db.insertAlarmDetails("alarmset", nextAlarm);
+			Log.d(Tag, "next alarm is:  " + nextAlarm);
+			Editor editor = prefs.edit();
+			editor.putString("nextAlarm", nextAlarm);
+			editor.commit();
+			db.close();
+		}
 		
 	}
 	
