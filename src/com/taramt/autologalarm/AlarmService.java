@@ -39,9 +39,13 @@ import android.util.Log;
 	public void onStart(Intent intent, int startId) {
 		db = new DBAdapter(getApplicationContext());
 		prefs = getSharedPreferences("ALARM", MODE_PRIVATE);
+
+		/* to change the nextAlarm get from NEXT_ALARM_FORMATTED
+		 * into the date format i.e, dd-MM-yyyy HH:mm
+		 * to save into the database as TS
+		 * */
+		String nextAlarm = getNextAlarm(getApplicationContext());
 		
-		String nextAlarm = Settings.System.getString(getApplicationContext().
-				getContentResolver(),Settings.System.NEXT_ALARM_FORMATTED);
 		/* getting nextalarmclock information 
 		 * through getNextAlarmClock
 		 * works only for api level 21 and above
@@ -72,6 +76,67 @@ import android.util.Log;
 	}
 	
 	
+
+	public static String getNextAlarm(Context context) {
+		// collecting short names of days    
+		DateFormatSymbols symbols = new DateFormatSymbols();
+		// and fill with those names map...
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		String[] dayNames = symbols.getShortWeekdays();
+		
+		
+		map.put(dayNames[Calendar.MONDAY], Calendar.TUESDAY);
+		map.put(dayNames[Calendar.TUESDAY], Calendar.WEDNESDAY);
+		map.put(dayNames[Calendar.WEDNESDAY], Calendar.THURSDAY);
+		map.put(dayNames[Calendar.THURSDAY], Calendar.FRIDAY);
+		map.put(dayNames[Calendar.FRIDAY], Calendar.SATURDAY);
+		map.put(dayNames[Calendar.SATURDAY], Calendar.SUNDAY);
+		map.put(dayNames[Calendar.SUNDAY], Calendar.MONDAY);
 	
+		String nextAlarm = Settings.System.getString(context.getContentResolver(),
+				Settings.System.NEXT_ALARM_FORMATTED);
+		
+		//Log.d(Tag + "original", nextAlarm);
+		
+		// In case if alarm isn't set.....
+		if ((nextAlarm==null) || ("".equals(nextAlarm))) return null;
+		// day
+		String nextAlarmDay = nextAlarm.split(" ")[0];
+		// getting number....
+		int alarmDay = map.get(nextAlarmDay);
+
+		Date now = new Date();      
+		String dayOfWeek = new SimpleDateFormat("EE", Locale.getDefault()).format(now);     
+		int today = map.get(dayOfWeek);
+
+		// calculating no of days we have to next alarm :-)
+		int daysToAlarm = alarmDay-today;
+		// sometimes it will  be negtive number so add 7.
+		if (daysToAlarm<0) {
+			daysToAlarm += 7;
+		}
+
+
+
+		//  building date, and parse it.....
+		try {
+			Calendar cal2 = Calendar.getInstance();
+			String str = cal2.get(Calendar.YEAR)+"-"+(cal2.get(Calendar.MONTH)+1)+"-"+(cal2.get(Calendar.DAY_OF_MONTH));
+
+			SimpleDateFormat df  = new SimpleDateFormat("yyyy-MM-d hh:mm");
+
+			cal2.setTime(df.parse(str+nextAlarm.substring(nextAlarm.indexOf(" "))));
+			cal2.add(Calendar.DAY_OF_YEAR, daysToAlarm);
+			
+			SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+			
+			return s.format(cal2.getTime());
+		} catch (Exception e) {
+
+		}
+		// in case if cannot calculate...
+		return null;
+	}
+
 }
 

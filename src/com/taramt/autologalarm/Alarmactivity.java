@@ -2,10 +2,6 @@ package com.taramt.autologalarm;
 
 import java.util.ArrayList;
 
-import com.taramt.autolog.R;
-import com.taramt.utils.DBAdapter;
-import com.taramt.utils.Utils;
-
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
@@ -20,6 +16,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 
 
 @TargetApi(Build.VERSION_CODES.L) @SuppressLint("NewApi") public class Alarmactivity extends ActionBarActivity {
