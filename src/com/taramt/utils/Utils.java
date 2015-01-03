@@ -14,19 +14,6 @@ public class Utils {
 		this.context = context;
 	}
 	
-	/*
-	 *  Retrieving the appName using packageName
-	 */
-	public String getAppName(String packageName) {
-		PackageManager packageManager = context.getPackageManager();
-		ApplicationInfo applicationInfo = null;
-		try {
-			applicationInfo = packageManager.getApplicationInfo(packageName, 0);
-		} catch (final NameNotFoundException e) {}
-		final String appName = (String)((applicationInfo != null)
-				? packageManager.getApplicationLabel(applicationInfo) : "???");
-		return appName;
-	}
 	
 	/*
 	 * a method for getting the details from the database
@@ -42,21 +29,5 @@ public class Utils {
 	}
 	
 
-	public String convert2Time(long total) {
-	
-		 long totalSec = total/1000;
-	         //new date object with time difference
-		 
-	         String timeStr = "";
-	         if(totalSec/3600 > 0) {
-	        	 timeStr = timeStr +  totalSec/3600+"h  : ";
-	         }
-	        if ((totalSec%3600)/60 > 0) {
-	        	timeStr = timeStr + (totalSec%3600)/60 + "m  : ";
-	        }
-                
-                timeStr = timeStr + (totalSec%3600)%60 + "s";
-	         return timeStr;
-	}
 
 }
