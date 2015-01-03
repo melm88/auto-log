@@ -32,13 +32,18 @@ import android.util.Log;
 	}
 	@Override
 	public void onCreate() {
+	
+	}
+	
+	@Override
+	public void onStart(Intent intent, int startId) {
 		db = new DBAdapter(getApplicationContext());
-		Log.d(Tag, "Service onCreate called");
+		String nextAlarm = Settings.System.getString(getApplicationContext().
+				getContentResolver(),Settings.System.NEXT_ALARM_FORMATTED);
 		/* getting nextalarmclock information 
 		 * through getNextAlarmClock
 		 * works only for api level 21 and above
 		  */
-		String nextAlarm = null;
 		try {
 		    AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 		    nextAlarm = am.getNextAlarmClock().toString();
@@ -49,12 +54,6 @@ import android.util.Log;
 		db.open();
 		db.insertAlarmDetails("alarmset", nextAlarm);
 		db.close();
-	}
-	
-	@Override
-	public void onStart(Intent intent, int startId) {
-		Log.d(Tag, "Service onStart called");
-		
 		
 	}
 	
