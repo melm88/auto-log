@@ -21,6 +21,7 @@ public class CameraReceiver extends BroadcastReceiver {
 		// TODO Auto-generated method stub
 		Log.i("INFO", "Enter BroadcastReceiver CAMERA event");
 		
+		//Insert image/video formats an arraylist for identifying the media captured.
 		if(PICTURE_FORMATS == null) {
 			Log.d("picvid","picvid nuller");
 			PICTURE_FORMATS = new ArrayList<String>();
@@ -39,6 +40,7 @@ public class CameraReceiver extends BroadcastReceiver {
 		
 		Cursor cursor = arg0.getContentResolver().query(arg1.getData(), null, null, null, null);
 		cursor.moveToFirst();
+		//Get the first entry (latest) of the media file
 		String image_path = cursor.getString(cursor.getColumnIndex("_data"));
 		
 		int index = image_path.indexOf(".");
@@ -46,6 +48,8 @@ public class CameraReceiver extends BroadcastReceiver {
         
         Log.d("picvid","Format: "+tempFormat+" | "+arg1.getData());
 		
+        //IF picture format then save into DB with "Image" as file_type
+        //ELSE IF video format then save into DB with "Video" as file_type
         if(PICTURE_FORMATS.contains(tempFormat)) {
         	Toast.makeText(arg0, "New Photo is Saved as : " + image_path, Toast.LENGTH_SHORT).show();
     		Log.d("picvid","New Image Media: "+image_path+"|"+ new Date().toString());

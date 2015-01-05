@@ -48,6 +48,9 @@ public class TemperatureSensor extends Service implements SensorEventListener {
 		mTemperature = mSensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
 		//Log.d("sensor","inCreate");
 		super.onCreate();
+		
+		//If temperature sensor is available then register it.
+		//Otherwise insert into DB "No Temperature Sensor".
 		if(mTemperature != null)
 			mSensorManager.registerListener(this, mTemperature, SensorManager.SENSOR_DELAY_NORMAL);
 		else {
@@ -72,6 +75,7 @@ public class TemperatureSensor extends Service implements SensorEventListener {
 		
 		float centigrade_of_temperature = event.values[0];
 		
+		//Store into DB only if there is a change in temperature degree
 		if(centigrade_of_temperature != prev_amb_temp) {
 			Log.d("sensor","Temperature: "+centigrade_of_temperature+" | "+prev_amb_temp);
 			prev_amb_temp = centigrade_of_temperature;

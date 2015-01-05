@@ -27,10 +27,12 @@ public class SensorActivity extends Activity implements SensorEventListener {
 		tv = (TextView) findViewById(R.id.temperatureTV);
 		prev_amb_temp = 0;
 
-		// Get an instance of the sensor service, and use that to get an instance of
-		// a particular sensor.
-		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-		mTemperature = mSensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+		// Get an instance of the sensor service, and use that 
+		// to get an instance of a particular sensor.
+		mSensorManager = (SensorManager) getSystemService(
+				Context.SENSOR_SERVICE);
+		mTemperature = mSensorManager.getDefaultSensor(
+				Sensor.TYPE_AMBIENT_TEMPERATURE);
 	}
 
 	@Override
@@ -44,10 +46,12 @@ public class SensorActivity extends Activity implements SensorEventListener {
 	public final void onSensorChanged(SensorEvent event) {
 		float centigrade_of_temperature = event.values[0];
 		
+		//Identify if there is a change in temperature
 		if(centigrade_of_temperature != prev_amb_temp) {
 			prev_amb_temp = centigrade_of_temperature;
 			tv.setText("Temperature: "+prev_amb_temp);
-			Log.d("sensor","TemperatureB: "+centigrade_of_temperature+" | "+prev_amb_temp);
+			Log.d("sensor","TemperatureB: "+centigrade_of_temperature
+					+" | "+prev_amb_temp);
 		}
 		
 		// Do something with this sensor data.
@@ -59,7 +63,8 @@ public class SensorActivity extends Activity implements SensorEventListener {
 	protected void onResume() {
 		// Register a listener for the sensor.
 		super.onResume();
-		mSensorManager.registerListener(this, mTemperature, SensorManager.SENSOR_DELAY_NORMAL);
+		mSensorManager.registerListener(this, mTemperature,
+				SensorManager.SENSOR_DELAY_NORMAL);
 	}
 
 	@Override
