@@ -12,7 +12,10 @@ import android.media.MediaRecorder;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
-
+/*
+ * AudioLevelService computes the audio level of buffered audio samples. 
+ * 
+ */
 public class AudioLevelService extends Service {
 	private static final int sampleRate = 8000;
 	private AudioRecord audio;
@@ -36,7 +39,6 @@ public int onStartCommand(Intent intent, int flags, int startId) {
 	audio = new AudioRecord(MediaRecorder.AudioSource.MIC, sampleRate,
 			AudioFormat.CHANNEL_IN_MONO,
 			AudioFormat.ENCODING_PCM_16BIT, bufferSize);
-
 	audio.startRecording();
 	readAudioBuffer();//After this call we can get the last value assigned to the lastLevel variable
 	audio.stop();
@@ -47,14 +49,10 @@ public int onStartCommand(Intent intent, int flags, int startId) {
  * Functionality that gets the sound level out of the sample
  */
 private void readAudioBuffer() {
-
 	try {
 		short[] buffer = new short[bufferSize];
-
 		int bufferReadResult = 1;
-
 		if (audio != null) {
-
 			// Sense the voice...
 			bufferReadResult = audio.read(buffer, 0, bufferSize);
 			double sumLevel = 0;
@@ -68,18 +66,13 @@ private void readAudioBuffer() {
 		db.insertAudioLevelValue(lastLevel+"", new Date().toString());
 		db.close();
 		}
-
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
 }
-
-
 @Override
 public void onDestroy() {
 super.onDestroy();
-
 Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
 }
-
 }

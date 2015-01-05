@@ -15,26 +15,25 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.TextView;
-
+/*
+ * MainActivity launches AudioLevel logger service. 
+ */
 public class MainActivity extends Activity {
-
-	//private ImageView mouthImage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_audiolevel);
 		
-//		mouthImage = (ImageView)findViewById(R.id.mounthHolder);
-//		mouthImage.setKeepScreenOn(true);
 		Log.d("Activity", "onCreate");
-		
+		//SharedPreferences initialized
 		SharedPreferences savedValues = PreferenceManager
 				.getDefaultSharedPreferences(this);
 				//If this is the first launch
 				if (savedValues.getBoolean(getString(R.string.StartAudio), true)) {
 				Log.d("flag", "timer is being set");
 				SharedPreferences.Editor editor = savedValues.edit();
+				//Initialize the Start Audio to false
 				editor.putBoolean(getString(R.string.StartAudio), false);
 				editor.commit();
 				//Starting a AudioLevelService
@@ -62,14 +61,10 @@ public class MainActivity extends Activity {
 				}
 				db.close();
 				tv.setText(content);
-
-		
 	}
-
 	protected void onResume() {
 		super.onResume();
-		
-			}
+	}
 		@Override
 	protected void onPause() {
 		super.onPause();
