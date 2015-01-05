@@ -88,7 +88,7 @@ public class DBAdapter {
 		public ArrayList<String> getTemperatureDetails() {
 			//String query="select email_id from contacts";
 			Cursor cursor = db.query("AmbientTemperature", 
-					null, null, null, null, null, null);
+					null, null, null, null, null, "timeStamp DESC");
 			ArrayList<String> TemperatureDetails = new ArrayList<String>();
 			if(cursor != null) {
 				int count = 1;
