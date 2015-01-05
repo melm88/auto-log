@@ -44,6 +44,7 @@ public class SensorActivity extends Activity implements SensorEventListener {
 	public final void onSensorChanged(SensorEvent event) {
 		float centigrade_of_temperature = event.values[0];
 		
+		//If temperature change is observed then display it
 		if(centigrade_of_temperature != prev_amb_temp) {
 			prev_amb_temp = centigrade_of_temperature;
 			tv.setText("Temperature: "+prev_amb_temp);

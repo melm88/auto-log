@@ -50,6 +50,7 @@ public class TemperatureSensor extends Service implements SensorEventListener {
 		super.onCreate();
 		
 		//If sensor for Ambient_Temperature is available then register  the receiver
+		//ELSE make an entry in DB with the message "No Temperature Sensor"
 		if(mTemperature != null)
 			mSensorManager.registerListener(this, mTemperature, SensorManager.SENSOR_DELAY_NORMAL);
 		else {
