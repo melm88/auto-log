@@ -1,8 +1,17 @@
+<<<<<<< HEAD
 proguard-project.txt
 .classpath
 gen/
 bin/
 
+||||||| merged common ancestors
+=======
+
+
+gen/
+bin/
+
+>>>>>>> 4dbc0afc2ef10049fcb5655f2234aea71666f7ab
 # Built application files
 *.apk
 *.ap_

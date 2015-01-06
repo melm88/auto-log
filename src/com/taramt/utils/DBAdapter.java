@@ -1,14 +1,18 @@
 package com.taramt.utils;
 
+import android.content.ContentValues;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import android.content.ContentValues;
+
 import android.content.Context;
+
+import android.database.Cursor;
+
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -215,6 +219,94 @@ public class DBAdapter {
 		}
 		return (start - stop);
 	}
+	public void insertLocationDetails(String timeStamp,String lat , String lon, String accuracy, String address, String type){
+		Log.d("DBAdapter","insertLocation");
+		open();
+				
+		//String query="insert into LOCATION VALUES ("+timeStamp+","+lat+","+lon+","+accuracy+","+address+","+type+")";
+		ContentValues locationValues=new ContentValues();
+		locationValues.put("timestamp", timeStamp);
+		locationValues.put("lat", lat);
+		locationValues.put("lon", lon);
+		locationValues.put("accuracy", accuracy);
+		locationValues.put("address", address);
+		locationValues.put("ltype", type);
+		db.insert("LOCATION", null, locationValues);
+		//db.execSQL(query);
+		db.close();
+	}
+	public String[][] getLocationDetails(){
+		Log.d("DBAdapter","getlocation");
+		open();
+		String query="select * from LOCATION";
+		Cursor cursor;
+		try {
+			cursor = db.rawQuery(query, null);
+			int size=cursor.getCount();
+			Log.d("no of location logs",size+"");
+			String[][] data=new String[size][6];
+			int i=0;
+			while(cursor.moveToNext()){
+				data[i][0]=cursor.getString(1);
+				data[i][1]=cursor.getString(2);
+				data[i][2]=cursor.getString(3);
+				data[i][3]=cursor.getString(4);
+				data[i][4]=cursor.getString(5);
+				data[i][5]=cursor.getString(6);
+				i++;
+			}
+			db.close();
+			return data;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			Log.d("exception in getlocation",e.toString());
+			return null;
+		}
+		
+	}
+	
+	public void insertActivity(String timestamp,String activity,String confidence){
+		
+		Log.d("DBAdapter","insertActivity");
+		open();
+				
+		//String query="insert into LOCATION VALUES ("+timeStamp+","+lat+","+lon+","+accuracy+","+address+","+type+")";
+		ContentValues locationValues=new ContentValues();
+		locationValues.put("timestamp", timestamp);
+		locationValues.put("activity", activity);
+		locationValues.put("confidence", confidence);
+		
+		db.insert("ACTIVITIES", null, locationValues);
+		//db.execSQL(query);
+		db.close();
+	}
+	
+	public String[][] getActivities(){
+		Log.d("DBAdapter","getactivities");
+		open();
+		String query="select * from ACTIVITIES";
+		Cursor cursor;
+		try {
+			cursor = db.rawQuery(query, null);
+			int size=cursor.getCount();
+			Log.d("no of activities logs",size+"");
+			String[][] data=new String[size][3];
+			int i=0;
+			while(cursor.moveToNext()){
+				data[i][0]=cursor.getString(1);
+				data[i][1]=cursor.getString(2);
+				data[i][2]=cursor.getString(3);
+				
+				i++;
+			}
+			db.close();
+			return data;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			Log.d("exception in getactivity",e.toString());
+			return null;
+		}
+	}
 
 	public long getTotal(String state, String time) {
 		Editor editor = prefs.edit();
@@ -420,14 +512,18 @@ public class DBAdapter {
 		Cursor cursor = db.query("ChargerState", 
 				null, null, null, null, null, null);
 		ArrayList<String> PowerDetails = new ArrayList<String>();
-		while(cursor.moveToNext()) {
-			String nDetails = cursor.getString(cursor.getColumnIndex("connection"))
-					+ "  " + cursor.getString(cursor.getColumnIndex("chargingstate"))
-					+ "  " + cursor.getString(cursor.getColumnIndex("chargingpoint"))
-					+ "  " + cursor.getString(cursor.getColumnIndex("battery"))
-					+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp"));
-			PowerDetails.add(nDetails);
-		}
+
+		if(cursor != null) {
+			while(cursor.moveToNext()) {
+				String nDetails = cursor.getString(cursor.getColumnIndex("connection"))
+						+ "  " + cursor.getString(cursor.getColumnIndex("chargingstate"))
+						+ "  " + cursor.getString(cursor.getColumnIndex("chargingpoint"))
+						+ "  " + cursor.getString(cursor.getColumnIndex("battery"))
+						+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp"));
+				PowerDetails.add(nDetails);
+			}
+		}		
+
 		return PowerDetails;
 	}
 	
@@ -442,6 +538,25 @@ public class DBAdapter {
 		Log.d("Temperature", "" + n);
 		return n;	
 	}
+	
+	//Retrieve TemperatureDetails
+		public ArrayList<String> getTemperatureDetails() {
+			//String query="select email_id from contacts";
+			Cursor cursor = db.query("AmbientTemperature", 
+					null, null, null, null, null, "timeStamp DESC");
+			ArrayList<String> TemperatureDetails = new ArrayList<String>();
+			if(cursor != null) {
+				int count = 1;
+				while(cursor.moveToNext()) {
+					String nDetails = count+") " + cursor.getString(cursor.getColumnIndex("temperature"))
+							+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp")).split("GMT")[0];
+					TemperatureDetails.add(nDetails);
+					count++;
+				}
+			}
+			
+			return TemperatureDetails;
+		}
 	
 	//Insert Image/Video info into table
 	public long insertMediaDetails(String path, String mediatype, String time) {
@@ -462,5 +577,25 @@ public class DBAdapter {
 		
 		return n;	
 	}
+	
+	//Retrieve MediaDetails
+		public ArrayList<String> getMediaDetails() {
+			//String query="select email_id from contacts";
+			Cursor cursor = db.query("MediaEvent", 
+					null, null, null, null, null, null);
+			ArrayList<String> MediaDetails = new ArrayList<String>();
+			if(cursor != null) {
+				int count = 1;
+				while(cursor.moveToNext()) {
+					String nDetails = count +") "+ cursor.getString(cursor.getColumnIndex("filepath"))
+							+ " | " + cursor.getString(cursor.getColumnIndex("filetype"))
+							+ " | " + cursor.getString(cursor.getColumnIndex("timeStamp")).split("GMT")[0];
+					MediaDetails.add(nDetails);
+					count++;
+				}
+			}
+			
+			return MediaDetails;
+		}
 
 }

@@ -14,9 +14,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		Log.d("AutoLog","Database created....");
 	}
 
-	//Create tables
-	public void onCreate(SQLiteDatabase db) {
 		
+	//Create tables
+
+	public void onCreate(SQLiteDatabase db) 
+	{
+		//db.execSQL("create table if not exists email(mesgid INTEGER not null, subject text not null, email text not null, sender text not null, datetime text not null, receiver text not null, folder text not null, numofattachments integer not null, recipients text,  flags text not null, displayname text, attachmentName text, PRIMARY KEY(mesgid, email, folder));");
+		db.execSQL("create table if not exists LOCATION(lid INTEGER not null, timestamp text not null, lat text not null, lon text not null, accuracy text not null, address text not null, ltype text not null, PRIMARY KEY(lid));");
+		db.execSQL("create table if not exists ACTIVITIES(aid INTEGER not null,timestamp text not null, activity text not null, confidence text not null, PRIMARY KEY(aid));");
+		Log.d("AutoLog","Table Created!!!");
+
 		// Table for NotificationDetails logging
 		db.execSQL("create table if not exists "
 				+ "NotificationDetails(appName text not null, "
@@ -72,6 +79,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				+ "filetype text not null,"
 				+ " timeStamp text not null, primary key(timeStamp));");
 		Log.d("AutoLogDB", "Table Created MediaEvent!!!");
+
 
 	}
 
