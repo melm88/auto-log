@@ -8,5 +8,8 @@
     <string name="title_activity_controller">ControllerActivity</string>
     <string name="title_activity_data_usage">DataUsage</string>
     <string name="title_activity_screen">ScreenActivity</string>
+    <string name="title_activity_charger_state">ChargerState</string>
+    <string name="title_activity_sensor">SensorActivity</string>
+    <string name="title_activity_power">PowerActivity</string>
 
 </resources>

@@ -6,10 +6,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-
-	public DatabaseHelper(Context context) {
-		super(context, "AutoLog" , null, 1);
-	//	Log.d("AutoLog", "Database created....");
+	
+	public DatabaseHelper(Context context) 
+	{
+		super(context,"AutoLog" , null, 1);
+		Log.d("AutoLog","Database created....");
 	}
 
 	//Create tables
@@ -48,6 +49,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				+ "AlarmDetails(alarm text not null, "
 				+ " timeStamp text not null,"
 				+ " PRIMARY KEY ( timeStamp ));");
+		
+		// Table for ChargerState
+		db.execSQL("create table if not exists "
+				+ "ChargerState(connection text not null, "
+				+ "chargingstate text not null,"
+				+ "chargingpoint text not null,"
+				+ "battery text not null,"
+				+ " timeStamp text not null);");
+		Log.d("AutoLogDB", "Table Created ChargerState!!!");
+		
+		// Table for AmbientTemperature
+		db.execSQL("create table if not exists "
+				+ "AmbientTemperature(temperature text not null,"
+				+ " timeStamp text not null);");
+		Log.d("AutoLogDB", "Table Created AmbientTemperature!!!");
+		
+		// Table for MediaEvent
+		db.execSQL("create table if not exists "
+				+ "MediaEvent(filepath text not null,"
+				+ "filetype text not null,"
+				+ " timeStamp text not null, primary key(timeStamp));");
+		Log.d("AutoLogDB", "Table Created MediaEvent!!!");
+
 	}
 
 	@Override
@@ -60,11 +84,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			db.execSQL("DROP TABLE IF EXISTS DataUsage");
 			db.execSQL("DROP TABLE IF EXISTS phone_activity");
 			db.execSQL("DROP TABLE IF EXISTS AlarmDetails");
+			db.execSQL("DROP TABLE IF EXISTS ChargerState");
+			db.execSQL("DROP TABLE IF EXISTS AmbientTemperature");
+			db.execSQL("DROP TABLE IF EXISTS MediaEvent");
 			onCreate(db);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 
 		}
-
 	}
 }

@@ -25,7 +25,21 @@
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
+
         </service>
+
+        <receiver android:name="com.taramt.power.PhoneChargerState" >
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="com.taramt.power.PowerActivity"
+            android:label="@string/title_activity_power" >
+        </activity>
+
     </application>
 </manifest>
 
