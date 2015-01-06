@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.taramt.autologalarm.Alarmactivity;
+import com.taramt.autologdatausage.DataUsage;
 import com.taramt.autolognotification.NotificationActivity;
 import com.taramt.autologscreenstate.ScreenActivity;
 
@@ -24,8 +25,11 @@ public class ControllerActivity extends Activity {
 		setContentView(R.layout.activity_controller);
 		listView = (ListView) findViewById(R.id.list);
 		String[] values = new String[] { "Notification", 
+				"MediaActivity",
 				"Datausage",
+				"PowerActivity",
 				"ScreenActivity",
+				"TemperatureActivity",
 				"Alarm"
 		};
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -49,7 +53,7 @@ public class ControllerActivity extends Activity {
 				if (itemValue.equals("Notification")) {
 					myIntent = new Intent(getApplicationContext(), NotificationActivity.class);
 				} else if (itemValue.equals("Datausage")) {
-					myIntent=new Intent(getApplicationContext(), NotificationActivity.class);
+					myIntent=new Intent(getApplicationContext(), DataUsage.class);
 				} else if (itemValue.equals("ScreenActivity")) {
 					myIntent=new Intent(getApplicationContext(), ScreenActivity.class);
 				} else if (itemValue.equals("Alarm")) {

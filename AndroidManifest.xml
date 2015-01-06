@@ -55,8 +55,16 @@
             android:name="com.taramt.autologalarm.Alarmactivity"
             android:label="@string/title_activity_alarm" >
         </activity>
-        
+         <activity
+            android:name="com.taramt.autologscreenstate.ScreenActivity"
+            android:label="@string/title_activity_screen" >
+        </activity>
+         <activity
+            android:name="com.taramt.autologdatausage.DataUsage"
+            android:label="@string/title_activity_data_usage" >
+        </activity>
         <service android:name="com.taramt.autologalarm.AlarmService" > </service>
+        <service android:name="com.taramt.autologdatausage.DataService" > </service>
         <service
             android:name="com.taramt.autolognotification.NLService"
             android:label="@string/app_name"
