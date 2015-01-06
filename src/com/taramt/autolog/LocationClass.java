@@ -227,27 +227,30 @@ LocationListener {
  */
 	public  String getAddress(Context ctx, double latitude, double longitude) {
 		
-		//StringBuilder result = new StringBuilder();
 		String first = "";
 		try {
+			
 			Geocoder geocoder = new Geocoder(ctx, Locale.getDefault());
+			
 			List<Address> addresses=null;
+			
 			addresses = geocoder.getFromLocation(latitude, longitude, 5);
+			
 			Log.d("size",addresses.size()+"");
+			
 			if (addresses.size() > 0) {
+			
 				Address address = addresses.get(0);
-
 
 				first=address.getAddressLine(0);
 
-
 				if(first.contains(",")){
-					//first.replace(",", " ");
+
 					first = first.replaceAll(",", " ");
 					Log.d("address",first);
 				}
 				if(first.contains("null")){
-					//first.replace("null", "");
+
 					first = first.replaceAll("null", "");
 					Log.d("address",first);
 				}
@@ -255,7 +258,6 @@ LocationListener {
 		} catch (IOException e) {
 			Log.d("tag", e.getMessage());
 		}
-
 
 		return first;
 	}
