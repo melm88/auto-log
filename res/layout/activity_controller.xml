@@ -8,42 +8,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.taramt.autolog.ControllerActivity" >
 
-    <Button
-        android:id="@+id/Datausage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="59dp"
-        android:onClick="openActivity"
-        android:text="DatausageLog" />
-
-    <Button
-        android:id="@+id/NotificationDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/Datausage"
-        android:layout_below="@+id/Datausage"
-        android:onClick="openActivity"
-        android:text="NotificationLog" />
-
-    <Button
-        android:id="@+id/screenActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/NotificationDetails"
-        android:layout_below="@+id/NotificationDetails"
-        android:onClick="openActivity"
-        android:text="ScreenActivity" />
-
-    <Button
-        android:id="@+id/Alarm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/screenActivity"
-        android:layout_alignRight="@+id/screenActivity"
-        android:layout_below="@+id/screenActivity"
-        android:onClick="openActivity"
-        android:text="Alarm" />
+    
+      <ListView
+              android:id="@+id/list"
+              android:layout_height="wrap_content"
+              android:layout_width="match_parent">
+         </ListView>
 
 </RelativeLayout>
