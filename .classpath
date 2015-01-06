@@ -6,9 +6,8 @@
 	<classpathentry kind="src" path="libs"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry exported="true" kind="lib" path="D:/niranjan/Android/google-play-services_lib/libs/google-play-services.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="C:/Users/Niranjan/android-sdks/platforms/android-19/android.jar" sourcepath="C:/Users/Niranjan/android-sdks/sources/android-19">
+	<classpathentry kind="lib" path="D:/niranjan/Android/google-play-services_lib/libs/google-play-services.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Niranjan/android-sdks/platforms/android-21/android.jar" sourcepath="C:/Users/Niranjan/android-sdks/sources/android-21">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/C:/Users/Niranjan/android-sdks/docs/reference"/>
 		</attributes>
