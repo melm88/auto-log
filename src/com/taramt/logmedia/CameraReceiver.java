@@ -13,16 +13,15 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class CameraReceiver extends BroadcastReceiver {
-
-	ArrayList<String> PICTURE_FORMATS;
+    ArrayList<String> PICTURE_FORMATS;
 	ArrayList<String> VIDEO_FORMATS;
 	@Override
 	public void onReceive(Context arg0, Intent arg1) {
 		// TODO Auto-generated method stub
 		Log.i("INFO", "Enter BroadcastReceiver CAMERA event");
-		
-		if(PICTURE_FORMATS == null) {
-			Log.d("picvid","picvid nuller");
+
+		if (PICTURE_FORMATS == null) {
+			Log.d("picvid", "picvid nuller");
 			PICTURE_FORMATS = new ArrayList<String>();
 			PICTURE_FORMATS.add("jpg");
 			PICTURE_FORMATS.add("gif");
@@ -36,34 +35,43 @@ public class CameraReceiver extends BroadcastReceiver {
 			VIDEO_FORMATS.add("mkv");
 			VIDEO_FORMATS.add("ts");
 		}
-		
-		Cursor cursor = arg0.getContentResolver().query(arg1.getData(), null, null, null, null);
+
+		Cursor cursor = arg0.getContentResolver().query(
+				arg1.getData(), null, null, null, null);
 		cursor.moveToFirst();
-		String image_path = cursor.getString(cursor.getColumnIndex("_data"));
-		
+		String image_path = cursor.getString(cursor.getColumnIndex(
+				"_data"));
+
 		int index = image_path.indexOf(".");
-        String tempFormat = (String) image_path.subSequence(index+1, image_path.length());
-        
-        Log.d("picvid","Format: "+tempFormat+" | "+arg1.getData());
-		
-        if(PICTURE_FORMATS.contains(tempFormat)) {
-        	Toast.makeText(arg0, "New Photo is Saved as : " + image_path, Toast.LENGTH_SHORT).show();
-    		Log.d("picvid","New Image Media: "+image_path+"|"+ new Date().toString());
+        String tempFormat = (String) image_path.subSequence(
+        		index+1, image_path.length());
+
+        Log.d("picvid", "Format: "+ tempFormat+ " | "
+        		+ arg1.getData());
+
+        if (PICTURE_FORMATS.contains(tempFormat)) {
+        	Toast.makeText(arg0, "New Photo is Saved as : "
+        			+ image_path, Toast.LENGTH_SHORT).show();
+    		Log.d("picvid", "New Image Media: "
+        			+ image_path+ "|"+ new Date().toString());
     		DBAdapter dba = new DBAdapter(arg0);
     		dba.open();
-    		long n = dba.insertMediaDetails(image_path, "Image", new Date().toString());
-    		Log.d("picvid","insertImage: "+n);		
+    		long n = dba.insertMediaDetails(image_path,
+    				"Image", new Date().toString());
+    		Log.d("picvid", "insertImage: "+ n);
     		dba.close();
-        } else if(VIDEO_FORMATS.contains(tempFormat)) {
-        	Toast.makeText(arg0, "New Video is Saved as : " + image_path, Toast.LENGTH_SHORT).show();
-    		Log.d("picvid","New Video Media: "+image_path);
+        } else if (VIDEO_FORMATS.contains(tempFormat)) {
+        	Toast.makeText(arg0, "New Video is Saved as : "
+        			+ image_path, Toast.LENGTH_SHORT).show();
+    		Log.d("picvid", "New Video Media: "+ image_path);
     		DBAdapter dba = new DBAdapter(arg0);
     		dba.open();
-    		long n = dba.insertMediaDetails(image_path, "Video", new Date().toString());
+    		long n = dba.insertMediaDetails(image_path,
+    				"Video", new Date().toString());
     		Log.d("picvid","insertVideo: "+n);
     		dba.close();
         }
-		
+
 
 	}
 }
