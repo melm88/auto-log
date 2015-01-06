@@ -35,20 +35,28 @@
         <meta-data
         android:name="com.google.android.gms.version"
         android:value="@integer/google_play_services_version" />
-        <activity
-            android:name="com.taramt.autolognotification.NotificationActivity"
-            android:label="@string/title_activity_notification" >
-        </activity>
-        <activity android:name="com.taramt.autolog.MainActivity"
-            android:label="AutoLog">
+         <activity
+            android:name=".ControllerActivity"
+            android:label="@string/app_name" >
             
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+          
+        </activity>
+        <activity
+            android:name="com.taramt.autolognotification.NotificationActivity"
+            android:label="@string/title_activity_notification" >
         </activity>
 
+ <activity
+            android:name="com.taramt.autologalarm.Alarmactivity"
+            android:label="@string/title_activity_alarm" >
+        </activity>
+        
+        <service android:name="com.taramt.autologalarm.AlarmService" > </service>
         <service
             android:name="com.taramt.autolognotification.NLService"
             android:label="@string/app_name"
@@ -65,11 +73,7 @@
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name="com.taramt.power.PowerActivity"
-            android:label="@string/title_activity_power" >
-        </activity>
-
+   
         
         <service android:name="com.taramt.temperature.TemperatureSensor"
 	         android:enabled="true">
@@ -79,7 +83,10 @@
             android:name="com.taramt.temperature.SensorActivity"
             android:label="@string/title_activity_sensor" >
         </activity>
-        
+         <receiver android:name="com.taramt.autologscreenstate.ScreenReceiver">
+		</receiver>
+		  <service android:name="com.taramt.autologscreenstate.ScreenService" >
+        </service>
         <receiver
             android:name="com.taramt.logmedia.CameraReceiver"
             android:enabled="true" >
@@ -96,10 +103,8 @@
             </intent-filter>
         </receiver>
         
-        <activity
-            android:name="com.taramt.temperature.TemperatureActivity"
-            android:label="@string/title_activity_temperature" >
-        </activity>
+    
+
 
         <service
             android:name="com.taramt.logmedia.AudioService"

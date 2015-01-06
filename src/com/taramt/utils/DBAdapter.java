@@ -1,6 +1,5 @@
 package com.taramt.utils;
 
-import android.content.ContentValues;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,9 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import android.content.Context;
-
 import android.database.Cursor;
-
+import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.sqlite.SQLiteDatabase;
@@ -360,6 +358,7 @@ public class DBAdapter {
 
 		}
 		editor.commit();
+
 		// diff TS and time
 		// add the diff to total
 		//return total
@@ -404,6 +403,7 @@ public class DBAdapter {
 		close();
 		return top3;
 	}
+
 
 	// SORT
 
@@ -577,7 +577,6 @@ public class DBAdapter {
 		
 		return n;	
 	}
-	
 	//Retrieve MediaDetails
 		public ArrayList<String> getMediaDetails() {
 			//String query="select email_id from contacts";
@@ -597,5 +596,6 @@ public class DBAdapter {
 			
 			return MediaDetails;
 		}
+
 
 }

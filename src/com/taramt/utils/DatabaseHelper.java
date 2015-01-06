@@ -7,11 +7,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+
 	
 	public DatabaseHelper(Context context) 
 	{
 		super(context,"AutoLog" , null, 1);
 		Log.d("AutoLog","Database created....");
+
 	}
 
 		
@@ -96,6 +98,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			db.execSQL("DROP TABLE IF EXISTS ChargerState");
 			db.execSQL("DROP TABLE IF EXISTS AmbientTemperature");
 			db.execSQL("DROP TABLE IF EXISTS MediaEvent");
+
 			onCreate(db);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
