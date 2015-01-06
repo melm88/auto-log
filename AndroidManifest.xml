@@ -4,22 +4,14 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk
-<<<<<<< HEAD
+    <uses-sdk 
         android:minSdkVersion="18"
         android:targetSdkVersion="21" />
-||||||| merged common ancestors
-        android:minSdkVersion="14"
-        android:targetSdkVersion="19" />
     
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
   	<uses-permission android:name="android.permission.CAMERA" />
   	<uses-feature android:name="android.hardware.camera" />
     
-=======
-        android:minSdkVersion="14"
-        android:targetSdkVersion="19" />
->>>>>>> ambienttemperature
 
     <application
         android:allowBackup="true"
@@ -38,8 +30,6 @@
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
-<<<<<<< HEAD
-
         </service>
 
         <receiver android:name="com.taramt.power.PhoneChargerState" >
@@ -49,9 +39,6 @@
             </intent-filter>
         </receiver>
 
-||||||| merged common ancestors
-        </activity>
-
         <receiver android:name="com.taramt.power.PhoneChargerState" >
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
@@ -59,15 +46,11 @@
             </intent-filter>
         </receiver>
 
-=======
-        </activity>
->>>>>>> ambienttemperature
         <activity
             android:name="com.taramt.power.PowerActivity"
             android:label="@string/title_activity_power" >
         </activity>
-<<<<<<< HEAD
-||||||| merged common ancestors
+
         
         <service android:name="com.taramt.temperature.TemperatureSensor"
 	         android:enabled="true">
@@ -87,21 +70,13 @@
                 <data android:mimeType="video/*" />
             </intent-filter>
         </receiver>
-</application>
-=======
-
-        <service
-            android:name="com.taramt.temperature.TemperatureSensor"
-            android:enabled="true" >
-        </service>
-
+        
         <activity
             android:name="com.taramt.temperature.TemperatureActivity"
             android:label="@string/title_activity_temperature" >
         </activity>
+        
     </application>
->>>>>>> ambienttemperature
 
-    </application>
 </manifest>
 
