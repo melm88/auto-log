@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="19" />    
+        android:targetSdkVersion="19" />
 
     <application
         android:allowBackup="true"
@@ -22,16 +22,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.taramt.temperature.SensorActivity"
             android:label="@string/title_activity_sensor" >
         </activity>
-        
-        <service android:name="com.taramt.temperature.TemperatureSensor"
-	         android:enabled="true">
+
+        <service
+            android:name="com.taramt.temperature.TemperatureSensor"
+            android:enabled="true" >
         </service>
-        
-</application>
+
+        <activity
+            android:name="com.taramt.temperature.TemperatureActivity"
+            android:label="@string/title_activity_temperature" >
+        </activity>
+    </application>
 
 </manifest>
