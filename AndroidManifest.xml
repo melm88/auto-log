@@ -91,6 +91,19 @@
             android:name="com.taramt.temperature.SensorActivity"
             android:label="@string/title_activity_sensor" >
         </activity>
+         <activity
+            android:name="com.taramt.temperature.TemperatureActivity"
+            android:label="@string/title_activity_temperature" >
+        </activity>
+         <activity
+            android:name="com.taramt.power.PowerActivity"
+            android:label="@string/title_activity_power" >
+        </activity>
+        
+        <activity
+            android:name="com.taramt.logmedia.MediaActivity"
+            android:label="@string/title_activity_media" >
+        </activity>
          <receiver android:name="com.taramt.autologscreenstate.ScreenReceiver">
 		</receiver>
 		  <service android:name="com.taramt.autologscreenstate.ScreenService" >
@@ -119,10 +132,6 @@
             android:enabled="true" >
         </service>
 
-        <activity
-            android:name="com.taramt.logmedia.MediaActivity"
-            android:label="@string/title_activity_media" >
-        </activity>
         <activity android:name=".Calllog"
             android:label="CallLog"></activity>
         <service android:name=".ActivityRecognitionService"></service>

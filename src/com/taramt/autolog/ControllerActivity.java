@@ -15,6 +15,9 @@ import com.taramt.autologalarm.Alarmactivity;
 import com.taramt.autologdatausage.DataUsage;
 import com.taramt.autolognotification.NotificationActivity;
 import com.taramt.autologscreenstate.ScreenActivity;
+import com.taramt.logmedia.MediaActivity;
+import com.taramt.power.PowerActivity;
+import com.taramt.temperature.TemperatureActivity;
 
 public class ControllerActivity extends Activity {
 	ListView listView ;
@@ -58,6 +61,12 @@ public class ControllerActivity extends Activity {
 					myIntent=new Intent(getApplicationContext(), ScreenActivity.class);
 				} else if (itemValue.equals("Alarm")) {
 					myIntent=new Intent(getApplicationContext(), Alarmactivity.class);	
+				}  else if (itemValue.equals("PowerActivity")) {
+					myIntent=new Intent(getApplicationContext(), PowerActivity.class);	
+				}  else if (itemValue.equals("TemperatureActivity")) {
+					myIntent=new Intent(getApplicationContext(), TemperatureActivity.class);	
+				}  else if (itemValue.equals("MediaActivity")) {
+					myIntent=new Intent(getApplicationContext(), MediaActivity.class);	
 				}
 				startActivity(myIntent);
 				finish();

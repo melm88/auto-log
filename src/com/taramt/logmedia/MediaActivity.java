@@ -24,7 +24,7 @@ public class MediaActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_media);
-
+		mediaTV = (TextView)findViewById(R.id.mediaTV);
 		//mFileObserver.startWatching();
 		//onLaunch of the activity, initiate FileObserver
 		addObserver();
