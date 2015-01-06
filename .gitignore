@@ -1,4 +1,5 @@
 
+
 gen/
 bin/
 
@@ -11,8 +12,6 @@ bin/
 
 # Java class files
 *.class
-
-
 
 # Gradle files
 .gradle/
