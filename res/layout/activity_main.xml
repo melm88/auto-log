@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="${relativePackage}.${activityClass}" >
-<<<<<<< HEAD
     	
     <ScrollView
        android:id="@+id/scrollView1"
@@ -17,36 +16,6 @@
 	        android:layout_height="wrap_content"
 	        android:text="@string/hello_world" />
 	</ScrollView>
-||||||| merged common ancestors
 
-    <TextView
-        android:id="@+id/mainactTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-
-    <EditText
-        android:id="@+id/editTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:ems="10" >
-
-        <requestFocus />
-    </EditText>
-=======
-    
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-	    <TextView
-	        android:id="@+id/mainactTV"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/hello_world" />
-    </ScrollView>
->>>>>>> medialogger
 
 </RelativeLayout>
