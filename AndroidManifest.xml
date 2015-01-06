@@ -5,8 +5,21 @@
     android:versionName="1.0" >
 
     <uses-sdk
+<<<<<<< HEAD
         android:minSdkVersion="18"
         android:targetSdkVersion="21" />
+||||||| merged common ancestors
+        android:minSdkVersion="14"
+        android:targetSdkVersion="19" />
+    
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  	<uses-permission android:name="android.permission.CAMERA" />
+  	<uses-feature android:name="android.hardware.camera" />
+    
+=======
+        android:minSdkVersion="14"
+        android:targetSdkVersion="19" />
+>>>>>>> ambienttemperature
 
     <application
         android:allowBackup="true"
@@ -25,6 +38,7 @@
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
+<<<<<<< HEAD
 
         </service>
 
@@ -35,10 +49,58 @@
             </intent-filter>
         </receiver>
 
+||||||| merged common ancestors
+        </activity>
+
+        <receiver android:name="com.taramt.power.PhoneChargerState" >
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
+
+=======
+        </activity>
+>>>>>>> ambienttemperature
         <activity
             android:name="com.taramt.power.PowerActivity"
             android:label="@string/title_activity_power" >
         </activity>
+<<<<<<< HEAD
+||||||| merged common ancestors
+        
+        <service android:name="com.taramt.temperature.TemperatureSensor"
+	         android:enabled="true">
+        </service>
+        
+        <receiver
+            android:name="com.taramt.logmedia.CameraReceiver"
+            android:enabled="true" >
+            <intent-filter>
+                <action android:name="com.android.camera.NEW_PICTURE" />                
+                <action android:name="android.hardware.action.NEW_PICTURE" />
+                <action android:name="com.android.camera.NEW_VIDEO" />
+                <action android:name="android.hardware.action.NEW_VIDEO" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+                <data android:mimeType="video/*" />
+            </intent-filter>
+        </receiver>
+</application>
+=======
+
+        <service
+            android:name="com.taramt.temperature.TemperatureSensor"
+            android:enabled="true" >
+        </service>
+
+        <activity
+            android:name="com.taramt.temperature.TemperatureActivity"
+            android:label="@string/title_activity_temperature" >
+        </activity>
+    </application>
+>>>>>>> ambienttemperature
 
     </application>
 </manifest>
