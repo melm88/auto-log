@@ -23,6 +23,7 @@ public class DBAdapter {
 	static long itotal = 0L;
 	static long atotal = 0L;
 	Utils utils;
+	static int id = 0;
 	public DBAdapter(Context context) {
 		Log.d("AutoLog","Inside DBAdapter Constructor");
 		DBHelper = new DatabaseHelper(context);
@@ -70,7 +71,9 @@ public class DBAdapter {
 
 	// To log DataUsage of each app
 	public long insertDataUsage(String tablename, String appName, 
-			String send, String received, String total, String timeStamp) {
+			String send, String received, String total, String timeStamp)
+
+	{
 		Log.d("Dbb","DBA: " + appName 
 				+ " | "+ send +" | "+received
 				+ " | "+ total +" | "+timeStamp);
@@ -106,7 +109,13 @@ public class DBAdapter {
 
 	//To insert the screen state into the database
 	public void inserScreenstate(String state,String time){
-		getTotal(state, time);
+		if (!getLastrow().equals("noLastDetails") || id != 0) {
+			getTotal(state, time);
+			Log.d("De", id+"");
+		} else {
+			id++;
+		}
+		
 		ContentValues cv = new ContentValues();
 		cv.put("screenState", state);
 		cv.put("timeStamp", time);
@@ -117,25 +126,29 @@ public class DBAdapter {
 
 	}
 
-	public void enterPrefs(long total, String time, String state) {
+	public void enterPrefs(long cumulateTotal, String time, String state) {
+
 		String lastTimeStamp = getLastrow().split(",")[1];
 		lastTimeStamp = lastTimeStamp.split(" ")[0];
 		Editor edit = prefs.edit();
-		Log.d("LAST", time + " | " + state + " | " + total);
+		Log.d("LAST", time + " | " + state + " | " + cumulateTotal);
 		if(state.equals("Active")) {
 			if (lastTimeStamp.equals(time.split(" ")[0])) {
-				edit.putLong("t_unlocked",total);
-				Log.d("timeStamp T + LAstT same", time.split(" ")[0] + " | " + lastTimeStamp);
+				edit.putLong("t_unlocked",cumulateTotal);
+				Log.d("cTunlocked",prefs.getLong("t_unlocked", 0L) + "");
+				Log.d("timeStamp T + LAstT same", time.split(" ")[0] + " | " + lastTimeStamp + " | " + cumulateTotal);
 			} else {
 				Log.d("timeStamp T + LAstT", time.split(" ")[0] + " | " + lastTimeStamp);
 				edit.putLong("t_unlocked",0L);
+				
 			}
-			
+
 			edit.putString("s_unlocked", time);
 		} else {
 			if (lastTimeStamp.equals(time.split(" ")[0])) {
-				edit.putLong("t_locked",total);
-				Log.d("timeStamp T + LAstT same", time.split(" ")[0] + " | " + lastTimeStamp);
+				edit.putLong("t_locked",cumulateTotal);
+				Log.d("cTlocked",prefs.getLong("t_locked", 0L) + "");
+				Log.d("timeStamp T + LAstT same", time.split(" ")[0] + " | " + lastTimeStamp + " | " + cumulateTotal);
 			} else {
 				Log.d("timeStamp T + LAstT", time.split(" ")[0] + " | " + lastTimeStamp);
 				edit.putLong("t_locked", 0L);
@@ -204,61 +217,69 @@ public class DBAdapter {
 	}
 
 	public long getTotal(String state, String time) {
+		Editor editor = prefs.edit();
 		String rowDetails = getLastrow();
 		String timeStamp = rowDetails.split(",")[1];
 		String lastState = rowDetails.split(",")[0];
 		long cumulateTotal = 0L;
-		long total = 0L;
-
-		total = getDiffTS(timeStamp, time);
+		long total = getDiffTS(timeStamp, time);
 
 		if (lastState.equals("Active")) {
-			cumulateTotal =  prefs.getLong("t_unlocked", 0L);
 			
-			
+			cumulateTotal =  total + prefs.getLong("t_unlocked", 0L);
 
-			if (!timeStamp.equals("noLastTS") 
-					&& ahour != Integer.parseInt(timeStamp.substring(11,13))) {
+			Log.d("cumulateTotal", cumulateTotal + "");
+
+			if (ahour != Integer.parseInt(timeStamp.substring(11,13))) {
 				ahour = Integer.parseInt(timeStamp.substring(11,13));
 				insertSort(lastState, timeStamp, total, ahour+"");
-				atotal = 0;
+				editor.putString("aTS", timeStamp);
+				atotal = total;
+				Log.d("DebActive", lastState + " | " + timeStamp 
+						+ " | " + utils.convert2Time(cumulateTotal) 
+						+ " | " + utils.convert2Time(atotal));
 			} else {
 				atotal = atotal + total;
-				updateSort(lastState, timeStamp, atotal, ahour+"");
+				updateSort(lastState, prefs.getString("aTS", timeStamp), atotal, ahour+"");
+				Log.d("DebActive", lastState + " | " + timeStamp 
+						+ " | " + utils.convert2Time(cumulateTotal)
+						+ " | " + utils.convert2Time(atotal));
 			}
-			
+
 		} else {
-			cumulateTotal = prefs.getLong("t_locked", 0L);
+			cumulateTotal = total + prefs.getLong("t_locked", 0L);
 
 
-			if (!timeStamp.equals("noLastTS") 
-					&& ihour != Integer.parseInt(timeStamp.substring(11,13))) {
+			if (ihour != Integer.parseInt(timeStamp.substring(11,13))) {
 				ihour = Integer.parseInt(timeStamp.substring(11,13));
-				insertSort("Idle", timeStamp, total, ihour+"");
-				itotal = 0;
+				insertSort(lastState, timeStamp, total, ihour+"");
+				editor.putString("iTS", timeStamp);
+				itotal = total;
+				Log.d("DebIdle", lastState + " | " + timeStamp 
+						+ " | " + utils.convert2Time(cumulateTotal) 
+						+ " | " + utils.convert2Time(itotal));
 			} else {
 				itotal = itotal + total;
-				updateSort("Idle", timeStamp, itotal, ihour+"");
+				updateSort(lastState, prefs.getString("iTS", timeStamp), itotal, ihour+"");
+				Log.d("DebIdle", lastState + " | " + timeStamp 
+						+ " | " + utils.convert2Time(cumulateTotal) 
+						+ " | " + utils.convert2Time(itotal));
 			}
 
-
 		}
-		if (!timeStamp.equals("noLastTS")) {
-			// diff TS and time
-			// add the diff to total
-			//return total
-			Log.d("LAST..", time + " | " + timeStamp + " | ");
-			total = getDiffTS(timeStamp, time);
-			cumulateTotal = cumulateTotal + total ;
-		}
+		editor.commit();
+		// diff TS and time
+		// add the diff to total
+		//return total
 		enterPrefs(cumulateTotal, timeStamp, lastState);
+		Log.d("cumulateTotalAfter", cumulateTotal + "");
 		updateTotal(timeStamp, total, cumulateTotal+"");
 		return cumulateTotal;
 	}
 	public String getLastrow() {
 		Cursor cursor = db.query("phone_activity", 
 				null, null, null, null, null, null);
-		String sDetailss = "noLastTS";
+		String sDetailss = "noLastDetails";
 		if (cursor.getCount() > 0) {
 			cursor.moveToLast();
 			sDetailss = cursor.getString(cursor.getColumnIndex("screenState"))
@@ -267,18 +288,11 @@ public class DBAdapter {
 		return sDetailss;
 	}
 
-
-
-
 	public int getrowcount(String state) {
 
 		Cursor cursor = db.query("phone_activity", 
 				null, "screenState=?", new String[] {state}, null, null, "total");
-		int count = cursor.getCount();
-		if (count > 0) {
-			return count;
-		}
-		return 1;
+		return cursor.getCount();
 	}
 
 	public ArrayList<String> getTop3(String state) {
@@ -316,11 +330,11 @@ public class DBAdapter {
 
 		open();
 		ContentValues cv=new ContentValues();
-		cv.put("timeStamp", timeStamp);
 		cv.put("total", total);
 		try {
 			long n = db.update("sort", 
-					cv, "screenState=? and hour=?", new String[] {state, hour});
+					cv, "screenState=? and hour=? and timeStamp=?",
+					new String[] {state, hour, timeStamp});
 			Log.d("UPDATESORT", ""+n);
 			return n;
 
@@ -331,10 +345,10 @@ public class DBAdapter {
 		close();
 		return 0;
 	}
-	public ArrayList<String> getSortDetails(String state) {
+	public ArrayList<String> getSortDetails(String state, String date) {
 		open();
 		Cursor cursor = db.query("sort", 
-				null, "screenState=?", new String[] {state}, null, null, "total");
+				null, "screenState=? and timeStamp LIKE '"+date+"%'", new String[] {state}, null, null, "total");
 		ArrayList<String> screenStateDetailss = new ArrayList<String>();
 		while(cursor.moveToNext()) {
 			String sDetailss = cursor.getString(cursor.getColumnIndex("timeStamp"))
@@ -345,4 +359,41 @@ public class DBAdapter {
 		close();
 		return screenStateDetailss;
 	}
+	
+	
+	
+	// ALARMDETAILS
+	// To log the database of Alarm details
+		public long insertAlarmDetails(String alarm, 
+				String timeStamp) {
+			try {
+				Log.d("AALARM",
+						"DBA: " + alarm 
+						+  timeStamp);
+				ContentValues cv = new ContentValues();
+				cv.put("alarm", alarm);
+				cv.put("timeStamp", timeStamp);
+				long n = db.insertOrThrow("AlarmDetails", null, cv);
+				Log.d("AlarmInserted", "" + n);
+				return n;	
+			} catch (android.database.sqlite.SQLiteConstraintException s) {
+
+			} 
+			return 0;
+		}
+
+		// To get the Alarm details show in display
+		public ArrayList<String> getAlarmDetails() {
+			//String query="select email_id from contacts";
+			Cursor cursor = db.query("AlarmDetails", 
+					null, null, null, null, null, null);
+			ArrayList<String> AlarmDetails = new ArrayList<String>();
+			while(cursor.moveToNext()) {
+				String aDetails = cursor.getString(cursor.getColumnIndex("alarm"))
+						+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp"));
+				AlarmDetails.add(aDetails);
+			}
+			return AlarmDetails;
+		}
+
 }

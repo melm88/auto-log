@@ -4,12 +4,11 @@ import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 	public DatabaseHelper(Context context) {
-		super(context, "AutoLog" , null, 2);
+		super(context, "AutoLog" , null, 1);
 	//	Log.d("AutoLog", "Database created....");
 	}
 
@@ -42,6 +41,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				+ "screenState text not null,"
 				+ "timeStamp text not null,"
 				+ "total long not null);");
+		
+		
+		// Table for AlarmDetails logging
+		db.execSQL("create table if not exists "
+				+ "AlarmDetails(alarm text not null, "
+				+ " timeStamp text not null,"
+				+ " PRIMARY KEY ( timeStamp ));");
 	}
 
 	@Override
@@ -53,6 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			db.execSQL("DROP TABLE IF EXISTS NotificationDetails");
 			db.execSQL("DROP TABLE IF EXISTS DataUsage");
 			db.execSQL("DROP TABLE IF EXISTS phone_activity");
+			db.execSQL("DROP TABLE IF EXISTS AlarmDetails");
 			onCreate(db);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
