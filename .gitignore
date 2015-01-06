@@ -1,7 +1,4 @@
-project.properties
-proguard-project.txt
-.project
-.classpath
+
 gen/
 bin/
 
