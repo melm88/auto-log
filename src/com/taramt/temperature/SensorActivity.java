@@ -23,7 +23,7 @@ public class SensorActivity extends Activity implements SensorEventListener {
 	@Override
 	public final void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_sensor);
+		setContentView(R.layout.activity_main);
 		tv = (TextView) findViewById(R.id.temperatureTV);
 		prev_amb_temp = 0;
 

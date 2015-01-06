@@ -1,7 +1,6 @@
 package com.taramt.power;
 
 import java.util.ArrayList;
-
 import com.taramt.autolog.R;
 import com.taramt.utils.DBAdapter;
 
