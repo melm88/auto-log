@@ -14,10 +14,6 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
             android:name="com.taramt.autolognotification.NotificationActivity"
             android:label="@string/title_activity_notification" >
         </activity>
@@ -30,40 +26,5 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
-
-        <activity
-            android:name=".ControllerActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.taramt.autologdatausage.DataUsage"
-            android:label="@string/title_activity_data_usage" >
-        </activity>
-
-        <service android:name="com.taramt.autologdatausage.DataService" >
-        </service>
-
-        <activity
-            android:name="com.taramt.autologscreenstate.ScreenActivity"
-            android:label="@string/title_activity_screen"
-            android:screenOrientation="portrait">
-             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <receiver android:name="com.taramt.autologscreenstate.ScreenReceiver">
-		</receiver>
-		  <service android:name="com.taramt.autologscreenstate.ScreenService" >
-        </service>
-        
     </application>
-    
-
 </manifest>
