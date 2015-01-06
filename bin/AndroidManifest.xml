@@ -7,7 +7,6 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="19" />
-    
 
     <application
         android:allowBackup="true"
@@ -31,6 +30,10 @@
             </intent-filter>
         </receiver>
 
-</application>
+        <activity
+            android:name="com.taramt.power.PowerActivity"
+            android:label="@string/title_activity_power" >
+        </activity>
+    </application>
 
 </manifest>
