@@ -420,6 +420,7 @@ public class DBAdapter {
 		Cursor cursor = db.query("ChargerState", 
 				null, null, null, null, null, null);
 		ArrayList<String> PowerDetails = new ArrayList<String>();
+
 		if(cursor != null) {
 			while(cursor.moveToNext()) {
 				String nDetails = cursor.getString(cursor.getColumnIndex("connection"))
@@ -430,6 +431,7 @@ public class DBAdapter {
 				PowerDetails.add(nDetails);
 			}
 		}		
+
 		return PowerDetails;
 	}
 	
@@ -483,5 +485,25 @@ public class DBAdapter {
 		
 		return n;	
 	}
+	
+	//Retrieve MediaDetails
+		public ArrayList<String> getMediaDetails() {
+			//String query="select email_id from contacts";
+			Cursor cursor = db.query("MediaEvent", 
+					null, null, null, null, null, null);
+			ArrayList<String> MediaDetails = new ArrayList<String>();
+			if(cursor != null) {
+				int count = 1;
+				while(cursor.moveToNext()) {
+					String nDetails = count +") "+ cursor.getString(cursor.getColumnIndex("filepath"))
+							+ " | " + cursor.getString(cursor.getColumnIndex("filetype"))
+							+ " | " + cursor.getString(cursor.getColumnIndex("timeStamp")).split("GMT")[0];
+					MediaDetails.add(nDetails);
+					count++;
+				}
+			}
+			
+			return MediaDetails;
+		}
 
 }
