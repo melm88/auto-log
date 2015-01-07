@@ -60,7 +60,7 @@ import com.taramt.utils.Utils;
 			pendingIntent = PendingIntent.getService(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 			am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 			am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 
-					1000*30 , pendingIntent);
+					1000*60*5 , pendingIntent);
 			Log.i("oon Alarm", "Alarm started");
 		} catch (Exception e) {
 			Log.d("exceptionasdfdf",""+e);

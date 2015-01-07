@@ -17,19 +17,19 @@ public class ActivityRecognitionActivity extends Activity {
 
 	TextView activitydata;
 	DBAdapter dbAdapter;
-	
-	
+
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-	
+
 		setContentView(R.layout.activity_activityrecognition);
 		activitydata=(TextView)findViewById(R.id.activities);
-		
+
 		dbAdapter=new DBAdapter(this);
-		
+
 		// get the activity data from the database.
 		String[][] data=dbAdapter.getActivities();
 		String adata="";
@@ -41,12 +41,12 @@ public class ActivityRecognitionActivity extends Activity {
 		}else{
 			adata=adata+"Log started just now";
 		}
-		
+
 		activitydata.setText(adata);
 	}
-		
-	
 
 
-	
+
+
+
 }

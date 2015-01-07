@@ -21,6 +21,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	public void onCreate(SQLiteDatabase db) 
 	{
+		db.execSQL("create table if not exists devicestate(activity text not null, timestamp text not null);");
+		Log.d("devicestate","Table Created!!!");
+		
+		db.execSQL("create table if not exists lightsensor(value text not null, timestamp text not null);");
+		Log.d("lightsensor","Table Created!!!");
+		
+		db.execSQL("create table if not exists wifianddata(network text not null, activity text not null, timestamp text not null);");
+		Log.d("lightsensor","Table Created!!!");
+
 		//db.execSQL("create table if not exists email(mesgid INTEGER not null, subject text not null, email text not null, sender text not null, datetime text not null, receiver text not null, folder text not null, numofattachments integer not null, recipients text,  flags text not null, displayname text, attachmentName text, PRIMARY KEY(mesgid, email, folder));");
 		db.execSQL("create table if not exists LOCATION(lid INTEGER not null, timestamp text not null, lat text not null, lon text not null, accuracy text not null, address text not null, ltype text not null, PRIMARY KEY(lid));");
 		db.execSQL("create table if not exists ACTIVITIES(aid INTEGER not null,timestamp text not null, activity text not null, confidence text not null, PRIMARY KEY(aid));");
@@ -82,6 +91,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				+ " timeStamp text not null, primary key(timeStamp));");
 		Log.d("AutoLogDB", "Table Created MediaEvent!!!");
 
+		db.execSQL("create table if not exists audiolevel(value text not null, timestamp text not null);");
+		Log.d("audiolevel","Table Created!!!");
+	
 
 	}
 
@@ -98,6 +110,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			db.execSQL("DROP TABLE IF EXISTS ChargerState");
 			db.execSQL("DROP TABLE IF EXISTS AmbientTemperature");
 			db.execSQL("DROP TABLE IF EXISTS MediaEvent");
+			
+			db.execSQL("DROP TABLE IF EXISTS devicestate");
+			db.execSQL("DROP TABLE IF EXISTS lightsensor");
+			db.execSQL("DROP TABLE IF EXISTS wifianddata");
+
 
 			onCreate(db);
 		} catch (SQLException e) {

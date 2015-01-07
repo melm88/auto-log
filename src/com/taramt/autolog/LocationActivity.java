@@ -21,9 +21,9 @@ public class LocationActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_location);
-		
+
 		ldata=(TextView)findViewById(R.id.ldata);
-		
+
 		dbAdapter=new DBAdapter(this);
 		// get the log from database
 		String[][] data=dbAdapter.getLocationDetails();
@@ -36,9 +36,9 @@ public class LocationActivity extends Activity {
 		}else{
 			locationdata=locationdata+"Log started just now";
 		}
-		
+
 		ldata.setText(locationdata);
 	}
-	
+
 
 }

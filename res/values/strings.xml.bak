@@ -8,8 +8,7 @@
     <string name="title_activity_ambientlight">AmbientlightActivity</string>
     <string name="Start">Start</string>
     <string name="title_activity_wifi">WifiActivity</string>
-     <string name="StartAudio">StartAudio</string>
-   
+    
     <string name="call_log">Call Log</string>
     
     <string name="action_start">Start</string>

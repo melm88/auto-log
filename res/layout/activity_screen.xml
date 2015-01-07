@@ -47,9 +47,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/Average"
-        android:text="Sort"
-        android:layout_marginTop="10sp" 
-        android:onClick="Sort"/>
+        android:layout_marginTop="10sp"
+        android:onClick="Sort"
+        android:text="Sort" />
 
     <Button
         android:id="@+id/Top3"
@@ -58,7 +58,7 @@
         android:layout_alignBaseline="@+id/Sort"
         android:layout_alignBottom="@+id/Sort"
         android:layout_centerHorizontal="true"
-        android:text="Top 3" 
-        android:onClick="Top3"/>
+        android:onClick="Top3"
+        android:text="Top 3" />
 
 </RelativeLayout>

@@ -187,9 +187,9 @@ LocationListener {
 		Log.e(TAG, "onConnectionFailed");
 	}
 
-/*
- * getCurrentAdderss is asynctask class for getting currentaddress.
- */
+	/*
+	 * getCurrentAdderss is asynctask class for getting currentaddress.
+	 */
 	private class GetCurrentAddress extends AsyncTask<Double, Void, String> {
 
 		DBAdapter dbAdapter;
@@ -213,7 +213,7 @@ LocationListener {
 		}
 		@Override
 		protected void onPostExecute(String resultString) {
-			
+
 			Log.d("LocationClass","in post execute"+resultString);
 			dbAdapter.insertLocationDetails(details.getString("timeStamp", ""), String.valueOf(lat),
 					String.valueOf(lon), String.valueOf(accuracy), resultString, " ");
@@ -222,24 +222,24 @@ LocationListener {
 		}
 	}
 
-/*
- * getAddress method for getting adderss from geocoder.
- */
+	/*
+	 * getAddress method for getting adderss from geocoder.
+	 */
 	public  String getAddress(Context ctx, double latitude, double longitude) {
-		
+
 		String first = "";
 		try {
-			
+
 			Geocoder geocoder = new Geocoder(ctx, Locale.getDefault());
-			
+
 			List<Address> addresses=null;
-			
+
 			addresses = geocoder.getFromLocation(latitude, longitude, 5);
-			
+
 			Log.d("size",addresses.size()+"");
-			
+
 			if (addresses.size() > 0) {
-			
+
 				Address address = addresses.get(0);
 
 				first=address.getAddressLine(0);

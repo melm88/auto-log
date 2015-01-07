@@ -29,27 +29,27 @@ import android.widget.TextView;
  * consent activities(projects)
  */
 public class MainActivity extends Activity {
-	
+
 	TextView tv;
 
 	Context context;
 	SharedPreferences details;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-	
+
 		setContentView(R.layout.activity_main);
 
 		context=this;
 		details=PreferenceManager.getDefaultSharedPreferences(this);
-		
+
 		//TextView in MainActivity
 
-				tv = (TextView) findViewById(R.id.mainactTV);
-	
+		tv = (TextView) findViewById(R.id.mainactTV);
+
 	}
-	
+
 
 
 }

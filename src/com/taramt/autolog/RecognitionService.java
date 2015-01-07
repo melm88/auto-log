@@ -16,7 +16,7 @@ import com.google.android.gms.location.DetectedActivity;
 public class RecognitionService extends IntentService {
 
 	public final String KEY_PREVIOUS_ACTIVITY_TYPE="KEY";
-	
+
 	//SharedPreferences details;
 
 	public RecognitionService() {
@@ -31,14 +31,14 @@ public class RecognitionService extends IntentService {
 		ActivityRecognitionResult result = ActivityRecognitionResult.extractResult(intent);
 
 		DetectedActivity mostProbableActivity = result.getMostProbableActivity();
-	
+
 		int activityType = mostProbableActivity.getType();
 		int confidence=mostProbableActivity.getConfidence();
-		
+
 		String Activity=getType(activityType);
 		//           SharedPreferences.Editor editor = details.edit();
 		//Log.e("ActivityRecognitionService",Activity+"  confidence is  "+confidence);
-		
+
 		if(ActivityRecognitionResult.hasResult(intent)){ 
 
 			//			editor.putString("Activity1", Activity);
@@ -49,7 +49,7 @@ public class RecognitionService extends IntentService {
 			Intent i = new Intent("stopupdates");
 			i.putExtra("Activity", Activity );
 			i.putExtra("confidence", confidence+"");
-			
+
 
 			// broadcast the updates to location class.
 			sendBroadcast(i);
@@ -58,9 +58,9 @@ public class RecognitionService extends IntentService {
 
 	}
 
-/*
- * getType methode for getting type of activity from the detected activity. It returns a string.
- */
+	/*
+	 * getType methode for getting type of activity from the detected activity. It returns a string.
+	 */
 	private String getType(int type){
 		if(type == DetectedActivity.UNKNOWN)
 			return "Unknown";

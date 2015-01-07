@@ -1,21 +1,5 @@
 package com.taramt.autolog;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -24,24 +8,22 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.taramt.utils.DBAdapter;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.widget.Toast;
 
 public class VisualizationOfLocation extends FragmentActivity {
 
 	private GoogleMap mMap;
 	static String resp="hai";
-	
+
 	DBAdapter dbAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_visualization);
-		
+
 		dbAdapter =new DBAdapter(this);
 
 		// get location data from database and store it in an array.		
@@ -58,7 +40,7 @@ public class VisualizationOfLocation extends FragmentActivity {
 			Toast.makeText(this, "no Autolog data to show", Toast.LENGTH_LONG).show();
 		}
 
-		
+
 
 		// plot the data on map with markers
 		mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
