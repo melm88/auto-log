@@ -683,5 +683,49 @@ public class DBAdapter {
 			}
 			return entry;
 		}
+		
+/*
+ * insertForeGroundApp method for inserting foregroundApp
+ */
+		public void insertForeGroundApp(String timeStamp,String AppName){
+			Log.d("DBAdapter","insertForeGroundApp");
+			open();
+				
+			ContentValues app=new ContentValues();
+			app.put("timestamp", timeStamp);
+			app.put("app", AppName);
+						
+			db.insert("FORE_GROUND_APP", null, app);
+			
+			db.close();
+		}
+/*
+ * getForeGroundApp method for getting foregroundApp
+ */
+		public String[][] getForeGroundApp(){
+			
+			Log.d("DBAdapter","getforegroundapp");
+			open();
+			String query="select * from FORE_GROUND_APP";
+			Cursor cursor;
+			try {
+				cursor = db.rawQuery(query, null);
+				int size=cursor.getCount();
+				Log.d("no of app logs",size+"");
+				String[][] data=new String[size][2];
+				int i=0;
+				while(cursor.moveToNext()){
+					data[i][0]=cursor.getString(1);
+					data[i][1]=cursor.getString(2);	
+					i++;
+				}
+				db.close();
+				return data;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				Log.d("exception in getforegroundapp",e.toString());
+				return null;
+			}
+		}
 
 }

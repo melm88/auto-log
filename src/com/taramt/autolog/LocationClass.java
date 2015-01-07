@@ -6,10 +6,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -218,6 +223,22 @@ LocationListener {
 			dbAdapter.insertLocationDetails(details.getString("timeStamp", ""), String.valueOf(lat),
 					String.valueOf(lon), String.valueOf(accuracy), resultString, " ");
 
+
+			ActivityManager am = (ActivityManager) getApplicationContext().getSystemService(Activity.ACTIVITY_SERVICE);
+	        String packageName = am.getRunningTasks(1).get(0).topActivity.getPackageName();
+			
+			final PackageManager pm = getApplicationContext().getPackageManager();
+			ApplicationInfo ai;
+			try {
+			    ai = pm.getApplicationInfo( packageName, 0);
+			} catch (final NameNotFoundException e) {
+			    ai = null;
+			}
+			final String applicationName = (String) (ai != null ? pm.getApplicationLabel(ai) : "(unknown)");
+			
+			dbAdapter.insertForeGroundApp(details.getString("timeStamp"," "),applicationName);
+			
+			Log.d("name",applicationName);
 
 		}
 	}

@@ -55,7 +55,8 @@ public class ControllerActivity extends Activity {
 				"WIFI and 3G data",
 				"Ambient light",
 				"Noise Level",
-				"Boot and Reboot"
+				"Boot and Reboot",
+				"Fore ground apps"
 		};
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, android.R.id.text1, values);
@@ -149,6 +150,8 @@ public class ControllerActivity extends Activity {
 				case 14: 
 					myIntent = new Intent(getApplicationContext(), BootActivity.class);
 					break;
+				case 15:
+					myIntent = new Intent(getApplicationContext(), ForeGroundApp.class);
 
 				} 
 				startActivity(myIntent);
