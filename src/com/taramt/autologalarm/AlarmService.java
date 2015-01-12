@@ -42,7 +42,8 @@ import com.taramt.utils.DBAdapter;
 		Log.d(Tag, "Service onStart called");
 		prefs = getSharedPreferences("ALARM", MODE_PRIVATE);
 		
-		String nextAlarm = getNextAlarm(getApplicationContext());
+		String nextAlarm = "";
+		nextAlarm = getNextAlarm(getApplicationContext());
 	
 		/* getting nextalarmclock information 
 		 * through getNextAlarmClock
