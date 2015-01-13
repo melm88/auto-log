@@ -727,5 +727,109 @@ public class DBAdapter {
 				return null;
 			}
 		}
+		
+		
+		// SYNC state cursors/arraylist retrieval methods
+		//Generated get device state log from database
+		public ArrayList<String> getdevicestatelogSYNC(){
+			Cursor cursor=db.query("devicestate", null,null, null, null, null, null);
+			ArrayList<String> entry = new ArrayList<String>();
+			while(cursor.moveToNext()) {
+				String nDetails = cursor.getString(cursor.getColumnIndex("activity"))
+						+ "|" + cursor.getString(cursor.getColumnIndex("timestamp"));
+				entry.add(nDetails);
+			}
+			return entry;
+		}
+		//Generated get Light Sensor log from database
+		public ArrayList<String> getLightSensorlogSYNC(){
+			Cursor cursor=db.query("lightsensor", null,null, null, null, null, null);
+			ArrayList<String> entry = new ArrayList<String>();
+			while(cursor.moveToNext()) {
+				String nDetails = cursor.getString(cursor.getColumnIndex("value"))
+						+ "|" + cursor.getString(cursor.getColumnIndex("timestamp"));
+				entry.add(nDetails);
+			}
+			return entry;
+		}
+		
+		//Generated get wifi and data log from database
+		public ArrayList<String> getwifianddatalogSYNC(){
+			Cursor cursor=db.query("wifianddata", null,null, null, null, null, null);
+			ArrayList<String> entry = new ArrayList<String>();
+			while (cursor.moveToNext()) {
+				String nDetails = 
+						cursor.getString(cursor.getColumnIndex("network"))
+						+ "|" +cursor.getString(cursor.getColumnIndex("activity"))
+						+ "|" + cursor.getString(cursor.getColumnIndex("timestamp"));
+				entry.add(nDetails);
+			}
+			return entry;
+		}
+		//Generated get Audio level log from database
+		public ArrayList<String> getaudiologSYNC(){
+			Cursor cursor=db.query("audiolevel", null,null, null, null, null, null);
+			ArrayList<String> entry = new ArrayList<String>();
+			while (cursor.moveToNext()) {
+				String nDetails = cursor.getString(cursor.getColumnIndex("value"))
+						+ "|" + cursor.getString(cursor.getColumnIndex("timestamp"));
+				entry.add(nDetails);
+			}
+			return entry;
+		}
+		
+		public ArrayList<String> getLocationDetailsSYNC(){
+			Log.d("DBAdapter","getlocation");
+			open();
+			String query="select * from LOCATION";
+			Cursor cursor;
+			try {
+				cursor = db.rawQuery(query, null);
+				int size=cursor.getCount();
+				Log.d("no of location logs",size+"");
+				ArrayList<String> locdata = new ArrayList<String>();
+				
+				while(cursor.moveToNext()){
+					Log.d("toServer", cursor.getColumnIndex("timestamp")+""+cursor.getColumnIndex("ltype"));
+					locdata.add(cursor.getString(cursor.getColumnIndex("lid"))+"|"+cursor.getString(1)+"|"+cursor.getString(2)+"|"
+							+cursor.getString(3)+"|"+cursor.getString(4)+"|"
+							+cursor.getString(5)+"|"+cursor.getString(6));					
+				}
+				
+				return locdata;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				Log.d("exception in getlocation",e.toString());
+				return null;
+			}
+			
+		}
+		
+		public ArrayList<String> getActivitiesSYNC(){
+			Log.d("DBAdapter","getactivities");
+			open();
+			String query="select * from ACTIVITIES";
+			Cursor cursor;
+			try {
+				cursor = db.rawQuery(query, null);
+				int size=cursor.getCount();
+				Log.d("no of activities logs",size+"");
+				ArrayList<String> activitiesdata = new ArrayList<String>();
+				
+				while(cursor.moveToNext()){
+					activitiesdata.add(cursor.getString(1)+"|"+cursor.getString(2)
+							+"|"+cursor.getString(3));
+				}
+				
+				return activitiesdata;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				Log.d("exception in getactivity",e.toString());
+				return null;
+			}
+		}
+		
+		
+		
 
 }
