@@ -15,6 +15,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class AmbientlightActivity extends ActionBarActivity {
@@ -23,42 +25,21 @@ public class AmbientlightActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ambientlight);
-		SharedPreferences savedValues = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		//If this is the first launch
-//		if (savedValues.getBoolean(getString(R.string.Start), true)) {
-//
-//			Log.d("flag", "timer is being set");
-//
-//			SharedPreferences.Editor editor = savedValues.edit();
-//			editor.putBoolean(getString(R.string.Start), false);
-//			editor.commit();
-//			//Starting a Ambient light service 
-//			Intent intent = new Intent(this, Ambientlightservice.class);
-//			PendingIntent pintent = PendingIntent
-//					.getService(this, 0, intent, 0);
-//
-//			AlarmManager alarm = (AlarmManager) 
-//					getSystemService(Context.ALARM_SERVICE);
-//			alarm.cancel(pintent);
-//			//setting an alarm manager for interval of 5 minutes
-//			alarm.setRepeating(AlarmManager.RTC_WAKEUP, 
-//					System.currentTimeMillis()+5*60*1000,
-//					5*60*1000, pintent); 
-//		} else {
-//			Log.d("flag", "timer is already set");
-//		}
-		//displaying the log from database on text view 
-		TextView tv = (TextView)findViewById(R.id.ambientlightlog);
 		DBAdapter db = new DBAdapter(this);
 		db.open();
-		ArrayList<String> row = db.getLightSensorlog();
-		String content = "";
-		for (int i = 0; i < row.size(); i++) {
-			content = content +  row.get(i)+ "\n\n";
-		}
+		ArrayList<String> rows = db.getLightSensorlog();
 		db.close();
-		tv.setText(content);
+		//displaying the log from database on list view 
+		ListView listView = (ListView) findViewById(R.id.list);
+
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, android.R.id.text1, rows);
+
+		listView.setAdapter(adapter); 
+
+
+
 
 	}
 
