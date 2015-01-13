@@ -13,6 +13,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,8 +52,20 @@ public class ControllerActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_controller);
 		listView = (ListView) findViewById(R.id.list);
-		
+
 		preferences=PreferenceManager.getDefaultSharedPreferences(this);
+		
+		String enabledAppList = Settings.Secure.getString(
+		        this.getContentResolver(), "enabled_notification_listeners");
+		System.out.println(enabledAppList);
+		boolean temp = enabledAppList.contains("com.taramt.autolog/com.taramt.autolognotification.NLService");
+		if(temp){
+			
+		}
+		else{
+			Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
+			startActivity(intent);	
+		}
 		
 		LaunchServices();
 		String[] values = new String[] { 
@@ -114,7 +127,7 @@ public class ControllerActivity extends Activity {
 					myIntent = new Intent(getApplicationContext(), Calllog.class);
 					break;
 				case 9: 
-						myIntent = new Intent(getApplicationContext(), LocationActivity.class);
+					myIntent = new Intent(getApplicationContext(), LocationActivity.class);
 					break;
 				case 10: 
 					myIntent = new Intent(getApplicationContext(), VisualizationOfLocation.class);
@@ -144,10 +157,10 @@ public class ControllerActivity extends Activity {
 	 * Launches all services.
 	 */
 	private NotificationReceiver nReceiver;
-	
-    public void LaunchServices(){
-    	
-    	SharedPreferences savedValues = PreferenceManager
+
+	public void LaunchServices(){
+
+		SharedPreferences savedValues = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		//If this is the first launch
 		if (savedValues.getBoolean(getString(R.string.Start), true)) {
@@ -157,19 +170,19 @@ public class ControllerActivity extends Activity {
 			editor.putBoolean(getString(R.string.StartAudio), false);
 			editor.commit();
 
-//		"Notification"
-    	nReceiver = new NotificationReceiver();
-		IntentFilter filter = new IntentFilter();
-		filter.addAction("com.taramt.autolog.notification");
-		registerReceiver(nReceiver,filter);		
-//		"MediaActivity",
-		 Intent audioservice = new Intent(this,
-		    		AudioService.class);
-		 startService(audioservice);
+			//		"Notification"
+			nReceiver = new NotificationReceiver();
+			IntentFilter filter = new IntentFilter();
+			filter.addAction("com.taramt.autolog.notification");
+			registerReceiver(nReceiver,filter);		
+			//		"MediaActivity",
+			Intent audioservice = new Intent(this,
+					AudioService.class);
+			startService(audioservice);
 
-//		"Datausage",
-		 
-		 try {
+			//		"Datausage",
+
+			try {
 				Intent intentt = new Intent(getApplicationContext(), DataService.class);
 				PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(),0,intentt,PendingIntent.FLAG_UPDATE_CURRENT);
 				AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
@@ -179,12 +192,12 @@ public class ControllerActivity extends Activity {
 				Log.d("exceptionasdfdf",""+e);
 			}
 
-		 
-//		"PowerActivity",
-		 
-//		"ScreenActivity",
-		 DBAdapter db = new DBAdapter(this);
-		 db.open();
+
+			//		"PowerActivity",
+
+			//		"ScreenActivity",
+			DBAdapter db = new DBAdapter(this);
+			db.open();
 			if (db.getrowcount("Active") == 0) {
 				SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 				String date =s.format(new Date());
@@ -194,25 +207,25 @@ public class ControllerActivity extends Activity {
 
 			if (this.getResources().getConfiguration().orientation == 1) {
 
-		 try {
+				try {
 
-				Intent intent = new Intent(getApplicationContext(), ScreenService.class);
-				PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-				AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-				am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
-						1000*30, pendingIntent);
-				Log.i("oon Alarm", "Alarm started");
-			} catch (Exception e) {
-				Log.d("exceptionasdfdf",""+e);
+					Intent intent = new Intent(getApplicationContext(), ScreenService.class);
+					PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+					AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+					am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+							1000*30, pendingIntent);
+					Log.i("oon Alarm", "Alarm started");
+				} catch (Exception e) {
+					Log.d("exceptionasdfdf",""+e);
+				}
 			}
-		 }
 
-//		"TemperatureActivity",
+			//		"TemperatureActivity",
 			Intent iServe = new Intent(this,
 					TemperatureSensor.class);
 			this.startService(iServe);
 
-//		"Alarm",
+			//		"Alarm",
 			try {
 
 				Intent intent = new Intent(getApplicationContext(), AlarmService.class);
@@ -225,9 +238,9 @@ public class ControllerActivity extends Activity {
 				Log.d("exceptionasdfdf",""+e);
 			}
 
-//		"UserActivity", 
+			//		"UserActivity", 
 			try {
-	
+
 				AlarmManager am= (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 				Intent intent=new Intent(getApplicationContext(),ActivityRecognitionService.class);
 				PendingIntent pintent = PendingIntent
@@ -235,15 +248,15 @@ public class ControllerActivity extends Activity {
 				am.setRepeating(AlarmManager.RTC_WAKEUP,
 						System.currentTimeMillis(),
 						1*60*1000, pintent);
-				
+
 			} catch (Exception e) {
 				Log.d("exceptionasdfdf",""+e);
 			}
-		
-//		"Callog", 
-				
-//		"Location",
-				try{
+
+			//		"Callog", 
+
+			//		"Location",
+			try{
 				AlarmManager am= (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 				Intent intent=new Intent(getApplicationContext(),LocationClass.class);
 				PendingIntent pintent = PendingIntent
@@ -251,16 +264,16 @@ public class ControllerActivity extends Activity {
 				am.setRepeating(AlarmManager.RTC_WAKEUP,
 						System.currentTimeMillis(),
 						1*60*1000, pintent);
-				
-				}catch(Exception e){
-					Log.d("exceptionasdfdf",""+e);
-				}
-//		"VisualizationofLocation",
-				
-//		"WIFI and 3G data",
-				
-//		"Ambient light",
-				try{
+
+			}catch(Exception e){
+				Log.d("exceptionasdfdf",""+e);
+			}
+			//		"VisualizationofLocation",
+
+			//		"WIFI and 3G data",
+
+			//		"Ambient light",
+			try{
 				Intent intent = new Intent(this, Ambientlightservice.class);
 				PendingIntent pintent = PendingIntent
 						.getService(this, 0, intent, 0);
@@ -272,12 +285,12 @@ public class ControllerActivity extends Activity {
 				alarm.setRepeating(AlarmManager.RTC_WAKEUP, 
 						System.currentTimeMillis()+5*60*1000,
 						5*60*1000, pintent); 
-				}
-				catch(Exception e){
-					Log.d("Ambientlight", ""+e);
-				}
-//		"Noise Level",
-				try{
+			}
+			catch(Exception e){
+				Log.d("Ambientlight", ""+e);
+			}
+			//		"Noise Level",
+			try{
 				Intent intent = new Intent(this, AudioLevelService.class);
 				PendingIntent pintent = PendingIntent
 						.getService(this, 0, intent, 0);
@@ -288,17 +301,17 @@ public class ControllerActivity extends Activity {
 				alarm.setRepeating(AlarmManager.RTC_WAKEUP,
 						System.currentTimeMillis(),
 						5*60*1000, pintent);
-				}
-				catch(Exception e){
-					Log.d("Noise Level", ""+e);
-				}
-//		"Boot and Reboot",
+			}
+			catch(Exception e){
+				Log.d("Noise Level", ""+e);
+			}
+			//		"Boot and Reboot",
 
-//		"Fore ground apps
+			//		"Fore ground apps
 		} else {
-		Log.d("Launch", "Services already Started");
+			Log.d("Launch", "Services already Started");
 		}		
-    }
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

@@ -14,6 +14,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 /*
  * MainActivity launches AudioLevel logger service. 
@@ -26,41 +28,20 @@ public class AudiolevelActivity extends Activity {
 		setContentView(R.layout.activity_audiolevel);
 
 		Log.d("Activity", "onCreate");
-		//SharedPreferences initialized
-		SharedPreferences savedValues = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		//If this is the first launch
-//		if (savedValues.getBoolean(getString(R.string.StartAudio), true)) {
-//			Log.d("flag", "timer is being set");
-//			SharedPreferences.Editor editor = savedValues.edit();
-//			//Initialize the Start Audio to false
-//			editor.putBoolean(getString(R.string.StartAudio), false);
-//			editor.commit();
-//			//Starting a AudioLevelService
-//			Intent intent = new Intent(this, AudioLevelService.class);
-//			PendingIntent pintent = PendingIntent
-//					.getService(this, 0, intent, 0);
-//			AlarmManager alarm = (AlarmManager)
-//					getSystemService(Context.ALARM_SERVICE);
-//			alarm.cancel(pintent);
-//			//setting an alarm manager for interval of 5 minutes
-//			alarm.setRepeating(AlarmManager.RTC_WAKEUP,
-//					System.currentTimeMillis(),
-//					5*60*1000, pintent);
-//		} else {
-//			Log.d("flag", "timer is already set");
-//		}
+		
 		//displaying the log from database on text view
-		TextView tv = (TextView)findViewById(R.id.audiolevellog);
 		DBAdapter db = new DBAdapter(this);
 		db.open();
-		ArrayList<String> row = db.getaudiolog();
-		String content = "";
-		for (int i = 0; i < row.size(); i++) {
-			content = content + row.get(i)+ "\n\n";
-		}
+		ArrayList<String> rows = db.getaudiolog();
 		db.close();
-		tv.setText(content);
+		ListView listView = (ListView) findViewById(R.id.list);
+
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, android.R.id.text1, rows);
+
+		listView.setAdapter(adapter); 
+	
 	}
 	protected void onResume() {
 		super.onResume();

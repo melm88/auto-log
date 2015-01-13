@@ -1,9 +1,13 @@
 package com.taramt.autolog;
 
+import java.util.ArrayList;
+
 import com.taramt.utils.DBAdapter;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 /**
@@ -22,22 +26,19 @@ public class LocationActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_location);
 
-		ldata=(TextView)findViewById(R.id.ldata);
 
 		dbAdapter=new DBAdapter(this);
 		// get the log from database
-		String[][] data=dbAdapter.getLocationDetails();
-		String locationdata="";
-		// loop through the log if previous activities are there.
-		if(data.length>0){
-			for(int i=0;i<data.length;i++){
-				locationdata=locationdata+data[i][0]+" "+data[i][1]+" "+data[i][2]+" "+data[i][3]+" "+data[i][4]+" "+data[i][5]+"\n";
-			}
-		}else{
-			locationdata=locationdata+"Log started just now";
-		}
+		ArrayList<String> data=dbAdapter.getLocationDetailsArrayList();
+		//displaying the log from database on list view 
+		ListView listView = (ListView) findViewById(R.id.list);
 
-		ldata.setText(locationdata);
+		if(data!=null) {
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, android.R.id.text1, data);
+
+			listView.setAdapter(adapter); 
+		}
 	}
 
 

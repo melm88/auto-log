@@ -30,17 +30,15 @@ public class AmbientlightActivity extends ActionBarActivity {
 		ArrayList<String> rows = db.getLightSensorlog();
 		db.close();
 		//displaying the log from database on list view 
-		ListView listView = (ListView) findViewById(R.id.list);
+		if(rows != null){
+			ListView listView = (ListView) findViewById(R.id.list);
 
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, android.R.id.text1, rows);
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, android.R.id.text1, rows);
 
-		listView.setAdapter(adapter); 
-
-
-
-
+			listView.setAdapter(adapter); 
+		}
 	}
 
 

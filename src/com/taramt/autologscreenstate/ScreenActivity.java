@@ -66,18 +66,18 @@ public class ScreenActivity extends Activity {
 		showTotalDuration();
 		showAverage();
 
-//		db.open();
-//		if (db.getrowcount("Active") == 0) {
-//			SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-//			String date =s.format(new Date());
-//			db.inserScreenstate("Active", date);
-//		}
-//		db.close();
-//
-//		if (ScreenActivity.this.getResources().getConfiguration().orientation == 1) {
-//			startAlarm();
-	//	}
-	//	id = 0;
+		//		db.open();
+		//		if (db.getrowcount("Active") == 0) {
+		//			SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		//			String date =s.format(new Date());
+		//			db.inserScreenstate("Active", date);
+		//		}
+		//		db.close();
+		//
+		//		if (ScreenActivity.this.getResources().getConfiguration().orientation == 1) {
+		//			startAlarm();
+		//	}
+		//	id = 0;
 
 
 
@@ -87,7 +87,7 @@ public class ScreenActivity extends Activity {
 		pYear = cal.get(Calendar.YEAR);
 		pMonth = cal.get(Calendar.MONTH);
 		pDay = cal.get(Calendar.DAY_OF_MONTH);
-	
+
 
 	}
 
