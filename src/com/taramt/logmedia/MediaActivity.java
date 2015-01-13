@@ -27,7 +27,8 @@ public class MediaActivity extends Activity {
 		mediaTV = (TextView)findViewById(R.id.mediaTV);
 		//mFileObserver.startWatching();
 		//onLaunch of the activity, initiate FileObserver
-		addObserver();
+		//addObserver();
+		displayMediaData();
 	}
 
 	//Launch the service for capturing audio files created in sdcard/Sounds

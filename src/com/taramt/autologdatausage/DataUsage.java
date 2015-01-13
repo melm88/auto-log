@@ -35,7 +35,7 @@ public class DataUsage extends Activity {
 		db = new DBAdapter(this);
 		utils = new Utils(this);
 		showdataUsage();
-		startAlarm();
+		//startAlarm();
 		Log.d("DATAUSAGE", "in on create");
 	}
 	 

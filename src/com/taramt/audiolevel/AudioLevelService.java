@@ -27,7 +27,7 @@ public class AudioLevelService extends Service {
 	}
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
+		//Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
 		try {
 			bufferSize = AudioRecord
 					.getMinBufferSize(sampleRate, AudioFormat.CHANNEL_IN_MONO,

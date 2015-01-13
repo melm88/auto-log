@@ -24,8 +24,8 @@ public class TemperatureActivity extends Activity {
 
 		//TextView in TemperatureActivity
 		temperatureTV = (TextView) findViewById(R.id.temperatureTV);
-		enableTemperatureSensing();
-
+		//enableTemperatureSensing();
+		displayTemperatureSensingData();
 		//Intent it = new Intent(this, SensorActivity.class);
 		//startActivity(it);
 	}

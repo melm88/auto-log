@@ -42,7 +42,7 @@ import com.taramt.utils.DBAdapter;
 		Log.d(Tag, "Service onStart called");
 		prefs = getSharedPreferences("ALARM", MODE_PRIVATE);
 		
-		String nextAlarm = "";
+		String nextAlarm = " ";
 		nextAlarm = getNextAlarm(getApplicationContext());
 	
 		/* getting nextalarmclock information 
@@ -56,9 +56,9 @@ import com.taramt.utils.DBAdapter;
 		    } catch (NoSuchMethodError e) {
 		        
 		    }
-		
-	//	Log.d(Tag + "Repeat", "next alarm is:  " + nextAlarm);
-		if (!nextAlarm.equals(prefs.getString("nextAlarm", "")) 
+		try{
+		Log.d(Tag + "Repeat", "next alarm is:  " + nextAlarm+" "+prefs);
+		if (!nextAlarm.equals(prefs.getString("nextAlarm", " ")) 
 				&& !nextAlarm.equals("")
 				&& !nextAlarm.equals(" ")) {
 			db.open();
@@ -68,6 +68,12 @@ import com.taramt.utils.DBAdapter;
 			editor.putString("nextAlarm", nextAlarm);
 			editor.commit();
 			db.close();
+		}
+		}
+		catch(NullPointerException e){
+		Log.d("Alarm", "No next Active Alarm");	
+		Log.d("Null pointer exception", e+"");	
+		
 		}
 		
 		

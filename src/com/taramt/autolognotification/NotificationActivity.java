@@ -37,10 +37,10 @@ public class NotificationActivity extends Activity {
 		 * any values can be received here which will send from the 
 		 * NLService through sendBroadcast method
 		 */
-		nReceiver = new NotificationReceiver();
-		IntentFilter filter = new IntentFilter();
-		filter.addAction("com.taramt.autolog.notification");
-		registerReceiver(nReceiver,filter);
+//		nReceiver = new NotificationReceiver();
+//		IntentFilter filter = new IntentFilter();
+//		filter.addAction("com.taramt.autolog.notification");
+//		registerReceiver(nReceiver,filter);
 		db = new DBAdapter(this);
 		utils = new Utils(this);
 		// Showing the notifications
@@ -50,7 +50,7 @@ public class NotificationActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		unregisterReceiver(nReceiver);
+	//	unregisterReceiver(nReceiver);
 	}
 	// getting notification details from database and displaying
 	public void showNotifications() {
@@ -83,7 +83,7 @@ public class NotificationActivity extends Activity {
 		}
 	}
 
-	class NotificationReceiver extends BroadcastReceiver {
+	public class NotificationReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			Log.d(TAG, "Notification received");	

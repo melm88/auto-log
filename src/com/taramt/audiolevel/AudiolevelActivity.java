@@ -30,26 +30,26 @@ public class AudiolevelActivity extends Activity {
 		SharedPreferences savedValues = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		//If this is the first launch
-		if (savedValues.getBoolean(getString(R.string.StartAudio), true)) {
-			Log.d("flag", "timer is being set");
-			SharedPreferences.Editor editor = savedValues.edit();
-			//Initialize the Start Audio to false
-			editor.putBoolean(getString(R.string.StartAudio), false);
-			editor.commit();
-			//Starting a AudioLevelService
-			Intent intent = new Intent(this, AudioLevelService.class);
-			PendingIntent pintent = PendingIntent
-					.getService(this, 0, intent, 0);
-			AlarmManager alarm = (AlarmManager)
-					getSystemService(Context.ALARM_SERVICE);
-			alarm.cancel(pintent);
-			//setting an alarm manager for interval of 5 minutes
-			alarm.setRepeating(AlarmManager.RTC_WAKEUP,
-					System.currentTimeMillis(),
-					5*60*1000, pintent);
-		} else {
-			Log.d("flag", "timer is already set");
-		}
+//		if (savedValues.getBoolean(getString(R.string.StartAudio), true)) {
+//			Log.d("flag", "timer is being set");
+//			SharedPreferences.Editor editor = savedValues.edit();
+//			//Initialize the Start Audio to false
+//			editor.putBoolean(getString(R.string.StartAudio), false);
+//			editor.commit();
+//			//Starting a AudioLevelService
+//			Intent intent = new Intent(this, AudioLevelService.class);
+//			PendingIntent pintent = PendingIntent
+//					.getService(this, 0, intent, 0);
+//			AlarmManager alarm = (AlarmManager)
+//					getSystemService(Context.ALARM_SERVICE);
+//			alarm.cancel(pintent);
+//			//setting an alarm manager for interval of 5 minutes
+//			alarm.setRepeating(AlarmManager.RTC_WAKEUP,
+//					System.currentTimeMillis(),
+//					5*60*1000, pintent);
+//		} else {
+//			Log.d("flag", "timer is already set");
+//		}
 		//displaying the log from database on text view
 		TextView tv = (TextView)findViewById(R.id.audiolevellog);
 		DBAdapter db = new DBAdapter(this);

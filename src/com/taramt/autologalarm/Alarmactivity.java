@@ -39,9 +39,9 @@ import com.taramt.utils.Utils;
 		setContentView(R.layout.activity_alarmactivity);
 		alarmDetails = (TextView)findViewById(R.id.alarmDetails);
 		prefs = getPreferences(MODE_PRIVATE);
-		if (Alarmactivity.this.getResources().getConfiguration().orientation == 1) {
-			startAlarm();
-		}
+//		if (Alarmactivity.this.getResources().getConfiguration().orientation == 1) {
+//			startAlarm();
+//		}
 		db = new DBAdapter(this);
 		utils = new Utils(this);
 		db.open();
