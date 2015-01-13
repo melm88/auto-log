@@ -2,7 +2,6 @@ package com.taramt.ambientlight;
 
 import java.util.Date;
 
-import com.taramt.autolog.R;
 import com.taramt.utils.DBAdapter;
 
 import android.app.Service;
@@ -43,13 +42,13 @@ public class Ambientlightservice  extends Service
 		return START_STICKY;
 	}
 
+	SensorManager sensorManager ;
+	Sensor lightSensor;
 	//Captures the first record of light sensor.
 	private void RecordLightIntensity() {
 		Log.d("TEST", "RecordLightIntensity");
-		SensorManager sensorManager 
-		= (SensorManager)getSystemService(Context.SENSOR_SERVICE);
-		Sensor lightSensor 
-		= sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+		sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+		lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
 		// If lightSensor is not available in device
 		if (lightSensor == null){
@@ -69,7 +68,7 @@ public class Ambientlightservice  extends Service
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
+		//Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
 	}
 
 	//light sensor event listener implementation
@@ -101,6 +100,8 @@ public class Ambientlightservice  extends Service
 				}
 
 				else{
+					sensorManager.unregisterListener(lightSensorEventListener);
+					stopSelf();
 					Log.d("TEST", "LightSensor value duplicates");
 
 				}

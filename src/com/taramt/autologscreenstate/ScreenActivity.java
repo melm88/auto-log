@@ -109,9 +109,9 @@ public class ScreenActivity extends Activity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if (ScreenActivity.this.getResources().getConfiguration().orientation == 1) {
-			startAlarm();
-		}
+//		if (ScreenActivity.this.getResources().getConfiguration().orientation == 1) {
+//			startAlarm();
+//		}
 	}
 
 	public void Sort(View v) {

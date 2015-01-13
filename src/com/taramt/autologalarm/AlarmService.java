@@ -134,7 +134,8 @@ import com.taramt.utils.DBAdapter;
 			
 			SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy");
 			
-			return s.format(cal2.getTime()) + " "+ nextAlarm.split(" ")[1];
+			//return s.format(cal2.getTime()) + " "+ nextAlarm.split(" ")[1];
+			return cal2.getTime().toString();
 		} catch (Exception e) {
 
 		}
