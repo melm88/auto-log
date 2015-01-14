@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -49,7 +50,7 @@ public class DBAdapter {
 		ContentValues cv = new ContentValues();
 		cv.put("appName", packageName);
 		cv.put("notificationDetails", nDetails);
-		cv.put("timeStamp", timeStamp);
+		cv.put("timestamp", timeStamp);
 		long n=db.insert("NotificationDetails", null, cv);
 		Log.d("NotificationDetails", "" + n);
 		return n;	
@@ -64,7 +65,7 @@ public class DBAdapter {
 		while(cursor.moveToNext()) {
 			String nDetails = cursor.getString(cursor.getColumnIndex("appName"))
 					+ "  " + cursor.getString(cursor.getColumnIndex("notificationDetails")) 
-					+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp"));
+					+ "  " + cursor.getString(cursor.getColumnIndex("timestamp"));
 			NotificationDetails.add(nDetails);
 		}
 		return NotificationDetails;
@@ -83,7 +84,7 @@ public class DBAdapter {
 		cv.put("send", send);
 		cv.put("received", received);
 		cv.put("total", total);
-		cv.put("timeStamp", timeStamp);
+		cv.put("timestamp", timeStamp);
 		long n=db.insert(tablename, null, cv);
 		Log.d("DataUsage", ""+n);
 		return n;	
@@ -99,7 +100,7 @@ public class DBAdapter {
 					+ "  " + cursor.getString(cursor.getColumnIndex("send")) 
 					+ "  " + cursor.getString(cursor.getColumnIndex("received"))
 					+ "  " + cursor.getString(cursor.getColumnIndex("total"))
-					+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp"));
+					+ "  " + cursor.getString(cursor.getColumnIndex("timestamp"));
 			datausageofApps.add(nDetails);
 		}
 		return datausageofApps;
@@ -116,10 +117,10 @@ public class DBAdapter {
 		} else {
 			id++;
 		}
-		
+
 		ContentValues cv = new ContentValues();
 		cv.put("screenState", state);
-		cv.put("timeStamp", time);
+		cv.put("timestamp", time);
 		cv.put("total", 0L);
 		cv.put("cumulatetotal", 0L+"");	
 
@@ -141,7 +142,7 @@ public class DBAdapter {
 			} else {
 				Log.d("timeStamp T + LAstT", time.split(" ")[0] + " | " + lastTimeStamp);
 				edit.putLong("t_unlocked",0L);
-				
+
 			}
 
 			edit.putString("s_unlocked", time);
@@ -167,7 +168,7 @@ public class DBAdapter {
 		cv.put("total", total);
 		try {
 			long n = db.update("phone_activity", 
-					cv, "timeStamp=?", new String[] {timeStamp});
+					cv, "timestamp=?", new String[] {timeStamp});
 			Log.d("UPDATE", ""+n);
 			return n;
 
@@ -195,7 +196,7 @@ public class DBAdapter {
 		while(cursor.moveToNext()) {
 			String sDetailss = cursor.getString(cursor.getColumnIndex("sno"))
 					+ "  " + cursor.getString(cursor.getColumnIndex("screenState")) 
-					+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp"))
+					+ "  " + cursor.getString(cursor.getColumnIndex("timestamp"))
 					+ "  " + utils.convert2Time(cursor.getLong(cursor.getColumnIndex("total")));
 			screenStateDetailss.add(sDetailss);
 		}
@@ -229,7 +230,7 @@ public class DBAdapter {
 	public void insertLocationDetails(String timeStamp,String lat , String lon, String accuracy, String address, String type){
 		Log.d("DBAdapter","insertLocation");
 		open();
-				
+
 		//String query="insert into LOCATION VALUES ("+timeStamp+","+lat+","+lon+","+accuracy+","+address+","+type+")";
 		ContentValues locationValues=new ContentValues();
 		locationValues.put("timestamp", timeStamp);
@@ -269,25 +270,25 @@ public class DBAdapter {
 			Log.d("exception in getlocation",e.toString());
 			return null;
 		}
-		
+
 	}
-	
+
 	public void insertActivity(String timestamp,String activity,String confidence){
-		
+
 		Log.d("DBAdapter","insertActivity");
 		open();
-				
-		//String query="insert into LOCATION VALUES ("+timeStamp+","+lat+","+lon+","+accuracy+","+address+","+type+")";
+
+		//String query="insert into LOCATION VALUES ("+timestamp+","+lat+","+lon+","+accuracy+","+address+","+type+")";
 		ContentValues locationValues=new ContentValues();
 		locationValues.put("timestamp", timestamp);
 		locationValues.put("activity", activity);
 		locationValues.put("confidence", confidence);
-		
+
 		db.insert("ACTIVITIES", null, locationValues);
 		//db.execSQL(query);
 		db.close();
 	}
-	
+
 	public String[][] getActivities(){
 		Log.d("DBAdapter","getactivities");
 		open();
@@ -303,7 +304,7 @@ public class DBAdapter {
 				data[i][0]=cursor.getString(1);
 				data[i][1]=cursor.getString(2);
 				data[i][2]=cursor.getString(3);
-				
+
 				i++;
 			}
 			db.close();
@@ -324,7 +325,7 @@ public class DBAdapter {
 		long total = getDiffTS(timeStamp, time);
 
 		if (lastState.equals("Active")) {
-			
+
 			cumulateTotal =  total + prefs.getLong("t_unlocked", 0L);
 
 			Log.d("cumulateTotal", cumulateTotal + "");
@@ -383,7 +384,7 @@ public class DBAdapter {
 		if (cursor.getCount() > 0) {
 			cursor.moveToLast();
 			sDetailss = cursor.getString(cursor.getColumnIndex("screenState"))
-					+ "," + cursor.getString(cursor.getColumnIndex("timeStamp"));
+					+ "," + cursor.getString(cursor.getColumnIndex("timestamp"));
 		}
 		return sDetailss;
 	}
@@ -403,7 +404,7 @@ public class DBAdapter {
 		cursor.moveToPosition(cursor.getCount() - 4);
 		while(cursor.moveToNext()) {
 
-			String sDetailss = cursor.getString(cursor.getColumnIndex("timeStamp"))
+			String sDetailss = cursor.getString(cursor.getColumnIndex("timestamp"))
 					+ "  " + utils.convert2Time(cursor.getLong(cursor.getColumnIndex("total")));
 			top3.add(sDetailss);
 
@@ -421,7 +422,7 @@ public class DBAdapter {
 
 		ContentValues cv = new ContentValues();
 		cv.put("screenState", state);
-		cv.put("timeStamp", time);
+		cv.put("timestamp", time);
 		cv.put("total", total);
 		cv.put("hour", hour);	
 		Log.d("DBBInsert", state + " | " + time  + " | " + total  + " | " + hour);
@@ -434,7 +435,7 @@ public class DBAdapter {
 		cv.put("total", total);
 		try {
 			long n = db.update("sort", 
-					cv, "screenState=? and hour=? and timeStamp=?",
+					cv, "screenState=? and hour=? and timestamp=?",
 					new String[] {state, hour, timeStamp});
 			Log.d("UPDATESORT", ""+n);
 			return n;
@@ -449,10 +450,10 @@ public class DBAdapter {
 	public ArrayList<String> getSortDetails(String state, String date) {
 		open();
 		Cursor cursor = db.query("sort", 
-				null, "screenState=? and timeStamp LIKE '"+date+"%'", new String[] {state}, null, null, "total");
+				null, "screenState=? and timestamp LIKE '"+date+"%'", new String[] {state}, null, null, "total");
 		ArrayList<String> screenStateDetailss = new ArrayList<String>();
 		while(cursor.moveToNext()) {
-			String sDetailss = cursor.getString(cursor.getColumnIndex("timeStamp"))
+			String sDetailss = cursor.getString(cursor.getColumnIndex("timestamp"))
 					+ "  " + utils.convert2Time(cursor.getLong(cursor.getColumnIndex("total")))
 					+ "  " + cursor.getString(cursor.getColumnIndex("hour"));
 			screenStateDetailss.add(sDetailss);
@@ -460,43 +461,43 @@ public class DBAdapter {
 		close();
 		return screenStateDetailss;
 	}
-	
-	
-	
+
+
+
 	// ALARMDETAILS
 	// To log the database of Alarm details
-		public long insertAlarmDetails(String alarm, 
-				String timeStamp) {
-			try {
-				Log.d("AALARM",
-						"DBA: " + alarm 
-						+  timeStamp);
-				ContentValues cv = new ContentValues();
-				cv.put("alarm", alarm);
-				cv.put("timeStamp", timeStamp);
-				long n = db.insertOrThrow("AlarmDetails", null, cv);
-				Log.d("AlarmInserted", "" + n);
-				return n;	
-			} catch (android.database.sqlite.SQLiteConstraintException s) {
+	public long insertAlarmDetails(String alarm, 
+			String timeStamp) {
+		try {
+			Log.d("AALARM",
+					"DBA: " + alarm 
+					+  timeStamp);
+			ContentValues cv = new ContentValues();
+			cv.put("alarm", alarm);
+			cv.put("timestamp", timeStamp);
+			long n = db.insertOrThrow("AlarmDetails", null, cv);
+			Log.d("AlarmInserted", "" + n);
+			return n;	
+		} catch (android.database.sqlite.SQLiteConstraintException s) {
 
-			} 
-			return 0;
-		}
+		} 
+		return 0;
+	}
 
-		// To get the Alarm details show in display
-		public ArrayList<String> getAlarmDetails() {
-			//String query="select email_id from contacts";
-			Cursor cursor = db.query("AlarmDetails", 
-					null, null, null, null, null, null);
-			ArrayList<String> AlarmDetails = new ArrayList<String>();
-			while(cursor.moveToNext()) {
-				String aDetails = cursor.getString(cursor.getColumnIndex("alarm"))
-						+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp"));
-				AlarmDetails.add(aDetails);
-			}
-			return AlarmDetails;
+	// To get the Alarm details show in display
+	public ArrayList<String> getAlarmDetails() {
+		//String query="select email_id from contacts";
+		Cursor cursor = db.query("AlarmDetails", 
+				null, null, null, null, null, null);
+		ArrayList<String> AlarmDetails = new ArrayList<String>();
+		while(cursor.moveToNext()) {
+			String aDetails = cursor.getString(cursor.getColumnIndex("alarm"))
+					+ "  " + cursor.getString(cursor.getColumnIndex("timestamp"));
+			AlarmDetails.add(aDetails);
 		}
-	
+		return AlarmDetails;
+	}
+
 	//Insert data into ChargerState table (Power_Connected / Power_Disconnected)
 	public long insertPowerDetails(String connection, 
 			String chargingstate, String chargingport, String batterylevel, String time) {
@@ -509,12 +510,12 @@ public class DBAdapter {
 		cv.put("chargingstate", chargingstate);
 		cv.put("chargingpoint", chargingport);
 		cv.put("battery", batterylevel);
-		cv.put("timeStamp", time);
+		cv.put("timestamp", time);
 		long n=db.insert("ChargerState", null, cv);
 		Log.d("ChargerState", "" + n);
 		return n;	
 	}
-	
+
 	//Retrieve ChargerDetails
 	public ArrayList<String> getPowerDetails() {
 		//String query="select email_id from contacts";
@@ -528,45 +529,45 @@ public class DBAdapter {
 						+ "  " + cursor.getString(cursor.getColumnIndex("chargingstate"))
 						+ "  " + cursor.getString(cursor.getColumnIndex("chargingpoint"))
 						+ "  " + cursor.getString(cursor.getColumnIndex("battery"))
-						+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp"));
+						+ "  " + cursor.getString(cursor.getColumnIndex("timestamp"));
 				PowerDetails.add(nDetails);
 			}
 		}		
 
 		return PowerDetails;
 	}
-	
+
 	//Insert Temperature data into table
 	public long insertTemperatureDetails(String temperature, String time) {
 		Log.d("Temperature",
 				"DBA: " + temperature + " | " + time);
 		ContentValues cv = new ContentValues();
 		cv.put("temperature", temperature);
-		cv.put("timeStamp", time);
+		cv.put("timestamp", time);
 		long n=db.insert("AmbientTemperature", null, cv);
 		Log.d("Temperature", "" + n);
 		return n;	
 	}
-	
+
 	//Retrieve TemperatureDetails
-		public ArrayList<String> getTemperatureDetails() {
-			//String query="select email_id from contacts";
-			Cursor cursor = db.query("AmbientTemperature", 
-					null, null, null, null, null, "timeStamp DESC");
-			ArrayList<String> TemperatureDetails = new ArrayList<String>();
-			if(cursor != null) {
-				int count = 1;
-				while(cursor.moveToNext()) {
-					String nDetails = count+") " + cursor.getString(cursor.getColumnIndex("temperature"))
-							+ "  " + cursor.getString(cursor.getColumnIndex("timeStamp")).split("GMT")[0];
-					TemperatureDetails.add(nDetails);
-					count++;
-				}
+	public ArrayList<String> getTemperatureDetails() {
+		//String query="select email_id from contacts";
+		Cursor cursor = db.query("AmbientTemperature", 
+				null, null, null, null, null, "timestamp DESC");
+		ArrayList<String> TemperatureDetails = new ArrayList<String>();
+		if(cursor != null) {
+			int count = 1;
+			while(cursor.moveToNext()) {
+				String nDetails = count+") " + cursor.getString(cursor.getColumnIndex("temperature"))
+						+ "  " + cursor.getString(cursor.getColumnIndex("timestamp")).split("GMT")[0];
+				TemperatureDetails.add(nDetails);
+				count++;
 			}
-			
-			return TemperatureDetails;
 		}
-	
+
+		return TemperatureDetails;
+	}
+
 	//Insert Image/Video info into table
 	public long insertMediaDetails(String path, String mediatype, String time) {
 		Log.d("MediaEvent",
@@ -576,260 +577,248 @@ public class DBAdapter {
 			ContentValues cv = new ContentValues();
 			cv.put("filepath", path);
 			cv.put("filetype", mediatype);
-			cv.put("timeStamp", time);
+			cv.put("timestamp", time);
 			n=db.insert("MediaEvent", null, cv);
 			Log.d("MediaEvent", "" + n);
 		} catch(Exception e) {
 			Log.d("MediaEvent",e.toString());
 			//e.printStackTrace();
 		}
-		
+
 		return n;	
 	}
 	//Retrieve MediaDetails
-		public ArrayList<String> getMediaDetails() {
-			//String query="select email_id from contacts";
-			Cursor cursor = db.query("MediaEvent", 
-					null, null, null, null, null, null);
-			ArrayList<String> MediaDetails = new ArrayList<String>();
-			if(cursor != null) {
-				int count = 1;
-				while(cursor.moveToNext()) {
-					String nDetails = count +") "+ cursor.getString(cursor.getColumnIndex("filepath"))
-							+ " | " + cursor.getString(cursor.getColumnIndex("filetype"))
-							+ " | " + cursor.getString(cursor.getColumnIndex("timeStamp")).split("GMT")[0];
-					MediaDetails.add(nDetails);
-					count++;
-				}
-			}
-			
-			return MediaDetails;
-		}
-	    //saves the boot,restart events
-		public long insertDeviceState(String activity, String timeStamp) {
-			Log.d("Dbb","DBA: " + activity + " | " + timeStamp);
-			ContentValues cv = new ContentValues();
-			cv.put("activity", activity);
-			cv.put("timestamp", timeStamp);
-			long n=db.insert("devicestate", null, cv);
-			Log.d("tablename", "inserted a row "+n);
-			return n;	
-		}
-		//saves the light sensor value
-		public long insertLightSensorValue(String activity, String timeStamp) {
-			Log.d("Dbb","DBA: " + activity + " | " + timeStamp);
-			ContentValues cv = new ContentValues();
-			cv.put("value", activity);
-			cv.put("timestamp", timeStamp);
-			long n=db.insert("lightsensor", null, cv);
-			Log.d("tablename", "inserted a row "+n);
-			return n;	
-		}
-		//saves wifi, mobile events
-		public long insertWifiandData(String network, String activity, String timeStamp) {
-			Log.d("Dbb","DBA: " + activity + " | " + timeStamp);
-			ContentValues cv = new ContentValues();
-			cv.put("network", network);
-			cv.put("activity", activity);
-			cv.put("timestamp", timeStamp);
-			
-			long n=db.insert("wifianddata", null, cv);
-			Log.d("tablename", "inserted a row "+n);
-			return n;	
-		}
-		//Generated get device state log from database
-		public ArrayList<String> getdevicestatelog(){
-			Cursor cursor=db.query("devicestate", null,null, null, null, null, null);
-			ArrayList<String> entry = new ArrayList<String>();
+	public ArrayList<String> getMediaDetails() {
+		//String query="select email_id from contacts";
+		Cursor cursor = db.query("MediaEvent", 
+				null, null, null, null, null, null);
+		ArrayList<String> MediaDetails = new ArrayList<String>();
+		if(cursor != null) {
+			int count = 1;
 			while(cursor.moveToNext()) {
-				String nDetails = cursor.getString(cursor.getColumnIndex("activity"))
-						+ "\n" + cursor.getString(cursor.getColumnIndex("timestamp"));
-				entry.add(nDetails);
+				String nDetails = count +") "+ cursor.getString(cursor.getColumnIndex("filepath"))
+						+ " | " + cursor.getString(cursor.getColumnIndex("filetype"))
+						+ " | " + cursor.getString(cursor.getColumnIndex("timestamp")).split("GMT")[0];
+				MediaDetails.add(nDetails);
+				count++;
 			}
-			return entry;
 		}
-		//Generated get Light Sensor log from database
-		public ArrayList<String> getLightSensorlog(){
-			Cursor cursor=db.query("lightsensor", null,null, null, null, null, null);
-			ArrayList<String> entry = new ArrayList<String>();
-			while(cursor.moveToNext()) {
-				String nDetails = cursor.getString(cursor.getColumnIndex("value"))
-						+ "\n" + cursor.getString(cursor.getColumnIndex("timestamp"));
-				entry.add(nDetails);
+
+		return MediaDetails;
+	}
+	//saves the boot,restart events
+	public long insertDeviceState(String activity, String timeStamp) {
+		Log.d("Dbb","DBA: " + activity + " | " + timeStamp);
+		ContentValues cv = new ContentValues();
+		cv.put("activity", activity);
+		cv.put("timestamp", timeStamp);
+		long n=db.insert("devicestate", null, cv);
+		Log.d("tablename", "inserted a row "+n);
+		return n;	
+	}
+	//saves the light sensor value
+	public long insertLightSensorValue(String activity, String timeStamp) {
+		Log.d("Dbb","DBA: " + activity + " | " + timeStamp);
+		ContentValues cv = new ContentValues();
+		cv.put("value", activity);
+		cv.put("timestamp", timeStamp);
+		long n=db.insert("lightsensor", null, cv);
+		Log.d("tablename", "inserted a row "+n);
+		return n;	
+	}
+	//saves wifi, mobile events
+	public long insertWifiandData(String network, String activity, String timeStamp) {
+		Log.d("Dbb","DBA: " + activity + " | " + timeStamp);
+		ContentValues cv = new ContentValues();
+		cv.put("network", network);
+		cv.put("activity", activity);
+		cv.put("timestamp", timeStamp);
+
+		long n=db.insert("wifianddata", null, cv);
+		Log.d("tablename", "inserted a row "+n);
+		return n;	
+	}
+	//Generated get device state log from database
+	public ArrayList<String> getdevicestatelog(){
+		Cursor cursor=db.query("devicestate", null,null, null, null, null, null);
+		ArrayList<String> entry = new ArrayList<String>();
+		while(cursor.moveToNext()) {
+			String nDetails = cursor.getString(cursor.getColumnIndex("activity"))
+					+ "\n" + cursor.getString(cursor.getColumnIndex("timestamp"));
+			entry.add(nDetails);
+		}
+		return entry;
+	}
+	//Generated get Light Sensor log from database
+	public ArrayList<String> getLightSensorlog(){
+		Cursor cursor=db.query("lightsensor", null,null, null, null, null, null);
+		ArrayList<String> entry = new ArrayList<String>();
+		while(cursor.moveToNext()) {
+			String nDetails = cursor.getString(cursor.getColumnIndex("value"))
+					+ "\n" + cursor.getString(cursor.getColumnIndex("timestamp"));
+			entry.add(nDetails);
+		}
+		return entry;
+	}
+	//Generated get wifi and data log from database
+	public ArrayList<String> getwifianddatalog(){
+		Cursor cursor=db.query("wifianddata", null,null, null, null, null, null);
+		ArrayList<String> entry = new ArrayList<String>();
+		while (cursor.moveToNext()) {
+			String nDetails = 
+					cursor.getString(cursor.getColumnIndex("network"))
+					+ "\n" +cursor.getString(cursor.getColumnIndex("activity"))
+					+ "\n" + cursor.getString(cursor.getColumnIndex("timestamp"));
+			entry.add(nDetails);
+		}
+		return entry;
+	}
+	//Generated get Audio level log from database
+	public ArrayList<String> getaudiolog(){
+		Cursor cursor=db.query("audiolevel", null,null, null, null, null, null);
+		ArrayList<String> entry = new ArrayList<String>();
+		while (cursor.moveToNext()) {
+			String nDetails = cursor.getString(cursor.getColumnIndex("value"))
+					+ "\n" + cursor.getString(cursor.getColumnIndex("timestamp"));
+			entry.add(nDetails);
+		}
+		return entry;
+	}
+
+	/*
+	 * insertForeGroundApp method for inserting foregroundApp
+	 */
+	public void insertForeGroundApp(String timeStamp,String AppName){
+		Log.d("DBAdapter","insertForeGroundApp");
+		open();
+
+		ContentValues app=new ContentValues();
+		app.put("timestamp", timeStamp);
+		app.put("app", AppName);
+
+		db.insert("FORE_GROUND_APP", null, app);
+
+		db.close();
+	}
+	/*
+	 * getForeGroundApp method for getting foregroundApp
+	 */
+	public String[][] getForeGroundApp(){
+
+		Log.d("DBAdapter","getforegroundapp");
+		open();
+		String query="select * from FORE_GROUND_APP";
+		Cursor cursor;
+		try {
+			cursor = db.rawQuery(query, null);
+			int size=cursor.getCount();
+			Log.d("no of app logs",size+"");
+			String[][] data=new String[size][2];
+			int i=0;
+			while(cursor.moveToNext()){
+				data[i][0]=cursor.getString(1);
+				data[i][1]=cursor.getString(2);	
+				i++;
 			}
-			return entry;
-		}
-		//Generated get wifi and data log from database
-		public ArrayList<String> getwifianddatalog(){
-			Cursor cursor=db.query("wifianddata", null,null, null, null, null, null);
-			ArrayList<String> entry = new ArrayList<String>();
-			while (cursor.moveToNext()) {
-				String nDetails = 
-						cursor.getString(cursor.getColumnIndex("network"))
-						+ "\n" +cursor.getString(cursor.getColumnIndex("activity"))
-						+ "\n" + cursor.getString(cursor.getColumnIndex("timestamp"));
-				entry.add(nDetails);
-			}
-			return entry;
-		}
-		//Generated get Audio level log from database
-		public ArrayList<String> getaudiolog(){
-			Cursor cursor=db.query("audiolevel", null,null, null, null, null, null);
-			ArrayList<String> entry = new ArrayList<String>();
-			while (cursor.moveToNext()) {
-				String nDetails = cursor.getString(cursor.getColumnIndex("value"))
-						+ "\n" + cursor.getString(cursor.getColumnIndex("timestamp"));
-				entry.add(nDetails);
-			}
-			return entry;
-		}
-		
-/*
- * insertForeGroundApp method for inserting foregroundApp
- */
-		public void insertForeGroundApp(String timeStamp,String AppName){
-			Log.d("DBAdapter","insertForeGroundApp");
-			open();
-				
-			ContentValues app=new ContentValues();
-			app.put("timestamp", timeStamp);
-			app.put("app", AppName);
-						
-			db.insert("FORE_GROUND_APP", null, app);
-			
 			db.close();
+			return data;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			Log.d("exception in getforegroundapp",e.toString());
+			return null;
 		}
-/*
- * getForeGroundApp method for getting foregroundApp
- */
-		public String[][] getForeGroundApp(){
-			
-			Log.d("DBAdapter","getforegroundapp");
-			open();
-			String query="select * from FORE_GROUND_APP";
-			Cursor cursor;
-			try {
-				cursor = db.rawQuery(query, null);
-				int size=cursor.getCount();
-				Log.d("no of app logs",size+"");
-				String[][] data=new String[size][2];
-				int i=0;
-				while(cursor.moveToNext()){
-					data[i][0]=cursor.getString(1);
-					data[i][1]=cursor.getString(2);	
-					i++;
+	}
+
+
+	// SYNC state cursors/arraylist retrieval methods
+	//SYNC DB VALUE-GENERATOR
+	public HashMap<String, ArrayList<String>> getSYNCData() {
+
+		String query1 = "";
+		Cursor c = null;
+
+		ArrayList<String> arrTblNames = new ArrayList<String>();
+		HashMap<String, ArrayList<String>> tables_for_sync = new HashMap<String, ArrayList<String>>();
+		ArrayList<String> table_data;
+		try {
+			c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+			//If there are tables in database then iterate through them and add it to
+			// the ArrayList<String> arrTblNames
+			if (c.moveToFirst()&&c!=null) {
+				while ( !c.isAfterLast() ) {
+					arrTblNames.add( c.getString( c.getColumnIndex("name")) );
+					c.moveToNext();
 				}
-				db.close();
-				return data;
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				Log.d("exception in getforegroundapp",e.toString());
-				return null;
 			}
-		}
-		
-		
-		// SYNC state cursors/arraylist retrieval methods
-		//Generated get device state log from database
-		public ArrayList<String> getdevicestatelogSYNC(){
-			Cursor cursor=db.query("devicestate", null,null, null, null, null, null);
-			ArrayList<String> entry = new ArrayList<String>();
-			while(cursor.moveToNext()) {
-				String nDetails = cursor.getString(cursor.getColumnIndex("activity"))
-						+ "|" + cursor.getString(cursor.getColumnIndex("timestamp"));
-				entry.add(nDetails);
+			c.close();
+
+			//Log.d("toServer",arrTblNames.toString());
+
+			//Iterate through the ArrayList of tablename (arrTblNames)
+			for(String tablname : arrTblNames) {
+				//Proceed only if table names are not the default-android tables
+				if(!tablname.equalsIgnoreCase("android_metadata") && !tablname.equalsIgnoreCase("sqlite_sequence")) {
+					c = db.rawQuery("SELECT * FROM "+tablname+" WHERE sync=0", null);
+					//If cursor is not null then proceed
+					if(c!=null) {
+						table_data = new ArrayList<String>();
+						Log.d("toServerDBSYNC",""+tablname+" : "+c.getCount()+"|"+c.getColumnCount());
+						int column_count = c.getColumnCount();
+						//Iterate through the rows in the particular table
+						while(c.moveToNext()){
+							String temp = "";
+							//Iterate and fetch data in each column of the table
+							//Insert data to a temp_string and add to arraylist table_data
+							for(int k=0; k<column_count-1; k++) {
+								Cursor typeCursor = 
+										db.rawQuery("select typeof (" + c.getColumnName(k) + ") from " + tablname, null);
+								typeCursor.moveToFirst();
+								//Log.d("toServerTYPE", tablname+"|"+k+":"+typeCursor.getString(0));
+								if(typeCursor.getString(0).equals("text"))
+									temp += c.getString(k)+"|";
+								else
+									temp += c.getInt(k)+"|";
+								typeCursor.close();							
+							}
+							temp = temp.substring(0, temp.lastIndexOf("|"));
+							table_data.add(temp);
+							//Log.d("toServerTYPE", temp);
+						}
+						//Insert the obtained data into a hashmap where key is tablename and value is data
+						tables_for_sync.put(tablname, table_data);
+						Log.d("toServerHASHV","tablname :"+tables_for_sync.get(tablname).toString());
+						//Log.d("toServerHASH",tables_for_sync.keySet().toString());
+					}
+					c.close();
+
+				}			
 			}
-			return entry;
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(c!=null)
+				c.close();
 		}
-		//Generated get Light Sensor log from database
-		public ArrayList<String> getLightSensorlogSYNC(){
-			Cursor cursor=db.query("lightsensor", null,null, null, null, null, null);
-			ArrayList<String> entry = new ArrayList<String>();
-			while(cursor.moveToNext()) {
-				String nDetails = cursor.getString(cursor.getColumnIndex("value"))
-						+ "|" + cursor.getString(cursor.getColumnIndex("timestamp"));
-				entry.add(nDetails);
-			}
-			return entry;
+
+		return tables_for_sync;
+	}
+	
+	//Update SYNC column values for the given row of the given table 
+	public void updateSYNCTable(String tablename, String timestamp) {
+		//String query = "UPDATE "+tablename+" SET sync="+1+" WHERE timestamp='"+timestamp+"'";
+		try {
+			//Cursor c = db.rawQuery(query, null);
+			ContentValues args = new ContentValues();
+			args.put("sync", 1);
+			boolean upd_state = db.update(tablename, args, "timestamp" + "='" + timestamp+"'", null) > 0;
+			Log.d("toServerSYNCUPD", "Upd "+tablename+" | "+timestamp);
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
-		
-		//Generated get wifi and data log from database
-		public ArrayList<String> getwifianddatalogSYNC(){
-			Cursor cursor=db.query("wifianddata", null,null, null, null, null, null);
-			ArrayList<String> entry = new ArrayList<String>();
-			while (cursor.moveToNext()) {
-				String nDetails = 
-						cursor.getString(cursor.getColumnIndex("network"))
-						+ "|" +cursor.getString(cursor.getColumnIndex("activity"))
-						+ "|" + cursor.getString(cursor.getColumnIndex("timestamp"));
-				entry.add(nDetails);
-			}
-			return entry;
-		}
-		//Generated get Audio level log from database
-		public ArrayList<String> getaudiologSYNC(){
-			Cursor cursor=db.query("audiolevel", null,null, null, null, null, null);
-			ArrayList<String> entry = new ArrayList<String>();
-			while (cursor.moveToNext()) {
-				String nDetails = cursor.getString(cursor.getColumnIndex("value"))
-						+ "|" + cursor.getString(cursor.getColumnIndex("timestamp"));
-				entry.add(nDetails);
-			}
-			return entry;
-		}
-		
-		public ArrayList<String> getLocationDetailsSYNC(){
-			Log.d("DBAdapter","getlocation");
-			open();
-			String query="select * from LOCATION";
-			Cursor cursor;
-			try {
-				cursor = db.rawQuery(query, null);
-				int size=cursor.getCount();
-				Log.d("no of location logs",size+"");
-				ArrayList<String> locdata = new ArrayList<String>();
-				
-				while(cursor.moveToNext()){
-					Log.d("toServer", cursor.getColumnIndex("timestamp")+""+cursor.getColumnIndex("ltype"));
-					locdata.add(cursor.getString(cursor.getColumnIndex("lid"))+"|"+cursor.getString(1)+"|"+cursor.getString(2)+"|"
-							+cursor.getString(3)+"|"+cursor.getString(4)+"|"
-							+cursor.getString(5)+"|"+cursor.getString(6));					
-				}
-				
-				return locdata;
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				Log.d("exception in getlocation",e.toString());
-				return null;
-			}
-			
-		}
-		
-		public ArrayList<String> getActivitiesSYNC(){
-			Log.d("DBAdapter","getactivities");
-			open();
-			String query="select * from ACTIVITIES";
-			Cursor cursor;
-			try {
-				cursor = db.rawQuery(query, null);
-				int size=cursor.getCount();
-				Log.d("no of activities logs",size+"");
-				ArrayList<String> activitiesdata = new ArrayList<String>();
-				
-				while(cursor.moveToNext()){
-					activitiesdata.add(cursor.getString(1)+"|"+cursor.getString(2)
-							+"|"+cursor.getString(3));
-				}
-				
-				return activitiesdata;
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				Log.d("exception in getactivity",e.toString());
-				return null;
-			}
-		}
-		
-		
-		
+
+	}
+
+
+
 
 }

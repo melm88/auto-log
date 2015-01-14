@@ -2037,8 +2037,9 @@ containing a value of this type.
         public static final int action_mode_bar_stub=0x7f080040;
         public static final int action_mode_close_button=0x7f080033;
         public static final int action_settings=0x7f08006b;
-        public static final int action_start=0x7f08006c;
-        public static final int action_stop=0x7f08006d;
+        public static final int action_start=0x7f08006d;
+        public static final int action_stop=0x7f08006e;
+        public static final int action_sync=0x7f08006c;
         public static final int activities=0x7f080053;
         public static final int activity_chooser_view_content=0x7f080034;
         public static final int alarmDetails=0x7f080054;
