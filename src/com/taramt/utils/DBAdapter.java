@@ -273,6 +273,37 @@ public class DBAdapter {
 
 	}
 
+
+	public ArrayList<String> getLocationDetailsArrayList(){
+		ArrayList<String> rows= new ArrayList<String>();
+ 		Log.d("DBAdapter","getlocation");
+		open();
+		String query="select * from LOCATION";
+		Cursor cursor;
+		try {
+			cursor = db.rawQuery(query, null);
+			int size=cursor.getCount();
+			Log.d("no of location logs",size+"");
+			while(cursor.moveToNext()){
+				String nDetails = cursor.getString(1)
+						+ "\n" + cursor.getString(2)
+						+ "\n" + cursor.getString(3)
+				+ "\n" + cursor.getString(4)
+				+ "\n" + cursor.getString(5)
+				+ "\n" + cursor.getString(6);
+				
+				rows.add(nDetails);
+			}
+			db.close();
+			return rows;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			Log.d("exception in getlocation",e.toString());
+			return null;
+		}
+		
+	}
+
 	public void insertActivity(String timestamp,String activity,String confidence){
 
 		Log.d("DBAdapter","insertActivity");
@@ -289,7 +320,9 @@ public class DBAdapter {
 		db.close();
 	}
 
-	public String[][] getActivities(){
+	public ArrayList<String> getActivities(){
+		ArrayList<String> rows = new ArrayList<String>();
+
 		Log.d("DBAdapter","getactivities");
 		open();
 		String query="select * from ACTIVITIES";
@@ -298,17 +331,17 @@ public class DBAdapter {
 			cursor = db.rawQuery(query, null);
 			int size=cursor.getCount();
 			Log.d("no of activities logs",size+"");
-			String[][] data=new String[size][3];
-			int i=0;
 			while(cursor.moveToNext()){
-				data[i][0]=cursor.getString(1);
-				data[i][1]=cursor.getString(2);
-				data[i][2]=cursor.getString(3);
 
-				i++;
+				String nDetails = cursor.getString(1)
+						+ "\n" + cursor.getString(2)
+						+ "\n" + cursor.getString(3);
+				
+				rows.add(nDetails);	
+
 			}
 			db.close();
-			return data;
+			return rows;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			Log.d("exception in getactivity",e.toString());
@@ -703,30 +736,29 @@ public class DBAdapter {
 	/*
 	 * getForeGroundApp method for getting foregroundApp
 	 */
-	public String[][] getForeGroundApp(){
+			public ArrayList<String> getForeGroundApp(){
+				ArrayList<String> entry = new ArrayList<String>();
+				Log.d("DBAdapter","getforegroundapp");
+				open();
+				String query="select * from FORE_GROUND_APP";
+				Cursor cursor;
+				try {
+					cursor = db.rawQuery(query, null);
+					int size=cursor.getCount();
+					Log.d("no of app logs",size+"");
+					while(cursor.moveToNext()){
+						String nDetails = cursor.getString(1)
+								+ "\n" + cursor.getString(2);
+						entry.add(nDetails);
+									}
+					db.close();
+					return entry;
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					Log.d("exception in getforegroundapp",e.toString());
+					return null;
+				}
 
-		Log.d("DBAdapter","getforegroundapp");
-		open();
-		String query="select * from FORE_GROUND_APP";
-		Cursor cursor;
-		try {
-			cursor = db.rawQuery(query, null);
-			int size=cursor.getCount();
-			Log.d("no of app logs",size+"");
-			String[][] data=new String[size][2];
-			int i=0;
-			while(cursor.moveToNext()){
-				data[i][0]=cursor.getString(1);
-				data[i][1]=cursor.getString(2);	
-				i++;
-			}
-			db.close();
-			return data;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			Log.d("exception in getforegroundapp",e.toString());
-			return null;
-		}
 	}
 
 
@@ -749,6 +781,7 @@ public class DBAdapter {
 					arrTblNames.add( c.getString( c.getColumnIndex("name")) );
 					c.moveToNext();
 				}
+
 			}
 			c.close();
 

@@ -9,11 +9,11 @@ import android.content.pm.PackageManager.NameNotFoundException;
 
 public class Utils {
 	Context context;
-	
+
 	public Utils(Context context) {
 		this.context = context;
 	}
-	
+
 	/*
 	 *  Retrieving the appName using packageName
 	 */
@@ -27,7 +27,7 @@ public class Utils {
 				? packageManager.getApplicationLabel(applicationInfo) : "???");
 		return appName;
 	}
-	
+
 	/*
 	 * a method for getting the details from the database
 	 */
@@ -40,23 +40,23 @@ public class Utils {
 		db.close();
 		return detailss;
 	}
-	
+
 
 	public String convert2Time(long total) {
-	
-		 long totalSec = total/1000;
-	         //new date object with time difference
-		 
-	         String timeStr = "";
-	         if(totalSec/3600 > 0) {
-	        	 timeStr = timeStr +  totalSec/3600+"h  : ";
-	         }
-	        if ((totalSec%3600)/60 > 0) {
-	        	timeStr = timeStr + (totalSec%3600)/60 + "m  : ";
-	        }
-                
-                timeStr = timeStr + (totalSec%3600)%60 + "s";
-	         return timeStr;
+
+		long totalSec = total/1000;
+		//new date object with time difference
+
+		String timeStr = "";
+		if(totalSec/3600 > 0) {
+			timeStr = timeStr +  totalSec/3600+"h  : ";
+		}
+		if ((totalSec%3600)/60 > 0) {
+			timeStr = timeStr + (totalSec%3600)/60 + "m  : ";
+		}
+
+		timeStr = timeStr + (totalSec%3600)%60 + "s";
+		return timeStr;
 	}
 
 }

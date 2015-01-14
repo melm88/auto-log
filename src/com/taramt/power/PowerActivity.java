@@ -6,18 +6,18 @@ import com.taramt.utils.DBAdapter;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class PowerActivity extends Activity {
-	TextView powerTV;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_power);
 
 		//TextView in PowerActivity
-		powerTV = (TextView) findViewById(R.id.powerActTV);
 		displayPowerResults();
 	}
 
@@ -31,23 +31,22 @@ public class PowerActivity extends Activity {
 	public void displayPowerResults() {
 
 		ArrayList<String> displayArray = null;
-		String content = "";
 
 		//Retrieve data from DB (PowerTable)
 		DBAdapter dba = new DBAdapter(this);
 		dba.open();
 		displayArray = dba.getPowerDetails();
 		dba.close();
+		//displaying the log from database on list view 
+		ListView listView = (ListView) findViewById(R.id.list);
 
-		//Code to display the database results on screen
-		//(if any)
-		if (displayArray != null) {
-			for (String ele: displayArray) {
-				content += ele + "\n\n";
-			}
 
-			powerTV.setText(content);
-		}
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, android.R.id.text1, displayArray);
+
+		listView.setAdapter(adapter); 
+
+
 
 	}
 }

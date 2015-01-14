@@ -1,6 +1,8 @@
 package com.taramt.autologdatausage;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import android.app.Service;
@@ -59,22 +61,26 @@ public class DataService extends Service{
 			String appName = utils.getAppName(package_name);
 		//	Drawable icon = pm.getApplicationIcon(app);
 			
-			double received = 
-					(double) TrafficStats.getUidRxBytes(uid)/ (1024 * 1024);
-			double send = 
-					(double) TrafficStats.getUidTxBytes(uid)/ (1024 * 1024);
-			double total = received + send;
+			float received = 
+					(float) TrafficStats.getUidRxBytes(uid)/ (1024 * 1024);
+			float send = 
+					(float) TrafficStats.getUidTxBytes(uid)/ (1024 * 1024);
+			float total = received + send;
 
 			if(total>0) {
-				long date = System.currentTimeMillis();
-				SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy HH:mm");
-				String timeStamp = formatter.format(date);
+//				long date = System.currentTimeMillis();
+//				SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy HH:mm");
+//				String timeStamp = formatter.format(date);
 				// Logging the datausage of each app
 				db.insertDataUsage(dataTable, appName, 
-						send+"", received+"", total+"", timeStamp);
+						round(send,2)+"kB", round(received,2)+"kB", round(total,2)+"kB",new Date().toString() );
 			}
 		}
 		db.close();
 	}
-	
+	public static BigDecimal round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);       
+        return bd;
+    }	
 }

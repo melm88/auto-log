@@ -72,7 +72,7 @@ LocationListener  {
 		SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		String timeStamp=s.format(new Date());
 		SharedPreferences.Editor editor=details.edit();
-		editor.putString("timeStamp", timeStamp);
+		editor.putString("timeStamp", new Date().toString());
 		editor.commit();
 
 		// start the activity monitoring 

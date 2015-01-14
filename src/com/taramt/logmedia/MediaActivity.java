@@ -13,68 +13,66 @@ import android.os.Bundle;
 import android.os.FileObserver;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class MediaActivity extends Activity {
 
-	TextView mediaTV;
 	private FileObserver mFileObserver;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_media);
-		mediaTV = (TextView)findViewById(R.id.mediaTV);
 		//mFileObserver.startWatching();
 		//onLaunch of the activity, initiate FileObserver
-		addObserver();
+		//addObserver();
+		displayMediaData();
 	}
 
 	//Launch the service for capturing audio files created in sdcard/Sounds
-		private void addObserver() {
-			//Log.d("audiorec","in addObserver");
-		    Intent audioservice = new Intent(MediaActivity.this,
-		    		AudioService.class);
-		    MediaActivity.this.startService(audioservice);
+	private void addObserver() {
+		//Log.d("audiorec","in addObserver");
+		Intent audioservice = new Intent(MediaActivity.this,
+				AudioService.class);
+		MediaActivity.this.startService(audioservice);
 
-		    //Display Media data from DB into MainActivity
-		    displayMediaData();
+		//Display Media data from DB into MainActivity
+		displayMediaData();
+	}
+
+	//Display MediaTable data
+	public void displayMediaData() {
+
+		//Retrieve an ArrayList<String> of results from
+		//MediaTable
+		DBAdapter dba = new DBAdapter(this);
+		dba.open();
+		ArrayList<String> mediaData = dba.getMediaDetails();
+		//displaying the log from database on list view 
+		ListView listView = (ListView) findViewById(R.id.list);
+
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, android.R.id.text1, mediaData);
+
+		listView.setAdapter(adapter); 
+
+		dba.close();
+	}
+
+	//Stop listening to audio files being created in sdcard/Sounds
+	public void stopFileObserverWatch() {
+		if (mFileObserver != null) {
+			mFileObserver.stopWatching();
 		}
+	}
 
-		//Display MediaTable data
-		public void displayMediaData() {
-
-			//Retrieve an ArrayList<String> of results from
-			//MediaTable
-			DBAdapter dba = new DBAdapter(this);
-			dba.open();
-			ArrayList<String> mediaData = dba.getMediaDetails();
-			dba.close();
-
-			//If there are contents in DB then display else
-			//show a message "No Media data captured"
-			if (mediaData.size() > 0) {
-				String result = "";
-				for (String med: mediaData) {
-					result += med + "\n\n";
-				}
-				mediaTV.setText(result);
-			} else {
-				mediaTV.setText("No Media data captured.");
-			}
-		}
-
-		//Stop listening to audio files being created in sdcard/Sounds
-		public void stopFileObserverWatch() {
-			if (mFileObserver != null) {
-	            mFileObserver.stopWatching();
-	        }
-		}
-
-		@Override
-		protected void onResume() {
-			// TODO Auto-generated method stub
-			super.onResume();
-			//mFileObserver.startWatching();
-		}
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		//mFileObserver.startWatching();
+	}
 }

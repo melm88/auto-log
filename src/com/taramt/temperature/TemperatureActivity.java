@@ -12,10 +12,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class TemperatureActivity extends Activity {
-    TextView temperatureTV;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,9 +24,8 @@ public class TemperatureActivity extends Activity {
 		setContentView(R.layout.activity_temperature);
 
 		//TextView in TemperatureActivity
-		temperatureTV = (TextView) findViewById(R.id.temperatureTV);
-		enableTemperatureSensing();
-
+		//enableTemperatureSensing();
+		displayTemperatureSensingData();
 		//Intent it = new Intent(this, SensorActivity.class);
 		//startActivity(it);
 	}
@@ -43,33 +43,33 @@ public class TemperatureActivity extends Activity {
 		TemperatureActivity.this.startService(iServe);
 		displayTemperatureSensingData();
 	}
-	
+
 	//Method to stop the service for capturing AmbientTemperature
 	public void stopTemperatureSensing() {
 		Intent iServe = new Intent(TemperatureActivity.this,
 				TemperatureSensor.class);
 		TemperatureActivity.this.stopService(iServe);
 	}
-	
+
 	//Method to display the results from Temperature table onto MainActivity
 	public void displayTemperatureSensingData() {
 		DBAdapter dba = new DBAdapter(this);
 		dba.open();
 		ArrayList<String> temperatureData = dba.getTemperatureDetails();
-		String result = "";
-		
 		//Display results only if there are data in DB.
 		//Otherwise result should show "No Temperature Change"
-		if (temperatureData.size() > 0) {
-			for (String temper: temperatureData) {
-				result += temper + "\n\n";
-			}
-			temperatureTV.setText(result);
-		} else {
-			temperatureTV.setText("No Temperature Changes recorded"
-					+ " so far");
-		}
 		dba.close();
+		//displaying the log from database on list view 
+		if(temperatureData != null) {
+			ListView listView = (ListView) findViewById(R.id.list);
+
+
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, android.R.id.text1, temperatureData);
+
+			listView.setAdapter(adapter); 
+
+		}
+
 	}
-	
 }

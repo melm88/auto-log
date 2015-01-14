@@ -19,26 +19,27 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 public class DataUsage extends Activity {
-	  SharedPreferences shared;
+	SharedPreferences shared;
 	TextView dataUsage;
 	DBAdapter db;
 	Utils utils;
 	static ArrayList<String> dataUsageApps = new ArrayList<String>();
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_data_usage);
-		dataUsage  = (TextView) findViewById(R.id.dataUsage);
 		db = new DBAdapter(this);
 		utils = new Utils(this);
 		showdataUsage();
-		startAlarm();
+		//startAlarm();
 		Log.d("DATAUSAGE", "in on create");
 	}
-	 
+
 	public void startAlarm() {
 
 		try {
@@ -50,32 +51,39 @@ public class DataUsage extends Activity {
 		} catch (Exception e) {
 			Log.d("exceptionasdfdf",""+e);
 		}
-		
-	}
-public void stopService() {
-	Intent intent = new Intent(this, DataService.class);
-	stopService(intent);
-	try {
-		
-		PendingIntent pendingIntent = PendingIntent.getService(this, 
-				0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		AlarmManager am =(AlarmManager)getSystemService(Context.ALARM_SERVICE);
-		am.cancel(pendingIntent);
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-}
 
-/*
- * Showing the data usage of each app from the phone database
- */
+	}
+	public void stopService() {
+		Intent intent = new Intent(this, DataService.class);
+		stopService(intent);
+		try {
+
+			PendingIntent pendingIntent = PendingIntent.getService(this, 
+					0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+			AlarmManager am =(AlarmManager)getSystemService(Context.ALARM_SERVICE);
+			am.cancel(pendingIntent);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/*
+	 * Showing the data usage of each app from the phone database
+	 */
 	public void showdataUsage() {
 		Log.d("DATAUSAGE", "in showdataUsage");
 		db.open();
 		dataUsageApps = db.getDatausageofApps();
-		dataUsage.setText(utils.getDetails(db, dataUsageApps));
 		db.close();
+
+		//displaying the log from database on list view 
+		ListView listView = (ListView) findViewById(R.id.list);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, android.R.id.text1, dataUsageApps);
+
+		listView.setAdapter(adapter); 
+
 	}
-	
+
 }

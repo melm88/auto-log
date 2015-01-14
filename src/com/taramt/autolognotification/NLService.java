@@ -102,7 +102,7 @@ public class NLService extends NotificationListenerService {
 		if (nDetails!=null) nDetails = notificationDetails.toString();
 		db = new DBAdapter(getBaseContext());
 		db.open();
-		db.insertNotificationDetails(appName , nDetails, timeStamp);
+		db.insertNotificationDetails(appName , nDetails, date.toString());
 		db.close();
 	}
 

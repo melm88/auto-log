@@ -12,6 +12,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 /**
  * launches WifiActivity
@@ -25,17 +27,18 @@ public class WifiActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_wifi);
 		//displaying the log from database on text view 
-		TextView tv = (TextView)findViewById(R.id.wifi);
-		  DBAdapter db = new DBAdapter(this);
-		   db.open();
-		   ArrayList<String> row = db.getwifianddatalog();
-		   String content = "";
-		   for (int i = 0; i < row.size(); i++) {
-			   content = content +  row.get(i)+ "\n\n";
-		}
-		   db.close();
-		   tv.setText(content);
-	
+		DBAdapter db = new DBAdapter(this);
+		db.open();
+		ArrayList<String> rows = db.getwifianddatalog();
+		//displaying the log from database on list view 
+		ListView listView = (ListView) findViewById(R.id.list);
+
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, android.R.id.text1, rows);
+
+		listView.setAdapter(adapter); 
+
 	}
 
 	@Override

@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.taramt.autolog.R;
@@ -27,9 +29,7 @@ import com.taramt.utils.Utils;
 	PendingIntent pendingIntent;
 	Intent intent;
 	SharedPreferences prefs;
-	TextView alarmDetails;
 	DBAdapter db;
-	ArrayList<String> aDetails = new ArrayList<String>();
 	Utils utils;
 
 
@@ -37,18 +37,26 @@ import com.taramt.utils.Utils;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_alarmactivity);
-		alarmDetails = (TextView)findViewById(R.id.alarmDetails);
 		prefs = getPreferences(MODE_PRIVATE);
-		if (Alarmactivity.this.getResources().getConfiguration().orientation == 1) {
-			startAlarm();
-		}
+		//		if (Alarmactivity.this.getResources().getConfiguration().orientation == 1) {
+		//			startAlarm();
+		//		}
 		db = new DBAdapter(this);
 		utils = new Utils(this);
 		db.open();
 
-		aDetails = db.getAlarmDetails();
+		ArrayList<String> rows = db.getAlarmDetails();
+
 		db.close();
-		alarmDetails.setText(utils.getDetails(db, aDetails));
+
+		//displaying the log from database on list view 
+		ListView listView = (ListView) findViewById(R.id.list);
+
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, android.R.id.text1, rows);
+
+		listView.setAdapter(adapter); 
 
 
 	}
