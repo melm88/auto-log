@@ -16,10 +16,13 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+
 import android.accounts.Account;
 import android.accounts.AccountManager;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -28,11 +31,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,7 +46,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.android.gms.games.request.Requests.SendRequestResult;
 import com.taramt.ambientlight.AmbientlightActivity;
 import com.taramt.ambientlight.Ambientlightservice;
 import com.taramt.audiolevel.AudioLevelService;
@@ -64,7 +66,7 @@ import com.taramt.temperature.TemperatureSensor;
 import com.taramt.utils.DBAdapter;
 import com.taramt.wifi.WifiActivity;
 
-public class ControllerActivity extends Activity {
+public class ControllerActivity extends ActionBarActivity {
 	ListView listView ;
 	String autologemailid;
 
@@ -91,6 +93,7 @@ public class ControllerActivity extends Activity {
 			editor.putString("autologsync", "no");
 			editor.commit();
 		}
+		
 
 
 		String enabledAppList = Settings.Secure.getString(
@@ -104,8 +107,16 @@ public class ControllerActivity extends Activity {
 			Toast.makeText(this,"Please check/enable the Notification Listener setting for AutoLog." +
 					"so that AutoLog can read the Notifications. Press back to see the App", 1*1000*60).show();
 
+			//			"Notification"
+			nReceiver = new NotificationReceiver();
+			IntentFilter filter = new IntentFilter();
+			filter.addAction("com.taramt.autolog.notification");
+			this.registerReceiver(nReceiver,filter);
+
 			Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
 			startActivity(intent);	
+
+
 		}
 
 		LaunchServices(this);
@@ -211,11 +222,7 @@ public class ControllerActivity extends Activity {
 			editor.putBoolean(c.getString(R.string.StartAudio), false);
 			editor.commit();
 
-			//		"Notification"
-			nReceiver = new NotificationReceiver();
-			IntentFilter filter = new IntentFilter();
-			filter.addAction("com.taramt.autolog.notification");
-			c.registerReceiver(nReceiver,filter);		
+					
 			//		"MediaActivity",
 			Intent audioservice = new Intent(c,
 					AudioService.class);

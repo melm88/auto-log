@@ -11,7 +11,7 @@
     <item
         android:id="@+id/action_sync"
         android:orderInCategory="99"
-        android:showAsAction="never"
+        android:showAsAction="ifRoom"
         android:title="Sync"/>
 
 </menu>
