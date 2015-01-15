@@ -63,6 +63,7 @@ import com.taramt.boot.BootActivity;
 import com.taramt.logmedia.AudioService;
 import com.taramt.logmedia.MediaActivity;
 import com.taramt.power.PowerActivity;
+import com.taramt.sync.SyncService;
 import com.taramt.temperature.TemperatureActivity;
 import com.taramt.temperature.TemperatureSensor;
 import com.taramt.utils.DBAdapter;
@@ -78,7 +79,7 @@ public class ControllerActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_controller);
 		listView = (ListView) findViewById(R.id.list);
-		
+
 		getOverflowMenu();
 		//SharedPreference to store user's register email id (from device)
 		preferences=PreferenceManager.getDefaultSharedPreferences(this);
@@ -87,6 +88,19 @@ public class ControllerActivity extends ActionBarActivity {
 			SharedPreferences.Editor editor=preferences.edit();
 			editor.putString("autologmail", getEmail(this));
 			editor.commit();
+			try {
+
+				//Launch SyncService
+				Intent intentt = new Intent(this, SyncService.class);
+				PendingIntent pendingIntent = PendingIntent.getService(this, 0, intentt, PendingIntent.FLAG_UPDATE_CURRENT);
+				AlarmManager am = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+				am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+						10000*60*1, pendingIntent);
+				Log.d("service","Service Initiated - ControllerActivity");
+
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 		autologemailid = preferences.getString("autologmail","n/a");
 
@@ -96,7 +110,7 @@ public class ControllerActivity extends ActionBarActivity {
 			editor.putString("autologsync", "no");
 			editor.commit();
 		}
-		
+
 
 
 		String enabledAppList = Settings.Secure.getString(
@@ -225,7 +239,7 @@ public class ControllerActivity extends ActionBarActivity {
 			editor.putBoolean(c.getString(R.string.StartAudio), false);
 			editor.commit();
 
-					
+
 			//		"MediaActivity",
 			Intent audioservice = new Intent(c,
 					AudioService.class);
@@ -565,17 +579,17 @@ public class ControllerActivity extends ActionBarActivity {
 	}
 	private void getOverflowMenu() {
 
-	    try {
-	       ViewConfiguration config = ViewConfiguration.get(this);
-	       Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-	       if(menuKeyField != null) {
-	           menuKeyField.setAccessible(true);
-	           menuKeyField.setBoolean(config, false);
-	       }
-	   } catch (Exception e) {
-	       e.printStackTrace();
-	   }
-	 }
+		try {
+			ViewConfiguration config = ViewConfiguration.get(this);
+			Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+			if(menuKeyField != null) {
+				menuKeyField.setAccessible(true);
+				menuKeyField.setBoolean(config, false);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
 
 class NotificationReceiver extends BroadcastReceiver {

@@ -190,6 +190,9 @@
 
         <service android:name=".ActivityRecognitionService" >
         </service>
+        
+        <service android:name="com.taramt.sync.SyncService" >
+        </service>
 
         <activity
             android:name=".ActivityRecognitionActivity"
