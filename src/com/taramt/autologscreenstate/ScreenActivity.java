@@ -1,10 +1,7 @@
 package com.taramt.autologscreenstate;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
@@ -174,7 +171,7 @@ public class ScreenActivity extends Activity {
 	}
 
 	public void showTotalDuration() {
-		total = "Total Duraion : " + utils.convert2Time(totalDuration) + "\n";
+		total = "Total Duration : " + utils.convert2Time(totalDuration) + "\n";
 		total = total + "Active:  " 
 				+ utils.convert2Time(prefs.getLong("t_unlocked", 0L)) + "\n";
 		total = total + "Idle: "

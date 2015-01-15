@@ -225,7 +225,9 @@ public class DBAdapter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return (start - stop);
+		//return (start - stop);
+		long temp = (new Date(time)).getTime()-(new Date(timeStamp)).getTime();
+		return temp;
 	}
 	public void insertLocationDetails(String timeStamp,String lat , String lon, String accuracy, String address, String type){
 		Log.d("DBAdapter","insertLocation");

@@ -1,6 +1,7 @@
 package com.taramt.autolog;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +41,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -76,7 +78,8 @@ public class ControllerActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_controller);
 		listView = (ListView) findViewById(R.id.list);
-
+		
+		getOverflowMenu();
 		//SharedPreference to store user's register email id (from device)
 		preferences=PreferenceManager.getDefaultSharedPreferences(this);
 		if(preferences.getString("autologmail","false").equals("false")) {
@@ -247,9 +250,9 @@ public class ControllerActivity extends ActionBarActivity {
 			DBAdapter db = new DBAdapter(c);
 			db.open();
 			if (db.getrowcount("Active") == 0) {
-				SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-				String date =s.format(new Date());
-				db.inserScreenstate("Active", date);
+				//SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+				//String date =s.format(new Date());
+				db.inserScreenstate("Active", new Date().toString());
 			}
 			db.close();
 
@@ -560,6 +563,19 @@ public class ControllerActivity extends ActionBarActivity {
 		}
 
 	}
+	private void getOverflowMenu() {
+
+	    try {
+	       ViewConfiguration config = ViewConfiguration.get(this);
+	       Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+	       if(menuKeyField != null) {
+	           menuKeyField.setAccessible(true);
+	           menuKeyField.setBoolean(config, false);
+	       }
+	   } catch (Exception e) {
+	       e.printStackTrace();
+	   }
+	 }
 }
 
 class NotificationReceiver extends BroadcastReceiver {
