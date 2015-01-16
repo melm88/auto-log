@@ -21,10 +21,8 @@ import org.apache.http.util.EntityUtils;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -49,12 +47,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.taramt.ambientlight.AmbientlightActivity;
-import com.taramt.ambientlight.Ambientlightservice;
-import com.taramt.audiolevel.AudioLevelService;
 import com.taramt.audiolevel.AudiolevelActivity;
-import com.taramt.autologalarm.AlarmService;
 import com.taramt.autologalarm.Alarmactivity;
-import com.taramt.autologdatausage.DataService;
 import com.taramt.autologdatausage.DataUsage;
 import com.taramt.autolognotification.NotificationActivity;
 import com.taramt.autologscreenstate.ScreenActivity;
@@ -62,6 +56,7 @@ import com.taramt.autologscreenstate.ScreenService;
 import com.taramt.boot.BootActivity;
 import com.taramt.logmedia.AudioService;
 import com.taramt.logmedia.MediaActivity;
+import com.taramt.megaservice.MegaService;
 import com.taramt.power.PowerActivity;
 import com.taramt.sync.SyncService;
 import com.taramt.temperature.TemperatureActivity;
@@ -250,15 +245,15 @@ public class ControllerActivity extends ActionBarActivity {
 
 			//		"Datausage",
 
-			try {
-				Intent intentt = new Intent(c, DataService.class);
-				PendingIntent pendingIntent = PendingIntent.getService(c,0,intentt,PendingIntent.FLAG_UPDATE_CURRENT);
-				AlarmManager am = (AlarmManager)c.getSystemService(Context.ALARM_SERVICE);
-				am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
-						1000*60*1, pendingIntent);
-			} catch (Exception e) {
-				Log.d("exceptionasdfdf",""+e);
-			}
+//			try {
+//				Intent intentt = new Intent(c, DataService.class);
+//				PendingIntent pendingIntent = PendingIntent.getService(c,0,intentt,PendingIntent.FLAG_UPDATE_CURRENT);
+//				AlarmManager am = (AlarmManager)c.getSystemService(Context.ALARM_SERVICE);
+//				am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+//						1000*60*1, pendingIntent);
+//			} catch (Exception e) {
+//				Log.d("exceptionasdfdf",""+e);
+//			}
 
 
 			//		"PowerActivity",
@@ -292,21 +287,34 @@ public class ControllerActivity extends ActionBarActivity {
 			Intent iServe = new Intent(c,
 					TemperatureSensor.class);
 			c.startService(iServe);
-
-			//		"Alarm",
 			try {
 
-				Intent intent = new Intent(c, AlarmService.class);
+				Intent intent = new Intent(c, MegaService.class);
 				PendingIntent pendingIntent = PendingIntent.getService(c,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 				AlarmManager am = (AlarmManager)c.getSystemService(Context.ALARM_SERVICE);
-				am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 
-						1000*60*5 , pendingIntent);
+				am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+						1000*60, pendingIntent);
 				Log.i("oon Alarm", "Alarm started");
 			} catch (Exception e) {
 				Log.d("exceptionasdfdf",""+e);
 			}
+		
 
-			//		"UserActivity", 
+			
+			//		"Alarm",
+//			try {
+//
+//				Intent intent = new Intent(c, AlarmService.class);
+//				PendingIntent pendingIntent = PendingIntent.getService(c,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+//				AlarmManager am = (AlarmManager)c.getSystemService(Context.ALARM_SERVICE);
+//				am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 
+//						1000*60*5 , pendingIntent);
+//				Log.i("oon Alarm", "Alarm started");
+//			} catch (Exception e) {
+//				Log.d("exceptionasdfdf",""+e);
+//			}
+//
+//			//		"UserActivity", 
 			try {
 
 				AlarmManager am= (AlarmManager)c.getSystemService(Context.ALARM_SERVICE);
@@ -320,10 +328,10 @@ public class ControllerActivity extends ActionBarActivity {
 			} catch (Exception e) {
 				Log.d("exceptionasdfdf",""+e);
 			}
-
-			//		"Callog", 
-
-			//		"Location",
+//
+//			//		"Callog", 
+//
+//			//		"Location",
 			try{
 				AlarmManager am= (AlarmManager)c.getSystemService(Context.ALARM_SERVICE);
 				Intent intent=new Intent(c,LocationClass.class);
@@ -336,43 +344,43 @@ public class ControllerActivity extends ActionBarActivity {
 			}catch(Exception e){
 				Log.d("exceptionasdfdf",""+e);
 			}
-			//		"VisualizationofLocation",
-
-			//		"WIFI and 3G data",
-
-			//		"Ambient light",
-			try{
-				Intent intent = new Intent(c, Ambientlightservice.class);
-				PendingIntent pintent = PendingIntent
-						.getService(c, 0, intent, 0);
-
-				AlarmManager alarm = (AlarmManager) 
-						c.getSystemService(Context.ALARM_SERVICE);
-				alarm.cancel(pintent);
-				//setting an alarm manager for interval of 5 minutes
-				alarm.setRepeating(AlarmManager.RTC_WAKEUP, 
-						System.currentTimeMillis(),
-						5*60*1000, pintent); 
-			}
-			catch(Exception e){
-				Log.d("Ambientlight", ""+e);
-			}
-			//		"Noise Level",
-			try{
-				Intent intent = new Intent(c, AudioLevelService.class);
-				PendingIntent pintent = PendingIntent
-						.getService(c, 0, intent, 0);
-				AlarmManager alarm = (AlarmManager)
-						c.getSystemService(Context.ALARM_SERVICE);
-				alarm.cancel(pintent);
-				//setting an alarm manager for interval of 5 minutes
-				alarm.setRepeating(AlarmManager.RTC_WAKEUP,
-						System.currentTimeMillis(),
-						5*60*1000, pintent);
-			}
-			catch(Exception e){
-				Log.d("Noise Level", ""+e);
-			}
+//			//		"VisualizationofLocation",
+//
+//			//		"WIFI and 3G data",
+//
+//			//		"Ambient light",
+//			try{
+//				Intent intent = new Intent(c, Ambientlightservice.class);
+//				PendingIntent pintent = PendingIntent
+//						.getService(c, 0, intent, 0);
+//
+//				AlarmManager alarm = (AlarmManager) 
+//						c.getSystemService(Context.ALARM_SERVICE);
+//				alarm.cancel(pintent);
+//				//setting an alarm manager for interval of 5 minutes
+//				alarm.setRepeating(AlarmManager.RTC_WAKEUP, 
+//						System.currentTimeMillis(),
+//						5*60*1000, pintent); 
+//			}
+//			catch(Exception e){
+//				Log.d("Ambientlight", ""+e);
+//			}
+//			//		"Noise Level",
+//			try{
+//				Intent intent = new Intent(c, AudioLevelService.class);
+//				PendingIntent pintent = PendingIntent
+//						.getService(c, 0, intent, 0);
+//				AlarmManager alarm = (AlarmManager)
+//						c.getSystemService(Context.ALARM_SERVICE);
+//				alarm.cancel(pintent);
+//				//setting an alarm manager for interval of 5 minutes
+//				alarm.setRepeating(AlarmManager.RTC_WAKEUP,
+//						System.currentTimeMillis(),
+//						5*60*1000, pintent);
+//			}
+//			catch(Exception e){
+//				Log.d("Noise Level", ""+e);
+//			}
 			//		"Boot and Reboot",
 
 			//		"Fore ground apps

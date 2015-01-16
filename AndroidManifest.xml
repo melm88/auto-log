@@ -21,7 +21,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -190,7 +190,6 @@
 
         <service android:name=".ActivityRecognitionService" >
         </service>
-        
         <service android:name="com.taramt.sync.SyncService" >
         </service>
 
@@ -207,14 +206,17 @@
 
         <service android:name="com.taramt.autolog.RecognitionService" >
         </service>
+        <service android:name="com.taramt.megaservice.MegaService" >
+        </service>
 
         <activity
             android:name="com.taramt.autolog.VisualizationOfLocation"
             android:label="Visualization" >
         </activity>
-		<activity android:name="com.taramt.autolog.ForeGroundApp"
-		    android:label="ForeGroundApps"></activity>
-
+        <activity
+            android:name="com.taramt.autolog.ForeGroundApp"
+            android:label="ForeGroundApps" >
+        </activity>
     </application>
 
 </manifest>
