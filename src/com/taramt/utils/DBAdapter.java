@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
+import android.provider.CallLog;
 import android.util.Log;
 
 public class DBAdapter {
@@ -26,7 +27,9 @@ public class DBAdapter {
 	static long atotal = 0L;
 	Utils utils;
 	static int id = 0;
+	Context context;
 	public DBAdapter(Context context) {
+		this.context = context;
 		Log.d("AutoLog","Inside DBAdapter Constructor");
 		DBHelper = new DatabaseHelper(context);
 		utils = new Utils(context);
@@ -998,6 +1001,87 @@ public class DBAdapter {
 
 	}
 
+	/*
+	 * getCallDetails method is used to get call details from the phone database.
+	 */
+	@SuppressWarnings("deprecation")
+	public ArrayList<String>  getCallDetails() { 
+
+		ArrayList<String> row = new ArrayList<String>();
+
+		Cursor managedCursor = context.getContentResolver().query(CallLog.Calls.CONTENT_URI, 
+				null, null, null, null); 
+		int number = managedCursor.getColumnIndex(CallLog.Calls.NUMBER); 
+		int type = managedCursor.getColumnIndex(CallLog.Calls.TYPE); 
+		int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
+		int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
+
+
+		// loop for traversing whole log
+		while (managedCursor.moveToNext()) { 
+			String phNumber = managedCursor.getString(number); 
+			String callType = managedCursor.getString(type);
+			String callDate = managedCursor.getString(date); 
+			Date callDayTime = new Date(Long.valueOf(callDate)); 
+			String callDuration = managedCursor.getString(duration);
+			String dir = null; int dircode = Integer.parseInt(callType); 
+			switch (dircode) { 
+			case CallLog.Calls.OUTGOING_TYPE: dir = "OUTGOING";
+			break; 
+			case CallLog.Calls.INCOMING_TYPE: dir = "INCOMING"; 
+			break; 
+			case CallLog.Calls.MISSED_TYPE: dir = "MISSED"; 
+			break; 
+			} 
+			String temp = phNumber+"|" 
+					+ dir + "|" + callDayTime
+					+ "|" + callDuration; 
+
+			row.add(temp);	
+		} 
+		return row;	
+	} 
+	/*
+	 * getCallDetailsLatest method is used to get call updates details from the phone database.
+	 */
+	@SuppressWarnings("deprecation")
+	public ArrayList<String>  getCallDetailsLatest(String lastFetch) { 
+
+		ArrayList<String> row = new ArrayList<String>();
+
+		Cursor managedCursor = context.getContentResolver().query(CallLog.Calls.CONTENT_URI, 
+				null,CallLog.Calls.DATE+">"+lastFetch, null, CallLog.Calls.DATE+" DESC"); 
+		int number = managedCursor.getColumnIndex(CallLog.Calls.NUMBER); 
+		int type = managedCursor.getColumnIndex(CallLog.Calls.TYPE); 
+		int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
+		int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
+
+
+		// loop for traversing whole log
+		while (managedCursor.moveToNext()) { 
+			String phNumber = managedCursor.getString(number); 
+			String callType = managedCursor.getString(type);
+			String callDate = managedCursor.getString(date); 
+			Date callDayTime = new Date(Long.valueOf(callDate)); 
+			String callDuration = managedCursor.getString(duration);
+			String dir = null; int dircode = Integer.parseInt(callType); 
+			switch (dircode) { 
+			case CallLog.Calls.OUTGOING_TYPE: dir = "OUTGOING";
+			break; 
+			case CallLog.Calls.INCOMING_TYPE: dir = "INCOMING"; 
+			break; 
+			case CallLog.Calls.MISSED_TYPE: dir = "MISSED"; 
+			break; 
+			} 
+			String temp = phNumber+"|" 
+					+ dir + "|" + callDayTime
+					+ "|" + callDuration; 
+
+			row.add(temp);	
+		} 
+
+		return row;
+	} 
 
 
 

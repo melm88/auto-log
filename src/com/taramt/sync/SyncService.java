@@ -3,6 +3,7 @@ package com.taramt.sync;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -17,13 +18,17 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+
+import com.taramt.autolog.Calllog;
 import com.taramt.utils.DBAdapter;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.provider.CallLog;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -105,8 +110,29 @@ public class SyncService  extends Service
 						webRequest("https://autocode.pythonanywhere.com/Autolog/webadmin/synchandler", key, temp_array);
 					}
 				}
+				Log.d("CALLLOG", "Sync starting");
+				String lastFetch = preferences.getString("lastFetch"," ");
+				Log.d("CALLLOG", "lastFetch "+lastFetch+".");
+				
+				if(lastFetch.equals(" ")) {
+					Log.d("CALLLOG", "First Sync");
+					temp_array = dba.getCallDetails();
+					SharedPreferences.Editor editor=preferences.edit();
+					editor.putString("lastFetch", new Date().getTime()+"");
+					editor.commit();
+				}
+				else{
+					Log.d("CALLLOG", "Update Sync");
+				temp_array = dba.getCallDetailsLatest(lastFetch);
+				}
+
+			webRequest("https://autocode.pythonanywhere.com/Autolog/webadmin/synchandler", "calllog", temp_array);
+			Log.d("CALLLOG", "Sync completed");
+			
+			
 			} catch(Exception e) {
 				e.printStackTrace();
+				Log.d("CALLLOG", "errr "+e);
 			} finally {		    	
 				SharedPreferences.Editor editor=preferences.edit();
 				editor.putString("autologsync", "no");

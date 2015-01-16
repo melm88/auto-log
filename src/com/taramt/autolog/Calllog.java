@@ -2,6 +2,9 @@ package com.taramt.autolog;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.SortedSet;
+
+import com.taramt.utils.DBAdapter;
 
 import android.app.Activity;
 import android.database.Cursor;
@@ -27,7 +30,8 @@ public class Calllog extends Activity {
 		setContentView(R.layout.activity_calllog);
 		try {
 			// get the call log
-			ArrayList<String> rows = getCallDetails(); 
+			DBAdapter db = new DBAdapter(this);
+			ArrayList<String> rows = db.getCallDetails(); 
 			//displaying the log from database on list view 
 			if(rows != null){
 				ListView listView = (ListView) findViewById(R.id.list);
@@ -44,45 +48,5 @@ public class Calllog extends Activity {
 
 	}
 
-	/*
-	 * getCallDetails method is used to get call details from the phone database.
-	 */
-	@SuppressWarnings("deprecation")
-	private ArrayList<String>  getCallDetails() { 
-
-		ArrayList<String> row = new ArrayList<String>();
-
-		Cursor managedCursor = managedQuery(CallLog.Calls.CONTENT_URI, 
-				null, null, null, null); 
-		int number = managedCursor.getColumnIndex(CallLog.Calls.NUMBER); 
-		int type = managedCursor.getColumnIndex(CallLog.Calls.TYPE); 
-		int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
-		int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
-
-
-		// loop for traversing whole log
-		while (managedCursor.moveToNext()) { 
-			String phNumber = managedCursor.getString(number); 
-			String callType = managedCursor.getString(type);
-			String callDate = managedCursor.getString(date); 
-			Date callDayTime = new Date(Long.valueOf(callDate)); 
-			String callDuration = managedCursor.getString(duration);
-			String dir = null; int dircode = Integer.parseInt(callType); 
-			switch (dircode) { 
-			case CallLog.Calls.OUTGOING_TYPE: dir = "OUTGOING";
-			break; 
-			case CallLog.Calls.INCOMING_TYPE: dir = "INCOMING"; 
-			break; 
-			case CallLog.Calls.MISSED_TYPE: dir = "MISSED"; 
-			break; 
-			} 
-			String temp = "\nPhone Number:--- " + phNumber + " \nCall Type:--- " 
-					+ dir + " \nCall Date:--- " + callDayTime
-					+ " \nCall duration in sec :--- " + callDuration; 
-
-			row.add(temp);	
-		} 
-		return row;
-	} 
 
 }
