@@ -54,12 +54,16 @@ public class NLService extends NotificationListenerService {
 		 * While mobile get notification this method will be invoked
 		 * Send the broadcast to update the details which are shown in the activity
 		 */
-		Log.i(TAG, "**********  onNotificationPosted *********");
-		Log.i(TAG, "ID :" + sbn.getId() + "\t" 
-				+ sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
+		try {
+			Log.i(TAG, "**********  onNotificationPosted *********");
+			Log.i(TAG, "ID :" + sbn.getId() + "\t" 
+					+ sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
 
-		sendBrodcast();
-		insertDB(sbn);
+			sendBrodcast();
+			insertDB(sbn);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void sendBrodcast() {
@@ -87,23 +91,27 @@ public class NLService extends NotificationListenerService {
 	 * Uses getNotificationDetails method
 	 */
 	public void insertDB(StatusBarNotification sbn) {
-		utils = new Utils(getApplicationContext());
-		// getting appname 
-		String appName = utils.getAppName(sbn.getPackageName());
-		// timeStamp
-		Date date = new Date(sbn.getPostTime());
-		SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy HH:mm");
-		String timeStamp = formatter.format(date);
+		try {
+			utils = new Utils(getApplicationContext());
+			// getting appname 
+			String appName = utils.getAppName(sbn.getPackageName());
+			// timeStamp
+			Date date = new Date(sbn.getPostTime());
+			SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy HH:mm");
+			String timeStamp = formatter.format(date);
 
-		Notification notification = sbn.getNotification();
-		// getting notificationDetails
-		notificationDetails = getNotificationDetails(notification);
-		String nDetails = "";
-		if (nDetails!=null) nDetails = notificationDetails.toString();
-		db = new DBAdapter(getBaseContext());
-		db.open();
-		db.insertNotificationDetails(appName , nDetails, date.toString());
-		db.close();
+			Notification notification = sbn.getNotification();
+			// getting notificationDetails
+			notificationDetails = getNotificationDetails(notification);
+			String nDetails = "";
+			if (nDetails!=null) nDetails = notificationDetails.toString();
+			db = new DBAdapter(getBaseContext());
+			db.open();
+			db.insertNotificationDetails(appName , nDetails, date.toString());
+			db.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static List<String> getNotificationDetails(Notification notification) {

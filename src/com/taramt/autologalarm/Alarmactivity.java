@@ -37,27 +37,30 @@ import com.taramt.utils.Utils;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_alarmactivity);
-		prefs = getPreferences(MODE_PRIVATE);
-		//		if (Alarmactivity.this.getResources().getConfiguration().orientation == 1) {
-		//			startAlarm();
-		//		}
-		db = new DBAdapter(this);
-		utils = new Utils(this);
-		db.open();
+		try {
+			prefs = getPreferences(MODE_PRIVATE);
+			//		if (Alarmactivity.this.getResources().getConfiguration().orientation == 1) {
+			//			startAlarm();
+			//		}
+			db = new DBAdapter(this);
+			utils = new Utils(this);
+			db.open();
 
-		ArrayList<String> rows = db.getAlarmDetails();
+			ArrayList<String> rows = db.getAlarmDetails();
 
-		db.close();
+			db.close();
 
-		//displaying the log from database on list view 
-		ListView listView = (ListView) findViewById(R.id.list);
+			//displaying the log from database on list view 
+			ListView listView = (ListView) findViewById(R.id.list);
 
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, android.R.id.text1, rows);
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, android.R.id.text1, rows);
 
-		listView.setAdapter(adapter); 
-
+			listView.setAdapter(adapter); 
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 

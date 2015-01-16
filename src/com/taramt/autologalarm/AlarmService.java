@@ -34,61 +34,65 @@ import com.taramt.utils.DBAdapter;
 	public void onCreate() {
 		db = new DBAdapter(getApplicationContext());
 		Log.d(Tag, "Service onCreate called");
-		
+
 	}
-	
+
 	@Override
 	public void onStart(Intent intent, int startId) {
 		Log.d(Tag, "Service onStart called");
-		prefs = getSharedPreferences("ALARM", MODE_PRIVATE);
-		
-		String nextAlarm = " ";
-		nextAlarm = getNextAlarm(getApplicationContext());
-	
-		/* getting nextalarmclock information 
-		 * through getNextAlarmClock
-		 * works only for api level 21 and above
-		  */
 		try {
-		    AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-		    nextAlarm = am.getNextAlarmClock().toString();
-		    Log.d(Tag + "_AI", nextAlarm);
-		    } catch (NoSuchMethodError e) {
-		        
-		    }
-		try{
-		Log.d(Tag + "Repeat", "next alarm is:  " + nextAlarm+" "+prefs);
-		if (!nextAlarm.equals(prefs.getString("nextAlarm", " ")) 
-				&& !nextAlarm.equals("")
-				&& !nextAlarm.equals(" ")) {
-			db.open();
-			db.insertAlarmDetails("alarmset", nextAlarm);
-			Log.d(Tag, "next alarm is:  " + nextAlarm);
-			Editor editor = prefs.edit();
-			editor.putString("nextAlarm", nextAlarm);
-			editor.commit();
-			db.close();
+			prefs = getSharedPreferences("ALARM", MODE_PRIVATE);
+
+			String nextAlarm = " ";
+			nextAlarm = getNextAlarm(getApplicationContext());
+
+			/* getting nextalarmclock information 
+			 * through getNextAlarmClock
+			 * works only for api level 21 and above
+			 */
+			try {
+				AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+				nextAlarm = am.getNextAlarmClock().toString();
+				Log.d(Tag + "_AI", nextAlarm);
+			} catch (NoSuchMethodError e) {
+
+			}
+			try{
+				Log.d(Tag + "Repeat", "next alarm is:  " + nextAlarm+" "+prefs);
+				if (!nextAlarm.equals(prefs.getString("nextAlarm", " ")) 
+						&& !nextAlarm.equals("")
+						&& !nextAlarm.equals(" ")) {
+					db.open();
+					db.insertAlarmDetails("alarmset", nextAlarm);
+					Log.d(Tag, "next alarm is:  " + nextAlarm);
+					Editor editor = prefs.edit();
+					editor.putString("nextAlarm", nextAlarm);
+					editor.commit();
+					db.close();
+				}
+			}
+			catch(NullPointerException e){
+				Log.d("Alarm", "No next Active Alarm");	
+				Log.d("Null pointer exception", e+"");	
+
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
-		}
-		catch(NullPointerException e){
-		Log.d("Alarm", "No next Active Alarm");	
-		Log.d("Null pointer exception", e+"");	
-		
-		}
-		
-		
-		
+
+
+
 	}
-	
-	
+
+
 	public static String getNextAlarm(Context context) {
 		// collecting short names of days    
 		DateFormatSymbols symbols = new DateFormatSymbols();
 		// and fill with those names map...
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		String[] dayNames = symbols.getShortWeekdays();
-		
-		
+
+
 		map.put(dayNames[Calendar.MONDAY], Calendar.TUESDAY);
 		map.put(dayNames[Calendar.TUESDAY], Calendar.WEDNESDAY);
 		map.put(dayNames[Calendar.WEDNESDAY], Calendar.THURSDAY);
@@ -96,12 +100,12 @@ import com.taramt.utils.DBAdapter;
 		map.put(dayNames[Calendar.FRIDAY], Calendar.SATURDAY);
 		map.put(dayNames[Calendar.SATURDAY], Calendar.SUNDAY);
 		map.put(dayNames[Calendar.SUNDAY], Calendar.MONDAY);
-	
+
 		String nextAlarm = Settings.System.getString(context.getContentResolver(),
 				Settings.System.NEXT_ALARM_FORMATTED);
-		
+
 		Log.d(Tag + "original", nextAlarm);
-		
+
 		// In case if alarm isn't set.....
 		if ((nextAlarm==null) || ("".equals(nextAlarm))) return null;
 		// day
@@ -131,9 +135,9 @@ import com.taramt.utils.DBAdapter;
 
 			cal2.setTime(df.parse(str+nextAlarm.substring(nextAlarm.indexOf(" "))));
 			cal2.add(Calendar.DAY_OF_YEAR, daysToAlarm);
-			
+
 			SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy");
-			
+
 			//return s.format(cal2.getTime()) + " "+ nextAlarm.split(" ")[1];
 			return cal2.getTime().toString();
 		} catch (Exception e) {

@@ -18,6 +18,7 @@ public class ForeGroundApp extends ActionBarActivity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_currentapp);
+		try {
 		dbAdapter =new DBAdapter(this);
 		ArrayList<String> app_data=dbAdapter.getForeGroundApp();
 
@@ -30,6 +31,9 @@ public class ForeGroundApp extends ActionBarActivity{
 
 				listView.setAdapter(adapter); 
 				}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 
 	}

@@ -28,20 +28,23 @@ public class AudiolevelActivity extends Activity {
 		setContentView(R.layout.activity_audiolevel);
 
 		Log.d("Activity", "onCreate");
-		
-		//displaying the log from database on text view
-		DBAdapter db = new DBAdapter(this);
-		db.open();
-		ArrayList<String> rows = db.getaudiolog();
-		db.close();
-		ListView listView = (ListView) findViewById(R.id.list);
+		try {
+			//displaying the log from database on text view
+			DBAdapter db = new DBAdapter(this);
+			db.open();
+			ArrayList<String> rows = db.getaudiolog();
+			db.close();
+			ListView listView = (ListView) findViewById(R.id.list);
 
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, android.R.id.text1, rows);
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, android.R.id.text1, rows);
 
-		listView.setAdapter(adapter); 
-	
+			listView.setAdapter(adapter); 
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 	protected void onResume() {
 		super.onResume();

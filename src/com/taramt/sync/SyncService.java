@@ -50,10 +50,14 @@ public class SyncService  extends Service
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId)
 	{
-		preferences=PreferenceManager.getDefaultSharedPreferences(this);
-		autologemailid = preferences.getString("autologmail","n/a");
-		new SendDataToServer().execute();
-		Log.d("service","Service Running - onStartCommand");
+		try {
+			preferences=PreferenceManager.getDefaultSharedPreferences(this);
+			autologemailid = preferences.getString("autologmail","n/a");
+			new SendDataToServer().execute();
+			Log.d("service","Service Running - onStartCommand");
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		return START_STICKY;
 	}
 

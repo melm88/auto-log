@@ -11,14 +11,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class PowerActivity extends Activity {
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_power);
-
-		//TextView in PowerActivity
-		displayPowerResults();
+		try {
+			//TextView in PowerActivity
+			displayPowerResults();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

@@ -26,18 +26,22 @@ public class WifiActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_wifi);
-		//displaying the log from database on text view 
-		DBAdapter db = new DBAdapter(this);
-		db.open();
-		ArrayList<String> rows = db.getwifianddatalog();
-		//displaying the log from database on list view 
-		ListView listView = (ListView) findViewById(R.id.list);
+		try {
+			//displaying the log from database on text view 
+			DBAdapter db = new DBAdapter(this);
+			db.open();
+			ArrayList<String> rows = db.getwifianddatalog();
+			//displaying the log from database on list view 
+			ListView listView = (ListView) findViewById(R.id.list);
 
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, android.R.id.text1, rows);
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, android.R.id.text1, rows);
 
-		listView.setAdapter(adapter); 
+			listView.setAdapter(adapter); 
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 

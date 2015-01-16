@@ -28,32 +28,36 @@ public class RecognitionService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 
 		Log.d("rs","onhandle intent");
-		ActivityRecognitionResult result = ActivityRecognitionResult.extractResult(intent);
+		try {
+			ActivityRecognitionResult result = ActivityRecognitionResult.extractResult(intent);
 
-		DetectedActivity mostProbableActivity = result.getMostProbableActivity();
+			DetectedActivity mostProbableActivity = result.getMostProbableActivity();
 
-		int activityType = mostProbableActivity.getType();
-		int confidence=mostProbableActivity.getConfidence();
+			int activityType = mostProbableActivity.getType();
+			int confidence=mostProbableActivity.getConfidence();
 
-		String Activity=getType(activityType);
-		//           SharedPreferences.Editor editor = details.edit();
-		//Log.e("ActivityRecognitionService",Activity+"  confidence is  "+confidence);
+			String Activity=getType(activityType);
+			//           SharedPreferences.Editor editor = details.edit();
+			//Log.e("ActivityRecognitionService",Activity+"  confidence is  "+confidence);
 
-		if(ActivityRecognitionResult.hasResult(intent)){ 
+			if(ActivityRecognitionResult.hasResult(intent)){ 
 
-			//			editor.putString("Activity1", Activity);
-			//			editor.commit();
+				//			editor.putString("Activity1", Activity);
+				//			editor.commit();
 
-			Log.d("activity",Activity);
+				Log.d("activity",Activity);
 
-			Intent i = new Intent("stopupdates");
-			i.putExtra("Activity", Activity );
-			i.putExtra("confidence", confidence+"");
+				Intent i = new Intent("stopupdates");
+				i.putExtra("Activity", Activity );
+				i.putExtra("confidence", confidence+"");
 
 
-			// broadcast the updates to location class.
-			sendBroadcast(i);
+				// broadcast the updates to location class.
+				sendBroadcast(i);
 
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 
 	}

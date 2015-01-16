@@ -69,23 +69,26 @@ LocationListener {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 
-		Log.d("locatin class","onstart");
-		// start the location updates if not already processing.
-		if (!currentlyProcessingLocation) {
+		try {
+			Log.d("locatin class","onstart");
+			// start the location updates if not already processing.
+			if (!currentlyProcessingLocation) {
 
-			currentlyProcessingLocation = true;
+				currentlyProcessingLocation = true;
 
-			SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-			String timeStamp=s.format(new Date());
-			SharedPreferences.Editor editor=details.edit();
-			editor.putString("timeStamp", new Date().toString());
-			editor.commit();
+				SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+				String timeStamp=s.format(new Date());
+				SharedPreferences.Editor editor=details.edit();
+				editor.putString("timeStamp", new Date().toString());
+				editor.commit();
 
-			// start location tracking
-			startLocationTracking();
+				// start location tracking
+				startLocationTracking();
 
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
-
 		return START_STICKY;
 	}
 
@@ -225,19 +228,19 @@ LocationListener {
 
 
 			ActivityManager am = (ActivityManager) getApplicationContext().getSystemService(Activity.ACTIVITY_SERVICE);
-	        String packageName = am.getRunningTasks(1).get(0).topActivity.getPackageName();
-			
+			String packageName = am.getRunningTasks(1).get(0).topActivity.getPackageName();
+
 			final PackageManager pm = getApplicationContext().getPackageManager();
 			ApplicationInfo ai;
 			try {
-			    ai = pm.getApplicationInfo( packageName, 0);
+				ai = pm.getApplicationInfo( packageName, 0);
 			} catch (final NameNotFoundException e) {
-			    ai = null;
+				ai = null;
 			}
 			final String applicationName = (String) (ai != null ? pm.getApplicationLabel(ai) : "(unknown)");
-			
+
 			dbAdapter.insertForeGroundApp(details.getString("timeStamp"," "),applicationName);
-			
+
 			Log.d("name",applicationName);
 
 		}

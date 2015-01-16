@@ -28,7 +28,11 @@ public class MediaActivity extends Activity {
 		//mFileObserver.startWatching();
 		//onLaunch of the activity, initiate FileObserver
 		//addObserver();
-		displayMediaData();
+		try {
+			displayMediaData();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	//Launch the service for capturing audio files created in sdcard/Sounds
@@ -44,22 +48,25 @@ public class MediaActivity extends Activity {
 
 	//Display MediaTable data
 	public void displayMediaData() {
+		try {
+			//Retrieve an ArrayList<String> of results from
+			//MediaTable
+			DBAdapter dba = new DBAdapter(this);
+			dba.open();
+			ArrayList<String> mediaData = dba.getMediaDetails();
+			//displaying the log from database on list view 
+			ListView listView = (ListView) findViewById(R.id.list);
 
-		//Retrieve an ArrayList<String> of results from
-		//MediaTable
-		DBAdapter dba = new DBAdapter(this);
-		dba.open();
-		ArrayList<String> mediaData = dba.getMediaDetails();
-		//displaying the log from database on list view 
-		ListView listView = (ListView) findViewById(R.id.list);
 
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, android.R.id.text1, mediaData);
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, android.R.id.text1, mediaData);
+			listView.setAdapter(adapter); 
 
-		listView.setAdapter(adapter); 
-
-		dba.close();
+			dba.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	//Stop listening to audio files being created in sdcard/Sounds

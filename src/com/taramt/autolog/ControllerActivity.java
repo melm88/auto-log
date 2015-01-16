@@ -79,7 +79,7 @@ public class ControllerActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_controller);
 		listView = (ListView) findViewById(R.id.list);
-
+		try {
 		getOverflowMenu();
 		//SharedPreference to store user's register email id (from device)
 		preferences=PreferenceManager.getDefaultSharedPreferences(this);
@@ -221,6 +221,9 @@ public class ControllerActivity extends ActionBarActivity {
 			}
 
 		}); 
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	/*
 	 * Launches all services.
@@ -392,13 +395,17 @@ public class ControllerActivity extends ActionBarActivity {
 		if (id == R.id.action_settings) {
 			return true;
 		} else if (id == R.id.action_sync) {
+			try {
 			//Check sync state from SharedPreference
 			if(preferences.getString("autologsync","false").equals("no")) {
 				new SendDataToServer().execute();
 				Toast.makeText(this, "Sync Initiated", Toast.LENGTH_SHORT/1500).show();
 			} else {
 				Toast.makeText(this, "Sync In Progress", Toast.LENGTH_SHORT/1500).show();
-			}			
+			}	
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -484,13 +491,16 @@ public class ControllerActivity extends ActionBarActivity {
 		// onPostExecute displays the results of the AsyncTask.
 		@Override
 		protected void onPostExecute(String result) {
-
+			try {
 			Toast.makeText(getApplicationContext(), "Autolog Sync -Completed", Toast.LENGTH_SHORT/1000).show();
 			resp = resp.trim();
 			if(resp.equals("success"))
 			{
 				//Do Something
 				Log.d("toServer","Success is returned");
+			}
+			} catch(Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}

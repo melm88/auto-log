@@ -26,18 +26,21 @@ public class LocationActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_location);
 
+		try {
+			dbAdapter=new DBAdapter(this);
+			// get the log from database
+			ArrayList<String> data=dbAdapter.getLocationDetailsArrayList();
+			//displaying the log from database on list view 
+			ListView listView = (ListView) findViewById(R.id.list);
 
-		dbAdapter=new DBAdapter(this);
-		// get the log from database
-		ArrayList<String> data=dbAdapter.getLocationDetailsArrayList();
-		//displaying the log from database on list view 
-		ListView listView = (ListView) findViewById(R.id.list);
+			if(data!=null) {
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+						android.R.layout.simple_list_item_1, android.R.id.text1, data);
 
-		if(data!=null) {
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-					android.R.layout.simple_list_item_1, android.R.id.text1, data);
-
-			listView.setAdapter(adapter); 
+				listView.setAdapter(adapter); 
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 

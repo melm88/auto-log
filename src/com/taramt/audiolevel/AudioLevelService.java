@@ -35,14 +35,17 @@ public class AudioLevelService extends Service {
 		} catch (Exception e) {
 			android.util.Log.e("TrackingFlow", "Exception", e);
 		}
-
-		audio = new AudioRecord(MediaRecorder.AudioSource.MIC, sampleRate,
-				AudioFormat.CHANNEL_IN_MONO,
-				AudioFormat.ENCODING_PCM_16BIT, bufferSize);
-		audio.startRecording();
-		//After this call we can get the last value assigned to the lastLevel variable
-		readAudioBuffer();
-		audio.stop();
+		try {
+			audio = new AudioRecord(MediaRecorder.AudioSource.MIC, sampleRate,
+					AudioFormat.CHANNEL_IN_MONO,
+					AudioFormat.ENCODING_PCM_16BIT, bufferSize);
+			audio.startRecording();
+			//After this call we can get the last value assigned to the lastLevel variable
+			readAudioBuffer();
+			audio.stop();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		return START_STICKY;
 	}
 

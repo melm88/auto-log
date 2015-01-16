@@ -48,43 +48,46 @@ public class ScreenActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_screen);
-		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		utils = new Utils(this);
+		try {
+			prefs = PreferenceManager.getDefaultSharedPreferences(this);
+			utils = new Utils(this);
 
-		db = new DBAdapter(this);
-		db.open();
-		log = (TextView)findViewById(R.id.log);
-		Average = (TextView)findViewById(R.id.Average);
-		Total = (TextView)findViewById(R.id.Total_duration);
+			db = new DBAdapter(this);
+			db.open();
+			log = (TextView)findViewById(R.id.log);
+			Average = (TextView)findViewById(R.id.Average);
+			Total = (TextView)findViewById(R.id.Total_duration);
 
-		sDetails = db.getScreenStateDetails();
-		db.close();
-		log.setText(utils.getDetails(db, sDetails));
-		showTotalDuration();
-		showAverage();
+			sDetails = db.getScreenStateDetails();
+			db.close();
+			log.setText(utils.getDetails(db, sDetails));
+			showTotalDuration();
+			showAverage();
 
-		//		db.open();
-		//		if (db.getrowcount("Active") == 0) {
-		//			SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-		//			String date =s.format(new Date());
-		//			db.inserScreenstate("Active", date);
-		//		}
-		//		db.close();
-		//
-		//		if (ScreenActivity.this.getResources().getConfiguration().orientation == 1) {
-		//			startAlarm();
-		//	}
-		//	id = 0;
-
-
+			//		db.open();
+			//		if (db.getrowcount("Active") == 0) {
+			//			SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+			//			String date =s.format(new Date());
+			//			db.inserScreenstate("Active", date);
+			//		}
+			//		db.close();
+			//
+			//		if (ScreenActivity.this.getResources().getConfiguration().orientation == 1) {
+			//			startAlarm();
+			//	}
+			//	id = 0;
 
 
-		/** Get the current date */
-		final Calendar cal = Calendar.getInstance();
-		pYear = cal.get(Calendar.YEAR);
-		pMonth = cal.get(Calendar.MONTH);
-		pDay = cal.get(Calendar.DAY_OF_MONTH);
 
+
+			/** Get the current date */
+			final Calendar cal = Calendar.getInstance();
+			pYear = cal.get(Calendar.YEAR);
+			pMonth = cal.get(Calendar.MONTH);
+			pDay = cal.get(Calendar.DAY_OF_MONTH);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -106,9 +109,9 @@ public class ScreenActivity extends Activity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-//		if (ScreenActivity.this.getResources().getConfiguration().orientation == 1) {
-//			startAlarm();
-//		}
+		//		if (ScreenActivity.this.getResources().getConfiguration().orientation == 1) {
+		//			startAlarm();
+		//		}
 	}
 
 	public void Sort(View v) {
@@ -187,11 +190,15 @@ public class ScreenActivity extends Activity {
 
 		public void onDateSet(DatePicker view, int year, 
 				int monthOfYear, int dayOfMonth) {
-			pYear = year;
-			pMonth = monthOfYear;
-			pDay = dayOfMonth;
-			updateDisplay();
-			Sort();
+			try {
+				pYear = year;
+				pMonth = monthOfYear;
+				pDay = dayOfMonth;
+				updateDisplay();
+				Sort();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 	};
 	/** Updates the date in the TextView */

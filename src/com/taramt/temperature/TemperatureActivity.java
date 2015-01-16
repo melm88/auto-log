@@ -22,12 +22,15 @@ public class TemperatureActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_temperature);
-
-		//TextView in TemperatureActivity
-		//enableTemperatureSensing();
-		displayTemperatureSensingData();
-		//Intent it = new Intent(this, SensorActivity.class);
-		//startActivity(it);
+		try {
+			//TextView in TemperatureActivity
+			//enableTemperatureSensing();
+			displayTemperatureSensingData();
+			//Intent it = new Intent(this, SensorActivity.class);
+			//startActivity(it);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -53,22 +56,26 @@ public class TemperatureActivity extends Activity {
 
 	//Method to display the results from Temperature table onto MainActivity
 	public void displayTemperatureSensingData() {
-		DBAdapter dba = new DBAdapter(this);
-		dba.open();
-		ArrayList<String> temperatureData = dba.getTemperatureDetails();
-		//Display results only if there are data in DB.
-		//Otherwise result should show "No Temperature Change"
-		dba.close();
-		//displaying the log from database on list view 
-		if(temperatureData != null) {
-			ListView listView = (ListView) findViewById(R.id.list);
+		try {
+			DBAdapter dba = new DBAdapter(this);
+			dba.open();
+			ArrayList<String> temperatureData = dba.getTemperatureDetails();
+			//Display results only if there are data in DB.
+			//Otherwise result should show "No Temperature Change"
+			dba.close();
+			//displaying the log from database on list view 
+			if(temperatureData != null) {
+				ListView listView = (ListView) findViewById(R.id.list);
 
 
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-					android.R.layout.simple_list_item_1, android.R.id.text1, temperatureData);
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+						android.R.layout.simple_list_item_1, android.R.id.text1, temperatureData);
 
-			listView.setAdapter(adapter); 
+				listView.setAdapter(adapter); 
 
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 
 	}

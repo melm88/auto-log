@@ -43,10 +43,14 @@ public class NotificationActivity extends Activity {
 		//		IntentFilter filter = new IntentFilter();
 		//		filter.addAction("com.taramt.autolog.notification");
 		//		registerReceiver(nReceiver,filter);
+		try {
 		db = new DBAdapter(this);
 		utils = new Utils(this);
 		// Showing the notifications
 		showNotifications();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -98,7 +102,11 @@ public class NotificationActivity extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			Log.d(TAG, "Notification received");	
 			// Showing the notifications
-			showNotifications();
+			try {
+				showNotifications();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

@@ -36,9 +36,13 @@ public class DataService extends Service{
 	public void onStart(Intent intent, int startId) {
 		// getting the datausage of each app every 5 minutes.
 		Log.d("DATAUSAGE", "in on start service");
-		getDatausageperApp();
+		try {
+			getDatausageperApp();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	/*
 	 *  getting the datausage of each app
 	 *  1. getting the list of apps
@@ -47,40 +51,44 @@ public class DataService extends Service{
 	 *  4. inserts at every 5 minutes (set by alarm manager)
 	 */
 	public void getDatausageperApp() {
-		final PackageManager pm = getPackageManager();
-		// get a list of installed apps.
-		List<ApplicationInfo> packages = pm.getInstalledApplications(0);
+		try {
+			final PackageManager pm = getPackageManager();
+			// get a list of installed apps.
+			List<ApplicationInfo> packages = pm.getInstalledApplications(0);
 
-		db.open();
-		for (ApplicationInfo packageInfo : packages) {
-			// get the UID for the selected app
-			int uid = packageInfo.uid;
-			
-			// getting the package_name
-			String package_name = packageInfo.packageName;
-			String appName = utils.getAppName(package_name);
-		//	Drawable icon = pm.getApplicationIcon(app);
-			
-			float received = 
-					(float) TrafficStats.getUidRxBytes(uid)/ (1024 * 1024);
-			float send = 
-					(float) TrafficStats.getUidTxBytes(uid)/ (1024 * 1024);
-			float total = received + send;
+			db.open();
+			for (ApplicationInfo packageInfo : packages) {
+				// get the UID for the selected app
+				int uid = packageInfo.uid;
 
-			if(total>0) {
-//				long date = System.currentTimeMillis();
-//				SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy HH:mm");
-//				String timeStamp = formatter.format(date);
-				// Logging the datausage of each app
-				db.insertDataUsage(dataTable, appName, 
-						round(send,2)+"kB", round(received,2)+"kB", round(total,2)+"kB",new Date().toString() );
+				// getting the package_name
+				String package_name = packageInfo.packageName;
+				String appName = utils.getAppName(package_name);
+				//	Drawable icon = pm.getApplicationIcon(app);
+
+				float received = 
+						(float) TrafficStats.getUidRxBytes(uid)/ (1024 * 1024);
+				float send = 
+						(float) TrafficStats.getUidTxBytes(uid)/ (1024 * 1024);
+				float total = received + send;
+
+				if(total>0) {
+					//				long date = System.currentTimeMillis();
+					//				SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy HH:mm");
+					//				String timeStamp = formatter.format(date);
+					// Logging the datausage of each app
+					db.insertDataUsage(dataTable, appName, 
+							round(send,2)+"kB", round(received,2)+"kB", round(total,2)+"kB",new Date().toString() );
+				}
 			}
+			db.close();
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
-		db.close();
 	}
 	public static BigDecimal round(float d, int decimalPlace) {
-        BigDecimal bd = new BigDecimal(Float.toString(d));
-        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);       
-        return bd;
-    }	
+		BigDecimal bd = new BigDecimal(Float.toString(d));
+		bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);       
+		return bd;
+	}	
 }

@@ -15,29 +15,33 @@ public class ScreenReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		
-		db = new DBAdapter(context);
-		db.open();
-		SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
-		String date =s.format(new Date());
-		if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-			
-			db.inserScreenstate("Idle", new Date().toString());
-			
-			Log.d("screen","screen off");
+		try {
+			db = new DBAdapter(context);
+			db.open();
+			SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
-		} else if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
-			
-			db.inserScreenstate("Active", new Date().toString());
-			
-			Log.d("screen","user present");
+			String date =s.format(new Date());
+			if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
 
+				db.inserScreenstate("Idle", new Date().toString());
+
+				Log.d("screen","screen off");
+
+			} else if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
+
+				db.inserScreenstate("Active", new Date().toString());
+
+				Log.d("screen","user present");
+
+			}
+			db.close();
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
-		db.close();
 	}
 
 
-	}
+}
 
 

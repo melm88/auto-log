@@ -33,11 +33,15 @@ public class DataUsage extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_data_usage);
-		db = new DBAdapter(this);
-		utils = new Utils(this);
-		showdataUsage();
-		//startAlarm();
-		Log.d("DATAUSAGE", "in on create");
+		try {
+			db = new DBAdapter(this);
+			utils = new Utils(this);
+			showdataUsage();
+			//startAlarm();
+			Log.d("DATAUSAGE", "in on create");
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void startAlarm() {

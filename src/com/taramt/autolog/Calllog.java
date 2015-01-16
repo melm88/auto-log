@@ -25,11 +25,11 @@ public class Calllog extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_calllog);
-	
-		// get the call log
-		ArrayList<String> rows = getCallDetails(); 
-		//displaying the log from database on list view 
-		if(rows != null){
+		try {
+			// get the call log
+			ArrayList<String> rows = getCallDetails(); 
+			//displaying the log from database on list view 
+			if(rows != null){
 				ListView listView = (ListView) findViewById(R.id.list);
 
 
@@ -37,6 +37,9 @@ public class Calllog extends Activity {
 						android.R.layout.simple_list_item_1, android.R.id.text1, rows);
 
 				listView.setAdapter(adapter); 
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 
 	}
@@ -48,7 +51,7 @@ public class Calllog extends Activity {
 	private ArrayList<String>  getCallDetails() { 
 
 		ArrayList<String> row = new ArrayList<String>();
-		
+
 		Cursor managedCursor = managedQuery(CallLog.Calls.CONTENT_URI, 
 				null, null, null, null); 
 		int number = managedCursor.getColumnIndex(CallLog.Calls.NUMBER); 
@@ -56,7 +59,7 @@ public class Calllog extends Activity {
 		int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
 		int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
 
-		
+
 		// loop for traversing whole log
 		while (managedCursor.moveToNext()) { 
 			String phNumber = managedCursor.getString(number); 
@@ -76,7 +79,7 @@ public class Calllog extends Activity {
 			String temp = "\nPhone Number:--- " + phNumber + " \nCall Type:--- " 
 					+ dir + " \nCall Date:--- " + callDayTime
 					+ " \nCall duration in sec :--- " + callDuration; 
-			
+
 			row.add(temp);	
 		} 
 		return row;

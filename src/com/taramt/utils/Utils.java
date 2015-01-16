@@ -34,28 +34,37 @@ public class Utils {
 	public String getDetails(DBAdapter db, ArrayList<String> details) {
 		db.open();
 		String detailss = "";
-		for (int i = 0; i<details.size(); i++) {
-			detailss = details.get(i) + "\n\n" + detailss ;
+		try {		
+			for (int i = 0; i<details.size(); i++) {
+				detailss = details.get(i) + "\n\n" + detailss ;
+			}
+			db.close();
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
-		db.close();
 		return detailss;
 	}
 
 
 	public String convert2Time(long total) {
-
-		long totalSec = total/1000;
-		//new date object with time difference
-
+		
 		String timeStr = "";
-		if(totalSec/3600 > 0) {
-			timeStr = timeStr +  totalSec/3600+"h  : ";
-		}
-		if ((totalSec%3600)/60 > 0) {
-			timeStr = timeStr + (totalSec%3600)/60 + "m  : ";
-		}
+		try {
+			long totalSec = total/1000;
+			//new date object with time difference
 
-		timeStr = timeStr + (totalSec%3600)%60 + "s";
+			
+			if(totalSec/3600 > 0) {
+				timeStr = timeStr +  totalSec/3600+"h  : ";
+			}
+			if ((totalSec%3600)/60 > 0) {
+				timeStr = timeStr + (totalSec%3600)/60 + "m  : ";
+			}
+
+			timeStr = timeStr + (totalSec%3600)%60 + "s";
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		return timeStr;
 	}
 

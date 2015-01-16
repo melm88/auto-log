@@ -37,22 +37,26 @@ public class ScreenService extends Service {
 	}
 	@Override
 	public void onStart(Intent intent, int startId) {
-		filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-		filter.addAction(Intent.ACTION_USER_PRESENT);
 		try {
-			unregisterReceiver(mReceiver);
-			Log.i("register oonService", "receiver unregistered");
-		} catch (IllegalArgumentException e) {
-			
+			filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+			filter.addAction(Intent.ACTION_USER_PRESENT);
+			try {
+				unregisterReceiver(mReceiver);
+				Log.i("register oonService", "receiver unregistered");
+			} catch (IllegalArgumentException e) {
+
+			}
+			registerReceiver(mReceiver, filter);
+			Log.i("register oonService", "receiver registered");
+			//	Log.i("register oonService", "receiver not registered");
+			stopAlarm();
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
-		registerReceiver(mReceiver, filter);
-		Log.i("register oonService", "receiver registered");
-		//	Log.i("register oonService", "receiver not registered");
-		stopAlarm();
 	}
 
 	public void stopAlarm() {
-		
+
 		Intent intent = new Intent(getApplicationContext(), ScreenService.class);
 		PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 		AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);

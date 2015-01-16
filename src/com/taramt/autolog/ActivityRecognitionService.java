@@ -53,12 +53,16 @@ LocationListener  {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		context=getApplicationContext();
+		try {
+			context=getApplicationContext();
 
-		details=PreferenceManager.getDefaultSharedPreferences(this);
-		dbAdapter=new DBAdapter(this);
+			details=PreferenceManager.getDefaultSharedPreferences(this);
+			dbAdapter=new DBAdapter(this);
 
-		Log.d("activity class","oncreate");
+			Log.d("activity class","oncreate");
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -68,39 +72,42 @@ LocationListener  {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d("activity class","onstart");
+		try {
+			SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+			String timeStamp=s.format(new Date());
+			SharedPreferences.Editor editor=details.edit();
+			editor.putString("timeStamp", new Date().toString());
+			editor.commit();
 
-		SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-		String timeStamp=s.format(new Date());
-		SharedPreferences.Editor editor=details.edit();
-		editor.putString("timeStamp", new Date().toString());
-		editor.commit();
+			// start the activity monitoring 
+			startActivityMonitoring();
 
-		// start the activity monitoring 
-		startActivityMonitoring();
+			// receiver which receives activity updates from recognition service.
+			receiver=new BroadcastReceiver(){
 
-		// receiver which receives activity updates from recognition service.
-		receiver=new BroadcastReceiver(){
+				@Override
+				public void onReceive(Context context, Intent intent) {
+					// TODO Auto-generated method stub
+					//get activity and confidence from receiver
+					String Activity=intent.getExtras().getString("Activity");
+					String confidence=intent.getExtras().getString("confidence");
 
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				// TODO Auto-generated method stub
-				//get activity and confidence from receiver
-				String Activity=intent.getExtras().getString("Activity");
-				String confidence=intent.getExtras().getString("confidence");
+					// store activity data in database
+					dbAdapter.insertActivity(details.getString("timeStamp", " "), Activity, confidence);
 
-				// store activity data in database
-				dbAdapter.insertActivity(details.getString("timeStamp", " "), Activity, confidence);
+					// call stopmonitoring method to stop activity updates.
+					stopMonitoring();
 
-				// call stopmonitoring method to stop activity updates.
-				stopMonitoring();
+				}
 
-			}
-
-		};
-		IntentFilter filter1 = new IntentFilter();
-		filter1.addAction("stopupdates");
-		// registering of receiver.
-		registerReceiver(receiver, filter1);
+			};
+			IntentFilter filter1 = new IntentFilter();
+			filter1.addAction("stopupdates");
+			// registering of receiver.
+			registerReceiver(receiver, filter1);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		return START_STICKY;
 	}
 
