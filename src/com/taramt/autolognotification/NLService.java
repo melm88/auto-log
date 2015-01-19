@@ -63,6 +63,8 @@ public class NLService extends NotificationListenerService {
 			insertDB(sbn);
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 
@@ -80,7 +82,10 @@ public class NLService extends NotificationListenerService {
 		ApplicationInfo applicationInfo = null;
 		try {
 			applicationInfo = packageManager.getApplicationInfo(packageName, 0);
-		} catch (final NameNotFoundException e) {}
+		} catch (final NameNotFoundException e) {
+			Utils.appendLog(e);
+			
+		}
 		final String appName = (String)((applicationInfo != null)
 				? packageManager.getApplicationLabel(applicationInfo) : "???");
 		return appName;
@@ -111,6 +116,8 @@ public class NLService extends NotificationListenerService {
 			db.close();
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 
@@ -152,6 +159,8 @@ public class NLService extends NotificationListenerService {
 			}
 		} catch (Exception e) {
 			Log.d("NotificationActivity", e.toString());
+			Utils.appendLog(e);
+			
 		}
 
 		return text;

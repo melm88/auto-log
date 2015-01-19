@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.SortedSet;
 
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 
 import android.app.Activity;
 import android.database.Cursor;
@@ -44,6 +45,8 @@ public class Calllog extends Activity {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 
 	}

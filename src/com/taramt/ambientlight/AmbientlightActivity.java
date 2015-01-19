@@ -1,9 +1,12 @@
 package com.taramt.ambientlight;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.taramt.autolog.R;
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
+
 import android.support.v7.app.ActionBarActivity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -42,6 +45,9 @@ public class AmbientlightActivity extends ActionBarActivity {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			
+			Utils.appendLog(e);
+			
 		}
 	}
 

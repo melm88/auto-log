@@ -2,6 +2,8 @@ package com.taramt.autologscreenstate;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
@@ -87,6 +89,8 @@ public class ScreenActivity extends Activity {
 			pDay = cal.get(Calendar.DAY_OF_MONTH);
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 
 	}
@@ -103,6 +107,8 @@ public class ScreenActivity extends Activity {
 			Log.i("oon Alarm", "Alarm started");
 		} catch (Exception e) {
 			Log.d("exceptionasdfdf",""+e);
+			Utils.appendLog(e);
+			
 		}
 	}
 
@@ -198,6 +204,8 @@ public class ScreenActivity extends Activity {
 				Sort();
 			} catch(Exception e) {
 				e.printStackTrace();
+				Utils.appendLog(e);
+				
 			}
 		}
 	};

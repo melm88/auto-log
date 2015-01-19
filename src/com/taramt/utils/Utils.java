@@ -1,11 +1,19 @@
 package com.taramt.utils;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Environment;
 
 public class Utils {
 	Context context;
@@ -22,7 +30,10 @@ public class Utils {
 		ApplicationInfo applicationInfo = null;
 		try {
 			applicationInfo = packageManager.getApplicationInfo(packageName, 0);
-		} catch (final NameNotFoundException e) {}
+		} catch (final NameNotFoundException e) {
+			Utils.appendLog(e);
+			
+		}
 		final String appName = (String)((applicationInfo != null)
 				? packageManager.getApplicationLabel(applicationInfo) : "???");
 		return appName;
@@ -41,6 +52,8 @@ public class Utils {
 			db.close();
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+				
 		}
 		return detailss;
 	}
@@ -64,8 +77,80 @@ public class Utils {
 			timeStr = timeStr + (totalSec%3600)%60 + "s";
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return timeStr;
 	}
+	//adds a log entry into log text file
+	public static void appendLog(Throwable ex)
+	{  String text = new Date().toString()+":";
+	   text+="-"+ex.toString();
+	   text+="-"+ex.getStackTrace()[0].getFileName();
+	   text+="-"+ex.getStackTrace()[0].getClassName();
+	   text+="-"+ex.getStackTrace()[0].getMethodName();
+	   text+="-"+ex.getStackTrace()[0].getLineNumber()+"\n";
+	   
+	   File logFile = new File(Environment.getExternalStorageDirectory()+"/Autolog_log.txt");
+	   if (!logFile.exists())
+	   {
+	      try
+	      {
+	         logFile.createNewFile();
+	      } 
+	      catch (IOException e)
+	      {
+	         e.printStackTrace();
+	     	Utils.appendLog(e);
+			
+	      }
+	   }
+	   try
+	   {
+	      //BufferedWriter for performance, true to set append to file flag
+	      BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true)); 
+	      buf.append(text);
+	      buf.newLine();
+	      buf.close();
+	   }
+	   catch (IOException e)
+	   {
+	      e.printStackTrace();
+	  	Utils.appendLog(e);
+		
+	   }
+	}
+	
 
+	public static void appendLog(String text) {
+		File logFile = new File(Environment.getExternalStorageDirectory()+"/Autolog_log.txt");
+		   if (!logFile.exists())
+		   {
+		      try
+		      {
+		         logFile.createNewFile();
+		      } 
+		      catch (IOException e)
+		      {
+		         e.printStackTrace();
+		     	Utils.appendLog(e);
+				
+		      }
+		   }
+		   try
+		   {
+		      //BufferedWriter for performance, true to set append to file flag
+		      BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true)); 
+		      buf.append(text);
+		      buf.newLine();
+		      buf.newLine();
+		      buf.close();
+		   }
+		   catch (IOException e)
+		   {
+		      e.printStackTrace();
+		  	Utils.appendLog(e);
+			
+		   }
+	}
 }

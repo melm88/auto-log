@@ -20,16 +20,20 @@ import android.provider.Settings;
 import android.util.Log;
 
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 
-@SuppressLint("NewApi") public class AlarmService extends Service {
+@SuppressLint("NewApi")
+public class AlarmService extends Service {
 	SharedPreferences prefs;
 	static String Tag = "NEXT_ALARM";
 	DBAdapter db;
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	@Override
 	public void onCreate() {
 		db = new DBAdapter(getApplicationContext());
@@ -46,22 +50,23 @@ import com.taramt.utils.DBAdapter;
 			String nextAlarm = " ";
 			nextAlarm = getNextAlarm(getApplicationContext());
 
-			/* getting nextalarmclock information 
-			 * through getNextAlarmClock
+			/*
+			 * getting nextalarmclock information through getNextAlarmClock
 			 * works only for api level 21 and above
 			 */
 			try {
-				AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+				AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 				nextAlarm = am.getNextAlarmClock().toString();
 				Log.d(Tag + "_AI", nextAlarm);
 			} catch (NoSuchMethodError e) {
+				Utils.appendLog(e);
 
 			}
-			try{
-				Log.d(Tag + "Repeat", "next alarm is:  " + nextAlarm+" "+prefs);
-				if (!nextAlarm.equals(prefs.getString("nextAlarm", " ")) 
-						&& !nextAlarm.equals("")
-						&& !nextAlarm.equals(" ")) {
+			try {
+				Log.d(Tag + "Repeat", "next alarm is:  " + nextAlarm + " "
+						+ prefs);
+				if (!nextAlarm.equals(prefs.getString("nextAlarm", " "))
+						&& !nextAlarm.equals("") && !nextAlarm.equals(" ")) {
 					db.open();
 					db.insertAlarmDetails("alarmset", nextAlarm);
 					Log.d(Tag, "next alarm is:  " + nextAlarm);
@@ -70,28 +75,26 @@ import com.taramt.utils.DBAdapter;
 					editor.commit();
 					db.close();
 				}
+			} catch (NullPointerException e) {
+				Log.d("Alarm", "No next Active Alarm");
+				Log.d("Null pointer exception", e + "");
+				Utils.appendLog(e);
+				
 			}
-			catch(NullPointerException e){
-				Log.d("Alarm", "No next Active Alarm");	
-				Log.d("Null pointer exception", e+"");	
-
-			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+
 		}
-
-
 
 	}
 
-
 	public static String getNextAlarm(Context context) {
-		// collecting short names of days    
+		// collecting short names of days
 		DateFormatSymbols symbols = new DateFormatSymbols();
 		// and fill with those names map...
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		String[] dayNames = symbols.getShortWeekdays();
-
 
 		map.put(dayNames[Calendar.MONDAY], Calendar.TUESDAY);
 		map.put(dayNames[Calendar.TUESDAY], Calendar.WEDNESDAY);
@@ -101,46 +104,51 @@ import com.taramt.utils.DBAdapter;
 		map.put(dayNames[Calendar.SATURDAY], Calendar.SUNDAY);
 		map.put(dayNames[Calendar.SUNDAY], Calendar.MONDAY);
 
-		String nextAlarm = Settings.System.getString(context.getContentResolver(),
+		String nextAlarm = Settings.System.getString(
+				context.getContentResolver(),
 				Settings.System.NEXT_ALARM_FORMATTED);
 
 		Log.d(Tag + "original", nextAlarm);
 
 		// In case if alarm isn't set.....
-		if ((nextAlarm==null) || ("".equals(nextAlarm))) return null;
+		if ((nextAlarm == null) || ("".equals(nextAlarm)))
+			return null;
 		// day
 		String nextAlarmDay = nextAlarm.split(" ")[0];
 		// getting number....
 		int alarmDay = map.get(nextAlarmDay);
 
-		Date now = new Date();      
-		String dayOfWeek = new SimpleDateFormat("EE", Locale.getDefault()).format(now);     
+		Date now = new Date();
+		String dayOfWeek = new SimpleDateFormat("EE", Locale.getDefault())
+				.format(now);
 		int today = map.get(dayOfWeek);
 
 		// calculating no of days we have to next alarm :-)
-		int daysToAlarm = alarmDay-today;
-		// sometimes it will  be negtive number so add 7.
-		if (daysToAlarm<0) {
+		int daysToAlarm = alarmDay - today;
+		// sometimes it will be negtive number so add 7.
+		if (daysToAlarm < 0) {
 			daysToAlarm += 7;
 		}
 
-
-
-		//  building date, and parse it.....
+		// building date, and parse it.....
 		try {
 			Calendar cal2 = Calendar.getInstance();
-			String str = cal2.get(Calendar.YEAR)+"-"+(cal2.get(Calendar.MONTH)+1)+"-"+(cal2.get(Calendar.DAY_OF_MONTH));
+			String str = cal2.get(Calendar.YEAR) + "-"
+					+ (cal2.get(Calendar.MONTH) + 1) + "-"
+					+ (cal2.get(Calendar.DAY_OF_MONTH));
 
-			SimpleDateFormat df  = new SimpleDateFormat("yyyy-MM-d hh:mm");
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-d hh:mm");
 
-			cal2.setTime(df.parse(str+nextAlarm.substring(nextAlarm.indexOf(" "))));
+			cal2.setTime(df.parse(str
+					+ nextAlarm.substring(nextAlarm.indexOf(" "))));
 			cal2.add(Calendar.DAY_OF_YEAR, daysToAlarm);
 
 			SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy");
 
-			//return s.format(cal2.getTime()) + " "+ nextAlarm.split(" ")[1];
+			// return s.format(cal2.getTime()) + " "+ nextAlarm.split(" ")[1];
 			return cal2.getTime().toString();
 		} catch (Exception e) {
+			Utils.appendLog(e);
 
 		}
 		// in case if cannot calculate...
@@ -148,4 +156,3 @@ import com.taramt.utils.DBAdapter;
 	}
 
 }
-

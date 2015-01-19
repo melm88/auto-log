@@ -31,6 +31,7 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 
 /**
  * 
@@ -88,6 +89,8 @@ LocationListener {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return START_STICKY;
 	}
@@ -153,6 +156,8 @@ LocationListener {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				Log.d("exception in calling asynctask",e.toString());
+				Utils.appendLog(e);
+				
 			}
 
 			//remove the location updates after getting address
@@ -236,6 +241,8 @@ LocationListener {
 				ai = pm.getApplicationInfo( packageName, 0);
 			} catch (final NameNotFoundException e) {
 				ai = null;
+				Utils.appendLog(e);
+				
 			}
 			final String applicationName = (String) (ai != null ? pm.getApplicationLabel(ai) : "(unknown)");
 
@@ -281,6 +288,8 @@ LocationListener {
 			}
 		} catch (IOException e) {
 			Log.d("tag", e.getMessage());
+			Utils.appendLog(e);
+			
 		}
 
 		return first;

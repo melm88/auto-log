@@ -86,6 +86,8 @@ import com.taramt.utils.Utils;
 			Log.d("activity class","oncreate");
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 
 
@@ -122,6 +124,8 @@ import com.taramt.utils.Utils;
 			caller++;
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 
 
@@ -174,6 +178,8 @@ import com.taramt.utils.Utils;
 			db.close();
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 	public static BigDecimal round(float d, int decimalPlace) {
@@ -198,7 +204,8 @@ import com.taramt.utils.Utils;
 				nextAlarm = am.getNextAlarmClock().toString();
 				Log.d(Tag + "_AI", nextAlarm);
 			} catch (NoSuchMethodError e) {
-
+				Utils.appendLog(e);
+				
 			}
 			try{
 				Log.d(Tag + "Repeat", "next alarm is:  " + nextAlarm+" "+prefs);
@@ -216,11 +223,18 @@ import com.taramt.utils.Utils;
 			}
 			catch(NullPointerException e){
 				Log.d("Alarm", "No next Active Alarm");	
-				Log.d("Null pointer exception", e+"");	
+				Log.d("Null pointer exception", e+"");
+				//Utils.appendLog(e);
+				Utils.appendLog(e);
+
+				
 
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+//			Utils.appendLog(e);
+			Utils.appendLog(e);
+
 		}
 
 	}
@@ -280,6 +294,8 @@ import com.taramt.utils.Utils;
 			//return s.format(cal2.getTime()) + " "+ nextAlarm.split(" ")[1];
 			return cal2.getTime().toString();
 		} catch (Exception e) {
+			Utils.appendLog(e);
+			
 
 		}
 		// in case if cannot calculate...
@@ -297,7 +313,9 @@ import com.taramt.utils.Utils;
 
 			RecordLightIntensity();
 		} catch(Exception e) {
-			e.printStackTrace();;
+			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 
 	}
@@ -362,6 +380,8 @@ import com.taramt.utils.Utils;
 				}
 			} catch(Exception e) {
 				e.printStackTrace();
+				Utils.appendLog(e);
+				
 			}
 
 		}
@@ -380,6 +400,8 @@ import com.taramt.utils.Utils;
 							AudioFormat.ENCODING_PCM_16BIT);
 		} catch (Exception e) {
 			android.util.Log.e("TrackingFlow", "Exception", e);
+			Utils.appendLog(e);
+			
 		}
 		try {
 			audio = new AudioRecord(MediaRecorder.AudioSource.MIC, sampleRate,
@@ -391,6 +413,8 @@ import com.taramt.utils.Utils;
 			audio.stop();
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 
 	}
@@ -399,6 +423,8 @@ import com.taramt.utils.Utils;
 	 */
 	private void readAudioBuffer() {
 		try {
+			
+			
 			short[] buffer = new short[bufferSize];
 			int bufferReadResult = 1;
 			if (audio != null) {
@@ -407,6 +433,7 @@ import com.taramt.utils.Utils;
 				double sumLevel = 0;
 				for (int i = 0; i < bufferReadResult; i++) {
 					sumLevel += buffer[i];
+					Log.d("Audio Level", buffer[i]+"");
 				}
 				lastLevel = Math.abs((sumLevel / bufferReadResult));
 				Log.d("Audio Level", lastLevel+"");
@@ -417,6 +444,8 @@ import com.taramt.utils.Utils;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 

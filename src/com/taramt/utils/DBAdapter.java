@@ -60,6 +60,8 @@ public class DBAdapter {
 			Log.d("NotificationDetails", "" + n);
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return n;	
 	}
@@ -79,6 +81,8 @@ public class DBAdapter {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return NotificationDetails;
 	}
@@ -102,6 +106,8 @@ public class DBAdapter {
 			Log.d("DataUsage", ""+n);
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return n;	
 	}
@@ -123,6 +129,8 @@ public class DBAdapter {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return datausageofApps;
 	}
@@ -149,6 +157,8 @@ public class DBAdapter {
 			db.insert("phone_activity", null, cv);
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 
 	}
@@ -187,6 +197,8 @@ public class DBAdapter {
 			edit.commit();
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 
@@ -206,10 +218,14 @@ public class DBAdapter {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				Log.d("exception in updating folders",e.toString());
+				Utils.appendLog(e);
+				
 			}
 			close();
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return 0;
 	}
@@ -225,6 +241,8 @@ public class DBAdapter {
 			Log.d("tablename", "inserted a row "+n);
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return n;	
 	}
@@ -243,6 +261,8 @@ public class DBAdapter {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return screenStateDetailss;
 	}
@@ -268,6 +288,8 @@ public class DBAdapter {
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		//return (start - stop);
 		long temp = (new Date(time)).getTime()-(new Date(timeStamp)).getTime();
@@ -290,6 +312,8 @@ public class DBAdapter {
 			db.close();
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 	public String[][] getLocationDetails(){
@@ -317,6 +341,8 @@ public class DBAdapter {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			Log.d("exception in getlocation",e.toString());
+			Utils.appendLog(e);
+			
 			return null;
 		}
 
@@ -346,8 +372,9 @@ public class DBAdapter {
 			db.close();
 			return rows;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			Log.d("exception in getlocation",e.toString());
+			Utils.appendLog(e);
+			
 			return null;
 		}
 
@@ -369,6 +396,8 @@ public class DBAdapter {
 			db.close();
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 
@@ -397,6 +426,8 @@ public class DBAdapter {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			Log.d("exception in getactivity",e.toString());
+			Utils.appendLog(e);
+			
 			return null;
 		}
 	}
@@ -464,6 +495,8 @@ public class DBAdapter {
 			updateTotal(timeStamp, total, cumulateTotal+"");
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return cumulateTotal;
 	}
@@ -480,6 +513,8 @@ public class DBAdapter {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return sDetailss;
 	}
@@ -493,6 +528,8 @@ public class DBAdapter {
 			return cursor.getCount();
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 			return 0;
 		}
 	}
@@ -515,6 +552,8 @@ public class DBAdapter {
 			close();
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return top3;
 	}
@@ -534,6 +573,8 @@ public class DBAdapter {
 			db.insert("sort", null, cv);
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 	public long updateSort(String state, String timeStamp, long total, String hour) {
@@ -551,6 +592,8 @@ public class DBAdapter {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			Log.d("exception in updating folders",e.toString());
+			Utils.appendLog(e);
+			
 		}
 		close();
 		return 0;
@@ -572,6 +615,8 @@ public class DBAdapter {
 			close();
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return screenStateDetailss;
 	}
@@ -593,7 +638,8 @@ public class DBAdapter {
 			Log.d("AlarmInserted", "" + n);
 			return n;	
 		} catch (android.database.sqlite.SQLiteConstraintException s) {
-
+			Utils.appendLog(s);
+			
 		} 
 		return 0;
 	}
@@ -613,6 +659,8 @@ public class DBAdapter {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return AlarmDetails;
 	}
@@ -636,6 +684,8 @@ public class DBAdapter {
 			Log.d("ChargerState", "" + n);
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return n;	
 	}
@@ -661,6 +711,8 @@ public class DBAdapter {
 			}	
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 
 		return PowerDetails;
@@ -679,6 +731,8 @@ public class DBAdapter {
 			Log.d("Temperature", "" + n);
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return n;	
 	}
@@ -702,6 +756,8 @@ public class DBAdapter {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 
 		return TemperatureDetails;
@@ -721,6 +777,8 @@ public class DBAdapter {
 			Log.d("MediaEvent", "" + n);
 		} catch(Exception e) {
 			Log.d("MediaEvent",e.toString());
+			Utils.appendLog(e);
+			
 			//e.printStackTrace();
 		}
 
@@ -746,6 +804,8 @@ public class DBAdapter {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 
 		return MediaDetails;
@@ -762,6 +822,8 @@ public class DBAdapter {
 			Log.d("tablename", "inserted a row "+n);
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return n;	
 	}
@@ -777,6 +839,8 @@ public class DBAdapter {
 			Log.d("tablename", "inserted a row "+n);
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return n;	
 	}
@@ -794,6 +858,8 @@ public class DBAdapter {
 			Log.d("tablename", "inserted a row "+n);
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return n;	
 	}
@@ -810,6 +876,8 @@ public class DBAdapter {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return entry;
 	}
@@ -826,6 +894,8 @@ public class DBAdapter {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return entry;
 	}
@@ -844,6 +914,8 @@ public class DBAdapter {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return entry;
 	}
@@ -860,6 +932,8 @@ public class DBAdapter {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return entry;
 	}
@@ -881,6 +955,8 @@ public class DBAdapter {
 			db.close();
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 	/*
@@ -906,6 +982,8 @@ public class DBAdapter {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			Log.d("exception in getforegroundapp",e.toString());
+			Utils.appendLog(e);
+			
 			return null;
 		}
 
@@ -978,6 +1056,8 @@ public class DBAdapter {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		} finally {
 			if(c!=null)
 				c.close();
@@ -997,6 +1077,8 @@ public class DBAdapter {
 			Log.d("toServerSYNCUPD", "Upd "+tablename+" | "+timestamp);
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 
 	}

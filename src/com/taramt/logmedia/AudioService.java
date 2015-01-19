@@ -1,11 +1,14 @@
 package com.taramt.logmedia;
 
+import java.io.File;
 import java.util.Date;
 
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Environment;
 import android.os.FileObserver;
 import android.os.IBinder;
 import android.util.Log;
@@ -43,7 +46,17 @@ public class AudioService extends Service {
 		// TODO Auto-generated method stub
 		super.onCreate();
 		try {
-			this.mFileObserver = new FileObserver("/sdcard/Sounds/") {
+			String filePath = "";
+			File f = new File(Environment.getExternalStorageDirectory()+"/Recording");
+			if(f.exists())
+				filePath = f.getAbsolutePath();
+			else {
+				f = new File(Environment.getExternalStorageDirectory()+"/Sounds");
+				filePath = f.getAbsolutePath();
+			}
+			Log.d("Fcheck","File: "+filePath);
+			//"/sdcard/Sounds/"
+			this.mFileObserver = new FileObserver(filePath) {
 				@Override
 				public void onEvent(int event, String path) {
 					Log.d("audiorec", "inOnEvent "+ event);
@@ -92,6 +105,8 @@ public class AudioService extends Service {
 			mFileObserver.startWatching();
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 
 	}

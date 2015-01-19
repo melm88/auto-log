@@ -3,6 +3,7 @@ package com.taramt.ambientlight;
 import java.util.Date;
 
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 
 import android.app.Service;
 import android.content.Context;
@@ -41,7 +42,9 @@ public class Ambientlightservice  extends Service
 
 			RecordLightIntensity();
 		} catch(Exception e) {
-			e.printStackTrace();;
+			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return START_STICKY;
 	}
@@ -112,6 +115,8 @@ public class Ambientlightservice  extends Service
 					}
 				}
 			} catch(Exception e) {
+				Utils.appendLog(e);
+				
 				e.printStackTrace();
 			}
 

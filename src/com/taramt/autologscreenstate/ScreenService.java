@@ -1,5 +1,7 @@
 package com.taramt.autologscreenstate;
 
+import java.util.Date;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -44,7 +46,8 @@ public class ScreenService extends Service {
 				unregisterReceiver(mReceiver);
 				Log.i("register oonService", "receiver unregistered");
 			} catch (IllegalArgumentException e) {
-
+				Utils.appendLog(e);
+				
 			}
 			registerReceiver(mReceiver, filter);
 			Log.i("register oonService", "receiver registered");
@@ -52,6 +55,8 @@ public class ScreenService extends Service {
 			stopAlarm();
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 

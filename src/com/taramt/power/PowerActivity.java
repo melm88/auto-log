@@ -1,8 +1,11 @@
 package com.taramt.power;
 
 import java.util.ArrayList;
+import java.util.Date;
+
 import com.taramt.autolog.R;
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -21,6 +24,8 @@ public class PowerActivity extends Activity {
 			displayPowerResults();
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 

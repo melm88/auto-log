@@ -3,6 +3,7 @@ package com.taramt.power;
 import java.util.Date;
 
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -61,8 +62,12 @@ public class ChargerClass {
 			dba.open();
 			dba.insertPowerDetails(power, isCharging==true?"Charging":"Not Charging", chargingport, ""+batteryPct, new Date().toString());
 			dba.close();
+			Utils.appendLog(new Date().toString()+","+power+", "+batteryPct);
+			
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 

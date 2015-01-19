@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 
 public class ScreenReceiver extends BroadcastReceiver {
 	DBAdapter db;
@@ -38,6 +39,8 @@ public class ScreenReceiver extends BroadcastReceiver {
 			db.close();
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 

@@ -1,6 +1,7 @@
 package com.taramt.autologalarm;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -60,6 +61,8 @@ import com.taramt.utils.Utils;
 			listView.setAdapter(adapter); 
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 
 	}
@@ -75,6 +78,8 @@ import com.taramt.utils.Utils;
 			Log.i("oon Alarm", "Alarm started");
 		} catch (Exception e) {
 			Log.d("exceptionasdfdf",""+e);
+			Utils.appendLog(e);
+			
 		}
 	}
 	@Override

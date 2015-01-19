@@ -3,6 +3,7 @@ package com.taramt.temperature;
 import java.util.Date;
 
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 
 import android.app.Service;
 import android.content.Context;
@@ -71,6 +72,8 @@ public class TemperatureSensor extends Service implements SensorEventListener {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 
 	}

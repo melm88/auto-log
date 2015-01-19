@@ -7,6 +7,7 @@ import com.taramt.autolog.R;
 import com.taramt.autologdatausage.DataService;
 import com.taramt.sync.SyncService;
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -53,7 +54,10 @@ public class BootReceiver extends BroadcastReceiver {
 
 				} catch(Exception e){
 					// db.insertDeviceState(e+"", new Date().toString());
+					Utils.appendLog(e);
+					
 				}
+				Utils.appendLog(new Date().toString()+",ACTION_BOOT_COMPLETED");
 
 
 				//save the event to database
@@ -68,9 +72,13 @@ public class BootReceiver extends BroadcastReceiver {
 				//save the event to database
 				db.insertDeviceState("ACTION_SHUTDOWN", new Date().toString());
 				db.close();
+				Utils.appendLog(new Date().toString()+",ACTION_SHUTDOWN");
+
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 

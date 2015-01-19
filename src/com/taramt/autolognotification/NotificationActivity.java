@@ -1,6 +1,7 @@
 package com.taramt.autolognotification;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.app.Activity;
 import android.app.NotificationManager;
@@ -50,6 +51,8 @@ public class NotificationActivity extends Activity {
 		showNotifications();
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 
@@ -106,6 +109,8 @@ public class NotificationActivity extends Activity {
 				showNotifications();
 			} catch(Exception e) {
 				e.printStackTrace();
+				Utils.appendLog(e);
+				
 			}
 		}
 	}

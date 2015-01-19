@@ -1,9 +1,11 @@
 package com.taramt.audiolevel;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.taramt.autolog.R;
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -43,6 +45,8 @@ public class AudiolevelActivity extends Activity {
 			listView.setAdapter(adapter); 
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 
 	}

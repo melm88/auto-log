@@ -31,6 +31,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -62,6 +63,7 @@ import com.taramt.sync.SyncService;
 import com.taramt.temperature.TemperatureActivity;
 import com.taramt.temperature.TemperatureSensor;
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 import com.taramt.wifi.WifiActivity;
 
 public class ControllerActivity extends ActionBarActivity {
@@ -76,12 +78,14 @@ public class ControllerActivity extends ActionBarActivity {
 		listView = (ListView) findViewById(R.id.list);
 		try {
 		getOverflowMenu();
+		
 		//SharedPreference to store user's register email id (from device)
 		preferences=PreferenceManager.getDefaultSharedPreferences(this);
 		if(preferences.getString("autologmail","false").equals("false")) {
-			Log.d("toServer", "EMAIL: "+getEmail(this));
+			Log.d("toServer", "EMAIL: "+getEmail(this)+" "+getDeviceName());
 			SharedPreferences.Editor editor=preferences.edit();
-			editor.putString("autologmail", getEmail(this));
+			editor.putString("autologmail", getEmail(this)+"-"+getDeviceName());
+			
 			editor.commit();
 			try {
 
@@ -95,6 +99,8 @@ public class ControllerActivity extends ActionBarActivity {
 
 			} catch(Exception e) {
 				e.printStackTrace();
+				Utils.appendLog(e);
+				
 			}
 		}
 		autologemailid = preferences.getString("autologmail","n/a");
@@ -218,6 +224,8 @@ public class ControllerActivity extends ActionBarActivity {
 		}); 
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 	/*
@@ -280,6 +288,8 @@ public class ControllerActivity extends ActionBarActivity {
 					Log.i("oon Alarm", "Alarm started");
 				} catch (Exception e) {
 					Log.d("exceptionasdfdf",""+e);
+					Utils.appendLog(e);
+					
 				}
 			}
 
@@ -297,6 +307,8 @@ public class ControllerActivity extends ActionBarActivity {
 				Log.i("oon Alarm", "Alarm started");
 			} catch (Exception e) {
 				Log.d("exceptionasdfdf",""+e);
+				Utils.appendLog(e);
+				
 			}
 		
 
@@ -327,6 +339,8 @@ public class ControllerActivity extends ActionBarActivity {
 
 			} catch (Exception e) {
 				Log.d("exceptionasdfdf",""+e);
+				Utils.appendLog(e);
+				
 			}
 //
 //			//		"Callog", 
@@ -343,6 +357,8 @@ public class ControllerActivity extends ActionBarActivity {
 
 			}catch(Exception e){
 				Log.d("exceptionasdfdf",""+e);
+				Utils.appendLog(e);
+				
 			}
 //			//		"VisualizationofLocation",
 //
@@ -413,6 +429,8 @@ public class ControllerActivity extends ActionBarActivity {
 			}	
 			} catch(Exception e) {
 				e.printStackTrace();
+				Utils.appendLog(e);
+				
 			}
 			return true;
 		}
@@ -484,10 +502,13 @@ public class ControllerActivity extends ActionBarActivity {
 				}
 			} catch(Exception e) {
 				e.printStackTrace();
+				Utils.appendLog(e);
+				
 			} finally {		    	
 				SharedPreferences.Editor editor=preferences.edit();
 				editor.putString("autologsync", "no");
 				editor.commit();
+				
 
 			}
 
@@ -509,6 +530,8 @@ public class ControllerActivity extends ActionBarActivity {
 			}
 			} catch(Exception e) {
 				e.printStackTrace();
+				Utils.appendLog(e);
+				
 			}
 		}
 	}
@@ -590,14 +613,24 @@ public class ControllerActivity extends ActionBarActivity {
 
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
+			Utils.appendLog(e);
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			Utils.appendLog(e);
+			
 		}
 
 	}
 	private void getOverflowMenu() {
 
 		try {
+			preferences=PreferenceManager.getDefaultSharedPreferences(this);
+			
+			SharedPreferences.Editor editor1=preferences.edit();
+			editor1.putString("autologsync", "no");
+			editor1.commit();
+		
 			ViewConfiguration config = ViewConfiguration.get(this);
 			Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
 			if(menuKeyField != null) {
@@ -606,8 +639,33 @@ public class ControllerActivity extends ActionBarActivity {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
+	public String getDeviceName() {
+		   String manufacturer = Build.MANUFACTURER;
+		   String model = Build.MODEL;
+		   if (model.startsWith(manufacturer)) {
+		      return capitalize(model);
+		   } else {
+		      return capitalize(manufacturer) + " " + model;
+		   }
+		}
+
+
+		private String capitalize(String s) {
+		    if (s == null || s.length() == 0) {
+		        return "";
+		    }
+		    char first = s.charAt(0);
+		    if (Character.isUpperCase(first)) {
+		        return s;
+		    } else {
+		        return Character.toUpperCase(first) + s.substring(1);
+		    }
+		}
+
 }
 
 class NotificationReceiver extends BroadcastReceiver {
@@ -617,5 +675,5 @@ class NotificationReceiver extends BroadcastReceiver {
 		// Showing the notifications
 		//showNotifications();
 	}
-}
+	}
 

@@ -1,8 +1,10 @@
 package com.taramt.autolog;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -41,6 +43,8 @@ public class LocationActivity extends Activity {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 

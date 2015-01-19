@@ -1,5 +1,7 @@
 package com.taramt.utils;
 
+import java.util.Date;
+
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -125,7 +127,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 			onCreate(db);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			Utils.appendLog(e);
+			
 
 		}
 	}

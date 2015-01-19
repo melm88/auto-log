@@ -40,6 +40,8 @@ public class DataService extends Service{
 			getDatausageperApp();
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 
@@ -84,6 +86,8 @@ public class DataService extends Service{
 			db.close();
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 	public static BigDecimal round(float d, int decimalPlace) {

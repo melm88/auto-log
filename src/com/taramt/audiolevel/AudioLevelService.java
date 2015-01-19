@@ -54,6 +54,9 @@ public class AudioLevelService extends Service {
 	 */
 	private void readAudioBuffer() {
 		try {
+			if(bufferSize==0)
+				bufferSize = 16;
+			
 			short[] buffer = new short[bufferSize];
 			int bufferReadResult = 1;
 			if (audio != null) {
@@ -61,6 +64,7 @@ public class AudioLevelService extends Service {
 				bufferReadResult = audio.read(buffer, 0, bufferSize);
 				double sumLevel = 0;
 				for (int i = 0; i < bufferReadResult; i++) {
+					Log.d("Audio Level", buffer[i]+" buffer");
 					sumLevel += buffer[i];
 				}
 				lastLevel = Math.abs((sumLevel / bufferReadResult));

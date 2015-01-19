@@ -1,11 +1,13 @@
 package com.taramt.temperature;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.taramt.autolog.MainActivity;
 import com.taramt.autolog.R;
 import com.taramt.autolog.R.layout;
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -30,6 +32,8 @@ public class TemperatureActivity extends Activity {
 			//startActivity(it);
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 
@@ -76,6 +80,8 @@ public class TemperatureActivity extends Activity {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 
 	}

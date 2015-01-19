@@ -22,6 +22,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.ActivityRecognitionClient;
 import com.google.android.gms.location.LocationListener;
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 
 /**
  * 
@@ -62,6 +63,8 @@ LocationListener  {
 			Log.d("activity class","oncreate");
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 
@@ -107,6 +110,8 @@ LocationListener  {
 			registerReceiver(receiver, filter1);
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return START_STICKY;
 	}

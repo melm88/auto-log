@@ -1,11 +1,14 @@
 package com.taramt.autolog;
 
+import java.util.Date;
+
 import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
 import com.google.android.gms.location.ActivityRecognitionResult;
 import com.google.android.gms.location.DetectedActivity;
+import com.taramt.utils.Utils;
 
 /**
  * 
@@ -58,6 +61,8 @@ public class RecognitionService extends IntentService {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 
 	}

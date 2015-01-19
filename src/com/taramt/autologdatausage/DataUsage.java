@@ -1,6 +1,7 @@
 package com.taramt.autologdatausage;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.taramt.autolog.R;
 import com.taramt.autolog.R.id;
@@ -41,6 +42,8 @@ public class DataUsage extends Activity {
 			Log.d("DATAUSAGE", "in on create");
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 
@@ -54,6 +57,8 @@ public class DataUsage extends Activity {
 					1000*60*5, pendingIntent);
 		} catch (Exception e) {
 			Log.d("exceptionasdfdf",""+e);
+			Utils.appendLog(e);
+			
 		}
 
 	}
@@ -67,8 +72,10 @@ public class DataUsage extends Activity {
 			AlarmManager am =(AlarmManager)getSystemService(Context.ALARM_SERVICE);
 			am.cancel(pendingIntent);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 

@@ -1,5 +1,7 @@
 package com.taramt.autolog;
 
+import java.util.Date;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -7,6 +9,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -55,6 +58,8 @@ public class VisualizationOfLocation extends FragmentActivity {
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 

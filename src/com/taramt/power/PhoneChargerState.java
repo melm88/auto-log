@@ -1,5 +1,9 @@
 package com.taramt.power;
 
+import java.util.Date;
+
+import com.taramt.utils.Utils;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +28,8 @@ public class PhoneChargerState extends BroadcastReceiver {
 			batteryStatus = c.registerReceiver(this, ifilter);
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 
@@ -55,6 +61,7 @@ public class PhoneChargerState extends BroadcastReceiver {
 		try {
 			//If POWER_CONNECTED
 			if (Intent.ACTION_POWER_CONNECTED.equals(intent.getAction())) {
+				
 				Log.d("PCS", "PowerConnected");
 				power = "Connected";
 				ChargerClass mycc = new ChargerClass(context);
@@ -69,6 +76,8 @@ public class PhoneChargerState extends BroadcastReceiver {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 }

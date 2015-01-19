@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -75,6 +76,8 @@ public class CameraReceiver extends BroadcastReceiver {
 
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 	}
 }

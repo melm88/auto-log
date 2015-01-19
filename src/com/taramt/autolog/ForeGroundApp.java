@@ -1,8 +1,10 @@
 package com.taramt.autolog;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -33,6 +35,8 @@ public class ForeGroundApp extends ActionBarActivity{
 				}
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		
 

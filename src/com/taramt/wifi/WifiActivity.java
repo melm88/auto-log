@@ -1,12 +1,14 @@
 package com.taramt.wifi;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.taramt.autolog.R;
 import com.taramt.autolog.R.id;
 import com.taramt.autolog.R.layout;
 import com.taramt.autolog.R.menu;
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -41,6 +43,8 @@ public class WifiActivity extends ActionBarActivity {
 			listView.setAdapter(adapter); 
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 
 	}

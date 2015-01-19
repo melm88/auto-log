@@ -21,6 +21,8 @@ import org.apache.http.util.EntityUtils;
 
 import com.taramt.autolog.Calllog;
 import com.taramt.utils.DBAdapter;
+import com.taramt.utils.Utils;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -62,6 +64,8 @@ public class SyncService  extends Service
 			Log.d("service","Service Running - onStartCommand");
 		} catch(Exception e) {
 			e.printStackTrace();
+			Utils.appendLog(e);
+			
 		}
 		return START_STICKY;
 	}
@@ -90,11 +94,6 @@ public class SyncService  extends Service
 
 			try {
 				//SharedPreference to keep track of sync
-				if(preferences.getString("autologsync","false").equals("no")) {
-					SharedPreferences.Editor editor=preferences.edit();
-					editor.putString("autologsync", "yes");
-					editor.commit();
-				}
 				//Retrieve a HashMap(tablename: rows-to-sync) from DB
 				HashMap<String, ArrayList<String>> sync_data_map = dba.getSYNCData();
 				//Get a set of all tablenames (using KeySet)
@@ -132,6 +131,8 @@ public class SyncService  extends Service
 			
 			} catch(Exception e) {
 				e.printStackTrace();
+				Utils.appendLog(e);
+				
 				Log.d("CALLLOG", "errr "+e);
 			} finally {		    	
 				SharedPreferences.Editor editor=preferences.edit();
@@ -236,11 +237,25 @@ public class SyncService  extends Service
 
 
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
+			SharedPreferences.Editor editor=preferences.edit();
+			editor.putString("autologsync", "no");
+			editor.commit();
+			Utils.appendLog(e);
+			
+
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			SharedPreferences.Editor editor=preferences.edit();
+			editor.putString("autologsync", "no");
+			editor.commit();
+			Utils.appendLog(e);
+			
+
 		}
 
+	}
+	
+	public void webRequestLarge(String url, String tablename, ArrayList<String> datas) {
+		
 	}
 
 
