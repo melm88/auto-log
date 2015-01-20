@@ -77,6 +77,7 @@ import com.taramt.utils.Utils;
 	@Override
 	public void onCreate() {
 		super.onCreate();	
+		Utils.appendLog("MegaService : onCreate, Started");
 		try {
 			db = new DBAdapter(getApplicationContext());
 			utils = new Utils(getApplicationContext());
@@ -89,23 +90,26 @@ import com.taramt.utils.Utils;
 			Utils.appendLog(e);
 			
 		}
-
+		Utils.appendLog("MegaService : onCreate, Ended");
 
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId)
 	{
+		Utils.appendLog("MegaService : onStartCommand, Started");
 		timestamp = new Date();
 		// getting the datausage of each app every 5 minutes.
 		Log.d("DATAUSAGE", "in on start service");
 		try {
 			Log.d("megaservice", "startingDataUSAGE");
+			Utils.appendLog("MegaService : getDatausageperApp, Started");
 			Date timer1=new Date();
 			getDatausageperApp();
 			Date timer2 = new Date();
 			Log.d("megaservice", "starting megaservice -- DataUsage: "+(timer2.getTime()-timer1.getTime())+" ~"+caller);
 			timer1 = new Date();
+			Utils.appendLog("MegaService : StartAlarmService, Started");
 			StartAlarmService();
 			timer2 = new Date();		
 			Log.d("megaservice", "LocationService -- Alarm: "+(timer2.getTime()-timer1.getTime())+" ~"+caller);
@@ -114,10 +118,12 @@ import com.taramt.utils.Utils;
 //			timer2 = new Date();
 //			Log.d("megaservice", "ambientService -- Location: "+(timer2.getTime()-timer1.getTime())+" ~"+caller);
 			timer1 = new Date();
+			Utils.appendLog("MegaService : ambientService, Started");
 			ambientService();
 			timer2 = new Date();
 			Log.d("megaservice", "AudioLevel -- Ambient"+(timer2.getTime()-timer1.getTime())+" ~"+caller);
 			timer1 = new Date();
+			Utils.appendLog("MegaService : AudioLevelService, Started");
 			AudioLevelService();
 			timer2 = new Date();
 			Log.d("megaservice", "Ended--MegaServices -- Audio: "+(timer2.getTime()-timer1.getTime())+" ~"+caller);
@@ -127,7 +133,7 @@ import com.taramt.utils.Utils;
 			Utils.appendLog(e);
 			
 		}
-
+		Utils.appendLog("MegaService : onStartCommand, Ended");
 
 		return START_STICKY;
 	}
@@ -135,7 +141,7 @@ import com.taramt.utils.Utils;
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-
+		Utils.appendLog("MegaService : onDestroy");
 	}
 	/*
 	 *  getting the datausage of each app

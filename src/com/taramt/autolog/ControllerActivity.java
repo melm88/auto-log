@@ -74,6 +74,7 @@ public class ControllerActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Utils.appendLog("ControllerActivity : onCreate, Started");
 		setContentView(R.layout.activity_controller);
 		listView = (ListView) findViewById(R.id.list);
 		try {
@@ -105,12 +106,6 @@ public class ControllerActivity extends ActionBarActivity {
 		}
 		autologemailid = preferences.getString("autologmail","n/a");
 
-		//SharedPreference to keep track of sync
-		if(preferences.getString("autologsync","false").equals("false")) {
-			SharedPreferences.Editor editor=preferences.edit();
-			editor.putString("autologsync", "no");
-			editor.commit();
-		}
 
 
 
@@ -234,7 +229,7 @@ public class ControllerActivity extends ActionBarActivity {
 	private static NotificationReceiver nReceiver;
 
 	public static void LaunchServices(Context c){
-
+		Utils.appendLog("ControllerActivity : LaunchServices, Started");
 		SharedPreferences savedValues = PreferenceManager
 				.getDefaultSharedPreferences(c);
 		//If this is the first launch
@@ -422,7 +417,13 @@ public class ControllerActivity extends ActionBarActivity {
 			try {
 			//Check sync state from SharedPreference
 			if(preferences.getString("autologsync","false").equals("no")) {
+				//SharedPreference to keep track of sync
 				new SendDataToServer().execute();
+				SharedPreferences.Editor editor=preferences.edit();
+				editor.putString("autologsync", "yes");
+				editor.commit();
+				
+				
 				Toast.makeText(this, "Sync Initiated", Toast.LENGTH_SHORT/1500).show();
 			} else {
 				Toast.makeText(this, "Sync In Progress", Toast.LENGTH_SHORT/1500).show();

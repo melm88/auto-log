@@ -38,13 +38,18 @@ public class NLService extends NotificationListenerService {
 	Utils utils;
 	@Override
 	public void onCreate() {
+		Utils.appendLog("NLService : onCreate, Started");
 		super.onCreate();
 		Log.i(TAG, "in on Create");
+		Utils.appendLog("NLService : onCreate, Ended");
+		
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		Utils.appendLog("NLService : onDestroy");
+		
 	}
 
 	@Override
@@ -58,8 +63,8 @@ public class NLService extends NotificationListenerService {
 			Log.i(TAG, "**********  onNotificationPosted *********");
 			Log.i(TAG, "ID :" + sbn.getId() + "\t" 
 					+ sbn.getNotification().tickerText + "\t" + sbn.getPackageName());
-
 			sendBrodcast();
+			Utils.appendLog("NLService : onNotificationPosted, Started");
 			insertDB(sbn);
 		} catch(Exception e) {
 			e.printStackTrace();

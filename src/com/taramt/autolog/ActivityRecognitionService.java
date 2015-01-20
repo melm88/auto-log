@@ -53,6 +53,7 @@ LocationListener  {
 
 	@Override
 	public void onCreate() {
+		Utils.appendLog("ActivityRecognitionService : onCreate, Started");
 		super.onCreate();
 		try {
 			context=getApplicationContext();
@@ -66,6 +67,8 @@ LocationListener  {
 			Utils.appendLog(e);
 			
 		}
+		Utils.appendLog("ActivityRecognitionService : onCreate, Ended");
+		
 	}
 
 	/*
@@ -74,6 +77,7 @@ LocationListener  {
 	 */
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		Utils.appendLog("ActivityRecognitionService : onStartCommand, Started");
 		Log.d("activity class","onstart");
 		try {
 			SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -83,8 +87,9 @@ LocationListener  {
 			editor.commit();
 
 			// start the activity monitoring 
+			Utils.appendLog("ActivityRecognitionService : startActivityMonitoring, Started");
 			startActivityMonitoring();
-
+			
 			// receiver which receives activity updates from recognition service.
 			receiver=new BroadcastReceiver(){
 
@@ -113,6 +118,8 @@ LocationListener  {
 			Utils.appendLog(e);
 			
 		}
+		Utils.appendLog("ActivityRecognitionService : onStartCommand, Ended");
+		
 		return START_STICKY;
 	}
 
@@ -147,6 +154,8 @@ LocationListener  {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		Utils.appendLog("ActivityRecognitionService : onDestroy");
+		
 	}
 	@Override
 	public IBinder onBind(Intent intent) {

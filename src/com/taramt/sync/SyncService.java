@@ -48,15 +48,19 @@ public class SyncService  extends Service
 
 	@Override
 	public void onCreate() {
-		// TODO Auto-generated method stub
+		Utils.appendLog("SyncService : onCreate, Started");
 		super.onCreate();		
 		preferences=PreferenceManager.getDefaultSharedPreferences(this);
 		autologemailid = preferences.getString("autologmail","n/a");
+		Utils.appendLog("SyncService : onCreate, Ended");
+		
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId)
 	{
+		Utils.appendLog("SyncService : onStartCommand, Started");
+		
 		try {
 			preferences=PreferenceManager.getDefaultSharedPreferences(this);
 			autologemailid = preferences.getString("autologmail","n/a");
@@ -67,13 +71,16 @@ public class SyncService  extends Service
 			Utils.appendLog(e);
 			
 		}
+		Utils.appendLog("SyncService : onStartCommand, Ended");
+		
 		return START_STICKY;
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-
+		Utils.appendLog("SyncService : onDestroy");
+		
 	}
 
 
@@ -84,7 +91,8 @@ public class SyncService  extends Service
 
 		@Override
 		protected String doInBackground(Void... params) {
-
+			Utils.appendLog("SyncService : SendDataToServer-doInBackground, Started");
+			
 			Log.d("toServer", "sending user data to server...");
 
 			dba.open();
@@ -106,6 +114,8 @@ public class SyncService  extends Service
 					temp_array = sync_data_map.get(key);
 					Log.d("toServerNET","Requesting: "+temp_array.size());
 					if(temp_array.size()>0) {
+						Utils.appendLog("SyncService : webRequest - "+key);
+						
 						webRequest("https://autocode.pythonanywhere.com/Autolog/webadmin/synchandler", key, temp_array);
 					}
 				}
@@ -124,7 +134,8 @@ public class SyncService  extends Service
 					Log.d("CALLLOG", "Update Sync");
 				temp_array = dba.getCallDetailsLatest(lastFetch);
 				}
-
+				Utils.appendLog("SyncService : webRequest - calllog");
+				
 			webRequest("https://autocode.pythonanywhere.com/Autolog/webadmin/synchandler", "calllog", temp_array);
 			Log.d("CALLLOG", "Sync completed");
 			
@@ -140,7 +151,8 @@ public class SyncService  extends Service
 				editor.commit();
 
 			}
-
+			Utils.appendLog("SyncService : SendDataToServer-doInBackground, Ended");
+			
 			dba.close();
 			return resp;
 
@@ -203,7 +215,7 @@ public class SyncService  extends Service
 						//Log.d("toServerRESP","--> "+temp_resp);
 						//If the returned count of insertions (OnServer) is greater than 0
 						//Proceed
-						if(Integer.parseInt(temp_resp)>0) {
+						if(Integer.parseInt(temp_resp)>0 && !tablename.equals("calllog")) {
 							//Log.d("toServerRESP","temp: "+temp_resp);
 							DBAdapter dba = new DBAdapter(getApplicationContext());
 							dba.open();

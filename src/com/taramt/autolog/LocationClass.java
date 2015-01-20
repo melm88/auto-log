@@ -61,15 +61,16 @@ LocationListener {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		Utils.appendLog("LocationClass : onCreate, Started");
 		context=getApplicationContext();
-
 		details=PreferenceManager.getDefaultSharedPreferences(this);
-
 		Log.d("location class","oncreate");
+		Utils.appendLog("LocationClass : onCreate, Ending");
 	}
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-
+		Utils.appendLog("LocationClass : onStartCommand, Started");
+		
 		try {
 			Log.d("locatin class","onstart");
 			// start the location updates if not already processing.
@@ -84,14 +85,15 @@ LocationListener {
 				editor.commit();
 
 				// start location tracking
+				Utils.appendLog("LocationClass : startLocationTracking, Started");
 				startLocationTracking();
-
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
 			Utils.appendLog(e);
 			
 		}
+		Utils.appendLog("LocationClass : onStartCommand, Stopped");
 		return START_STICKY;
 	}
 
@@ -115,6 +117,8 @@ LocationListener {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		Utils.appendLog("LocationClass : onDestroy");
+		
 	}
 	@Override
 	public IBinder onBind(Intent intent) {

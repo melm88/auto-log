@@ -122,8 +122,10 @@ public class Utils {
 	}
 	
 
-	public static void appendLog(String text) {
-		File logFile = new File(Environment.getExternalStorageDirectory()+"/Autolog_log.txt");
+	public static void appendLog(String event) {
+		 String text = new Date().toString()+":-"+event;
+		  
+		 File logFile = new File(Environment.getExternalStorageDirectory()+"/Autolog_lifecycle.txt");
 		   if (!logFile.exists())
 		   {
 		      try
